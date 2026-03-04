@@ -78,9 +78,8 @@ Let's start by verifying IP persistence.
 
 . In the *Virtualization* -> *VirtualMachines* list, locate your `vm-db` VM
 . Note the IP address displayed in the Network section of the Overview. This is an IP that has been dedicated to this machine by our UDN's IPAM.
-
-image::beg-module03/48.png[link=self, window=blank, width=100%]
 +
+image::beg-module03/48.png[link=self, window=blank, width=100%]
 
 === Start Live Migration
 
@@ -111,12 +110,12 @@ Now, let's secure our VMs. Our goal:
 We do this using standard Kubernetes **`NetworkPolicy`** resources.
 
 # [IMPORTANT]
-
+====
 It is crucial to understand that **Network Policies are not specific to UDNs**.
 
 They are standard Kubernetes resources that can be used to control flows on any network managed by OpenShift, including:
 
-# .   The default OpenShift SDN (the Pod Network).
+.   The default OpenShift SDN (the Pod Network).
 .   OVS bridges created by a `NodeNetworkConfigurationPolicy` (NNCP).
 .   And, of course, the UDNs we are working with.
 
@@ -124,25 +123,25 @@ They are standard Kubernetes resources that can be used to control flows on any 
 . Ensure you are in the correct project (udn-project-X)
 . Click on *Create Network Policy*, then *YAML View*
 
-## . **Policy 1: Deny All**
+. **Policy 1: Deny All**
 +
 Create a policy that selects `vm-db` and denies all incoming (ingress) traffic.
 +
 [source,yaml]
-
-## apiVersion: networking.k8s.io/v1
+----
+apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
-name: db-deny-all
+  name: db-deny-all
 spec:
-podSelector: <1>
-matchLabels:
-vm.kubevirt.io/name: vm-db
-policyTypes:
-- Ingress
-ingress: [] <2>
-
-## <1> `podSelector` works because the VM is managed by a `virt-launcher` pod that carries our **labels**.
+  podSelector: <1>
+    matchLabels:
+      vm.kubevirt.io/name: vm-db
+  policyTypes:
+    - Ingress
+  ingress: [] <2>
+----
+<1> `podSelector` works because the VM is managed by a `virt-launcher` pod that carries our **labels**.
 <2> An empty `ingress` list means "allow nothing".
 +
 . **Policy 2: Allow Web to DB flow**
