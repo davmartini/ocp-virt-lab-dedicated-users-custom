@@ -3,19 +3,23 @@
 ** xref:index.adoc#labaccess[Accessing the OpenShift Cluster]
 ** xref:index.adoc#bastionaccess[Accessing the Bastion]
 
-* xref:beg-module-01.adoc[1. Live Migration of Workloads]
 
 
-* xref:adv-module-01.adoc[2. Live Migration of Workloads]
-** xref:adv-module-01.adoc#labaccess[Accessing the OpenShift Cluster]
-** xref:adv-module-01.adoc#computerand[Compute Migration to a random node]
-*** xref:adv-module-01.adoc#computerandrequirements[Requirements]
-*** xref:adv-module-01.adoc#computerandinstructions[Instructions]
-** xref:adv-module-01.adoc#compute[Compute Migration to a specific node]
-*** xref:adv-module-01.adoc#computeinstructions[Instructions]
-** xref:adv-module-01.adoc#storage[Storage Migration]
-*** xref:adv-module-01.adoc#storagerequirements[Requirements]
-*** xref:adv-module-01.adoc#storageinstructions[Instructions]
+
+* xref:beg-intro.adoc[OpenShift Virtualization for beginners]
+** xref:beg-module-01.adoc[1. Live Migration of Workloads]
+
+* xref:adv-intro.adoc[OpenShift Virtualization for advanced users]
+** xref:adv-module-01.adoc[2. Live Migration of Workloads]
+*** xref:adv-module-01.adoc#labaccess[Accessing the OpenShift Cluster]
+*** xref:adv-module-01.adoc#computerand[Compute Migration to a random node]
+**** xref:adv-module-01.adoc#computerandrequirements[Requirements]
+**** xref:adv-module-01.adoc#computerandinstructions[Instructions]
+*** xref:adv-module-01.adoc#compute[Compute Migration to a specific node]
+**** xref:adv-module-01.adoc#computeinstructions[Instructions]
+*** xref:adv-module-01.adoc#storage[Storage Migration]
+**** xref:adv-module-01.adoc#storagerequirements[Requirements]
+**** xref:adv-module-01.adoc#storageinstructions[Instructions]
 
 * xref:adv-module-02.adoc[3. CPU and Memory Overcommit]
 ** xref:adv-module-02.adoc#labaccess[Accessing the OpenShift Cluster]
