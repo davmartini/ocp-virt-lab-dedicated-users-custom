@@ -45,7 +45,7 @@ image::beg-module02/04_Clone_Template_Options.png[link=self, window=blank, width
 +
 image::beg-module02/09_Scripts_CloudInit.png[link=self, window=blank, width=100%]
 
-## . When the *Cloud-init* dialog opens, click the *Configure via: Script* radio button then *replace* the YAML with the provided YAML *snippet*. Click *save* and *apply*. + [source,yaml,role=execute]
+## . When the *Cloud-init* dialog opens, click the *Configure via: Script* radio button then *replace* the YAML with the provided YAML *snippet*. Click *save* and *apply*.
 +
 [source,yaml,role=execute]
 ----
