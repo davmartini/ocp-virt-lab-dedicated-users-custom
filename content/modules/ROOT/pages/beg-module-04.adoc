@@ -178,7 +178,7 @@ spec:
 
 Let's test our rules. We will connect to `vm-web` and try to reach `vm-db` (e.g., `192.168.200.12`).
 
-## . Open the `vm-web` console.
+. Open the `vm-web` console.
 . **Test 1: Unauthorized Flow (e.g., PING or SSH)**
 +
 Essayez de pinger `vm-db`.
@@ -194,7 +194,7 @@ PING 192.168.200.12 (192.168.200.12) 56(84) bytes of data.
 +
 *Result:* Failure. ICMP traffic is not allowed by our policy. Attempting `ssh user@192.168.200.12` would also fail.
 
-## . **Test 2: Authorized Flow (TCP/3306)**
+. **Test 2: Authorized Flow (TCP/3306)**
 +
 Use a tool like `telnet` or `nc` (netcat) to test port 3306.
 +
