@@ -149,26 +149,26 @@ spec:
 Create a second policy that allows traffic from `vm-web` to `vm-db` *only* on TCP port 3306.
 +
 [source,yaml]
-
-## apiVersion: networking.k8s.io/v1
+----
+apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
-name: allow-web-to-db
+  name: allow-web-to-db
 spec:
-podSelector:
-matchLabels:
-vm.kubevirt.io/name: vm-db <1>
-policyTypes:
-- Ingress
-ingress:
-- from:
-- podSelector:
-matchLabels:
-vm.kubevirt.io/name: vm-web <2>
-ports:
-- protocol: TCP
-port: 3306 <3>
-
+  podSelector:
+    matchLabels:
+      vm.kubevirt.io/name: vm-db <1>
+  policyTypes:
+    - Ingress
+  ingress:
+    - from:
+        - podSelector:
+            matchLabels:
+              vm.kubevirt.io/name: vm-web <2>
+      ports:
+        - protocol: TCP
+          port: 3306 <3>
+----
 <1> This policy applies to `vm-db`.
 <2> It allows traffic *coming from* `vm-web`.
 <3> It allows traffic *only* on TCP port 3306.
@@ -180,16 +180,17 @@ Let's test our rules. We will connect to `vm-web` and try to reach `vm-db` (e.g.
 ## . Open the `vm-web` console.
 . **Test 1: Unauthorized Flow (e.g., PING or SSH)**
 +
-Try to ping `vm-db`.
+Essayez de pinger `vm-db`.
 +
 [source,sh]
-
-## $ ping 192.168.200.12
+----
+$ ping 192.168.200.12
 PING 192.168.200.12 (192.168.200.12) 56(84) bytes of data.
 ...
 --- 192.168.200.12 ping statistics ---
 4 packets transmitted, 0 received, 100% packet loss, time 3068ms
-
+----
++
 *Result:* Failure. ICMP traffic is not allowed by our policy. Attempting `ssh user@192.168.200.12` would also fail.
 
 ## . **Test 2: Authorized Flow (TCP/3306)**
@@ -197,10 +198,11 @@ PING 192.168.200.12 (192.168.200.12) 56(84) bytes of data.
 Use a tool like `telnet` or `nc` (netcat) to test port 3306.
 +
 [source,sh]
-
-## $ nc -v -z -w 3 192.168.200.12 3306
+----
+$ nc -v -z -w 3 192.168.200.12 3306
 Connection to 192.168.200.12 3306 port [tcp/mysql] succeeded!
-
+----
++
 *Result:* Success. The connection is established because it perfectly matches our **`NetworkPolicy`** `allow-web-to-db`.
 
 You have now implemented granular micro-segmentation between your VMs, in addition to providing them with persistent cluster-managed IP addresses, all thanks to UDNs.
