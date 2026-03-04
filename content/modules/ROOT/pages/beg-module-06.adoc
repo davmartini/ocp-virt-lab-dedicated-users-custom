@@ -161,12 +161,13 @@ Let's check if our VM is back and, more importantly, if its state (the `test.txt
 
 . Log in to the virtual machine again (credentials should be the same).
 
-## . Once logged in, list the home directory contents.
+. Once logged in, list the home directory contents.
 +
 [source,sh,role=execute]
-
-## ls
-
+----
+ls
+----
++
 **You should see the `test.txt` file!**
 +
 image::beg-module06/14.png[link=self, window=blank, width=100%]
