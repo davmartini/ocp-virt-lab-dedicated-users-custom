@@ -33,27 +33,27 @@ image::beg-module03/24.png[link=self, window=blank, width=75%]
 
 . Observe the `desiredState`. It describes the network configuration that OpenShift will apply to the nodes. It will look like this:
 
-## [source,yaml]
-
-## spec:
-desiredState:
-interfaces:
-- bridge:
-options:
-stp:
-enabled: false
-port:
-- name: enp3s0 <1>
-description: Linux bridge with enp3s0 as a port
-ipv4:
-dhcp: false
-enabled: false
-name: br-flat <2>
-state: up
-type: linux-bridge
-nodeSelector:
-node-role.kubernetes.io/worker: '' <3>
-
+[source,yaml]
+----
+spec:
+  desiredState:
+    interfaces:
+      - bridge:
+          options:
+            stp:
+              enabled: false
+          port:
+            - name: enp3s0 <1>
+        description: Linux bridge with enp3s0 as a port
+        ipv4:
+          dhcp: false
+          enabled: false
+        name: br-flat <2>
+        state: up
+        type: linux-bridge
+  nodeSelector:
+    node-role.kubernetes.io/worker: '' <3>
+----
 <1> Defines the port used for the Linux bridge.
 <2> Creates the `br-flat` bridge on the node's physical network interface card (NIC) `enp3s0`.
 <3> This policy is applied to all nodes with the "worker" role.
@@ -105,24 +105,24 @@ image::beg-module03/27.png[link=self, window=blank, width=100%]
 . Click the *Create* button.
 . You will see your new `corp-network` NAD in the list. If you click on it and go to the *YAML* tab, you will see the resulting configuration:
 
-## [source,yaml]
-
-## apiVersion: k8s.cni.cncf.io/v1
+[source,yaml]
+----
+apiVersion: k8s.cni.cncf.io/v1
 kind: NetworkAttachmentDefinition
 metadata:
-name: corp-network
-namespace: project-X
+  name: corp-network
+  namespace: project-X
 spec:
-config: '{
-"cniVersion": "0.3.1",
-"name": "corp-network",
-"type": "bridge", <1>
-"bridge": "br-flat", <2>
-"macspoofchk": true,
-"preserveDefaultVlan": false,
-"ipam": {}
-}'
-
+  config: '{
+    "cniVersion": "0.3.1",
+    "name": "corp-network",
+    "type": "bridge", <1>
+    "bridge": "br-flat", <2>
+    "macspoofchk": true,
+    "preserveDefaultVlan": false,
+    "ipam": {}
+  }'
+----
 <1> The network plugin type.
 <2> The Linux bridge on the node to be used.
 
