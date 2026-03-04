@@ -36,14 +36,14 @@ image::beg-module06/1.png[link=self, window=blank, width=100%]
 
 . Log in to the VM using the provided *Guest login credentials*.
 
-## . Once logged in, create an empty test file in the user's home directory root.
+. Once logged in, create an empty test file in the user's home directory root.
 +
 [source,sh,role=execute]
 ----
 touch test.txt
 ----
 
-## . Verify that the file exists by listing the directory contents.
+. Verify that the file exists by listing the directory contents.
 +
 [source,sh,role=execute]
 ----
