@@ -1,0 +1,419 @@
+= Hot Plugging Resources
+
+ifdef::vmware[]
+.VMware Rosetta Stone
+****
+VMware admins typically address requests for hot-add resources through the vCenter UI if they are being done manually.
+The Aria suite, also formerly known as vRealize Insights (VRI) and vRealize Automation (VRA), and/or other 3rd party Capacity Management software is used to manage the hot-add and hot-removal of resources in an automated fashion.
+****
+endif::[]
+
+In this module, you will perform three tasks:
+
+* <<cpu,Increase the CPU and Memory of a running VM>>
+* <<disk,Add a virtual disk to a running VM and then make it persistent>>
+* <<nic,Add a network interface (NIC) to a virtual machine>>
+
+include::lab-access.adoc[]
+
+[#cpu]
+== Adding CPU and Memory to a Running VM
+In this lab, we will add additional CPU and Memory resources to a Virtual Machine by changing the Virtual Machine’s Instance Type. To do this, you will start with an existing VM that has a single vCPU and 2 GiB of memory. Using the OpenShift Virtualization console, you will modify the configuration of the VM Instance Type to a type that has 2 vCPU and 4 GiB of memory.
+
+[#cpuinstructions]
+=== Instructions
+
+. Ensure you are <<labaccess,logged in to the OpenShift Console as the *admin* user>> from your *web browser* and continue to the next step.
+
++
+. Using the *OpenShift Console*, navigate to *Virtualization → Virtual Machines*.
+
++
+Under *All projects*, select the *hot-plug* namespace and select the *hot-plug-vm1* VM.
+
++
+Note that the InstanceType is set to *u1.small*.
+
++
+Above the InstanceType, you can see that the current *CPU | Memory* for this VM is *1 CPU | 2GiB Memory*.
+
++
+image::exercise3/03-image-cpu-001.png[title="CPU and Memory before hot plug", link=self, window=blank, width=100%]
+
++
+. Start the *hot-plug-vm1* VM using *virtctl* from your *Terminal* window
+
++
+[,shell,role="execute wrap",subs="attributes"]
+----
+virtctl start hot-plug-vm1 -n hot-plug
+----
+
++
+[,shell,role=wrap,subs="attributes"]
+.Output
+----
+VM hot-plug-vm1 was scheduled to start
+----
+
++
+. Click on the *Configuration* tab and select *Details*, if it is not already selected.
+
++
+You can see that the InstanceType is *General Purpose* and *1 CPU | 2GiB Memory*.
+
++
+image::exercise3/03-image-cpu-002.png[title="Virtual Machine details", link=self, window=blank, width=100%]
+
+. Click on the blue pencil icon to modify the CPU and Memory resources.
+
++
+In the window that appears, click the *Size* drop down and select *2xmedium: 2CPUs, 4Gi Memory*.
+
++
+Click the Save button.
+
++
+image::exercise3/03-image-cpu-003.png[title="Edit Instance Type", link=self, window=blank, width=100%]
+
+. The configuration in the Details panel will now show that the virtual machine has 2 CPUs and 4 GiB of memory.
+
++
+image::exercise3/03-image-cpu-004.png[title="Virtual Machine details", link=self, window=blank, width=100%]
+
++
+NOTE: In order for the new CPU and Memory configuration to take effect, the virtual machine will automatically migrate from one worker node to another. If the new CPU and Memory configuration does not appear immediately, you may have to wait a few minutes.
+
++
+image::exercise3/03-image-cpu-005.png[title="CPU and Memory messages", link=self, window=blank, width=100%]
+
++
+. From the UI, click on the *Console* tab. If necessary, click the blue *Connect* button.
+
++
+Login to the Virtual Machine using *Copy to clipboard* and *Paste to console* with the *User name* and *Password* credentials from above the console window.
+
++
+image::exercise3/03-image-cpu-006.png[title="Login to VM", link=self, window=blank, width=100%]
+
+. To validate that the VM now has 2 CPUs and 4GiB of memory, run the following:
+
++
+.Get the number of processors
+[source,text,role=execute]
+----
+nproc
+----
+
++
+.Get the amount of memory
+[source,text,role=execute]
+----
+free -m
+----
+
++
+You will see that the VM has 2 CPUs and approximately 4 GiB of total memory.
+
++
+NOTE: This VM image has kdump enabled, which reserves some memory for the kernel. This is why the memory amount appears to be less than 4 GiB. In fact, 4 GiB of memory is configured for the VM, but the operating system sees a lower number. If kdump were disabled, the total memory would be 4 GiB.
+
++
+image::exercise3/03-image-cpu-007.png[title="Verify new resources", link=self, window=blank, width=100%]
+
+[#disk]
+== Adding a Virtual Disk to a Running VM
+
+In this lab, we will add a new Disk to an existing VM. To do this, you will start with an existing VM with 1 or more Disks. Using the OpenShift Virtualization console, you will modify the configuration of the VM to include an additional hot plugged Disk.
+
+[NOTE]
+====
+This is similar to VMware's *Hot Add* feature.
+====
+
+[#diskinstructions]
+=== Instructions
+
+[start=1]
+. Ensure you are <<labaccess,logged in to the OpenShift Console as the *admin* user>> from your *web browser* and continue to the next step.
+
++
+. Using the *OpenShift Console*, navigate to *Virtualization → Virtual Machines*.
+
++
+Under *All projects*, select the *hot-plug* namespace and select the *hot-plug-vm1* VM.
+
++
+image::exercise3/03-image-disk-001.png[title="hot-plug-vm1 details", link=self, window=blank, width=100%]
+
+. Click on the *Configuration* tab and select *Storage*. You can see that the Virtual Machine currently has a single 30GB bootable disk that is using the *Storage class* called *ocs-external-storagecluster-ceph-rbd*.
+
++
+image::exercise3/03-image-disk-002.png[title="VM has only one disk", link=self, window=blank, width=100%]
+
+. Add an empty disk by clicking the *Add* button under *Disks* and then selecting *Empty disk (blank)*.
+
++
+image::exercise3/03-image-disk-003.png[title="Add an empty disk", link=self, window=blank, width=100%]
+
++
+. In the window that appears, give the new disk a name (e.g. *data-disk-01*) and change the size to 5 GiB. The rest of the options may remain at their defaults.
+
++
+Click the *Save* button.
+
++
+image::exercise3/03-image-disk-004.png[title="Configure the new disk", link=self, window=blank, width=100%]
+
++
+. The new disk has been added with a label of *Persistent Hotplug*.
+
++
+image::exercise3/03-image-disk-005.png[title="The disk is added", link=self, window=blank, width=100%]
+
++
+. Scroll up and click on the *Console* tab. The standard out of the VNC console will show logs that a new disk has been attached (*/dev/vdc*). The new disk may not appear immediately, so please be patient
+
++
+If there are no logs in standard out, *sudo dmesg* will show them and the addition of the disk
+
++
+image::exercise3/03-image-disk-006.png[title="Kernel messages about a new disk", link=self, window=blank, width=100%]
+
++
+. Login to the Virtual Machine using *Copy to clipboard* and *Paste to console* with the *User name* and *Password* credentials from above the console window. If necessary, click the blue *Connect* button.
+
++
+Run the *lsblk* command and you will see the new 5 GiB disk added as *vdc*.
+
++
+image::exercise3/03-image-disk-007.png[title="View the new disk from the OS", link=self, window=blank, width=100%]
+
+. The new disk is hot-plugged to the virtual machine by way of a new pod that manages access to the disk. The new pod is created in same project as the VM and is called *hp-volume-xxxxx*. This pod runs in addition to the *virt-launcher*.
+
++
+.Get a list of pods
+[source,text,role=execute]
+----
+oc get pods -n hot-plug
+----
++
+.Output
+----
+NAME                                READY   STATUS      RESTARTS   AGE
+hp-volume-mdnjd                     1/1     Running     0          114s
+virt-launcher-hot-plug-vm1-rb6lg    2/2     Running     0          147m
+----
+
++
+. The *hp-volume* pod will stop if the VM is stopped and the pod will start again when the VM is started. The new disk can be used as any normal disk would be used and will persist even if the VM is stopped and started.
+
++
+. We are not going to do it, but at this point you can create a filesystem on the new disk, mount it and use it as needed.
+
++
+. Now you will remove the hot-plugged disk from the Virtual Machine.
+
++
+. Using the *OpenShift Console*, navigate to *Virtualization → Virtual Machines*.
+
++
+Under *All projects*, select the *hot-plug* namespace and select the *hot-plug-vm1* VM.
+
++
+Click on the *Configuration* tab and select *Storage*.
+
++
+Note the name of the object that you will remove (e.g. *dv-hot-plug-vm1-data-disk-01-um6O11*) because you may want it for the Bonus Lab later!
+
++
+Click on the three dots on the right side of the *hot-plugged* disk and select *Detach*.
+
++
+image::exercise3/03-image-disk-011.png[title="Detach the disk", link=self, window=blank, width=100%]
+
+. Confirm the action by clicking on the *Detach* button.
+
++
+image::exercise3/03-image-disk-012.png[title="Confirm disk detach", link=self, window=blank, width=100%]
+
++
+. Confirm that the disk (*vdc*) has been removed.
+
++
+From the VM page, click on the *Console* tab. If necessary, click the blue *Connect* button.
+
++
+Login to the Virtual Machine using *Copy to clipboard* and *Paste to console* with the *User name* and *Password* credentials from above the console window.
+
++
+Run the *lsblk* command and you will see that the hot-plugged disk is no longer present on the system.
+
++
+NOTE: The detached disk still exists as a PVC. It can be re-attached, or attached to a different VM, or it can be deleted if it is no longer needed.
+
++
+image::exercise3/03-image-disk-013.png[title="Disk is removed in OS", link=self, window=blank, width=100%]
+
+[#bonuslabinstructions]
+=== Bonus Lab - Convert a Hot Plug Disk to a Permanent Disk
+
+The steps below are optional as they are not directly relate to hot plugging a new disk. However, it may be advantageous for you to know how to convert a *hot-plugged* disk to a standard disk, which requires a VM restart.
+
+. The PVC you detached above still exists until it is deleted manually. Therefore, you can reattach the PVC as a standard disk while the VM is shut down.
+
++
+. Navigate to *Virtualization -> Virtual Machines*, and select the *hot-plug* project. Select the VM named *hot-plug-vm1*.
+
++
+*Stop* the VM, either by using the *square stop button* or by selecting the *Actions* menu and clicking on *Stop*.
+
++
+image::exercise3/03-image-disk-persist-002.png[title="Stop the VM", link=self, window=blank, width=100%]
+
++
+. Click on the *Configuration* tab, and then *Storage*.
+
++
+Click on the *Add* pull down menu and select *Volume*.
+
++
+image::exercise3/03-image-disk-persist-003.png[title="Add a volume", link=self, window=blank, width=100%]
+
+. Give the disk a name, if desired, and select the previously disconnected PVC from the *PersistentVolumeClaim name* dropdown (e.g. *dv-hot-plug-vm1-data-disk-01-um6O11*)
+
++
+Click *Save*
+
++
+image::exercise3/03-image-disk-persist-004.png[title="Select the PVC", link=self, window=blank, width=100%]
+
++
+. Now both the boot volume and the new disk are visible in the virtual machine configuration.
+
++
+NOTE: The new disk no longer has the *Hotplug persistent* label because it is not being added while the VM is running.
+
++
+image::exercise3/03-image-disk-persist-005.png[title="Both disks are attached", link=self, window=blank, width=100%]
+
++
+. Start the virtual machine by clicking on the *blue Play icon*, or by selecting the *Actions* menu and clicking *Start*.
+
++
+image::exercise3/03-image-disk-persist-006.png[title="Both disks are attached", link=self, window=blank, width=100%]
+
+. Once the virtual machine is *Running*, click on the *Console* tab. If necessary, click the blue *Connect* button.
+
++
+Login to the Virtual Machine using *Copy to clipboard* and *Paste to console* with the *User name* and *Password* credentials from above the console window.
+
++
+Run *lsblk* and you can see that the disk is attached, although it may have changed names.
+
++
+If you formatted or wrote data to the disk while it was hot plugged, you would see that the data is still on the disk.
+
++
+image::exercise3/03-image-disk-persist-007.png[title="The disk is attached", link=self, window=blank, width=100%]
+
+[#nic]
+== Adding a NIC to a Running VM
+In this lab, we will add a new *Network Interface Card* (NIC) to an existing VM. To do this, you will start with an existing VM that has a single NIC on the pod network. Using the OpenShift Virtualization console, you will modify the configuration of the VM to include an additional NIC on a new network.
+
+[#nicinstructions]
+=== Instructions
+
+. Ensure you are <<labaccess,logged in to the OpenShift Console as the *admin* user>> from your *web browser* and continue to the next step.
+
++
+. Using the *OpenShift Console*, navigate to *Virtualization → Virtual Machines*.
+
++
+Under *All projects*, select the *hot-plug* namespace and select the *hot-plug-vm1* VM.
+
++
+. Take note of the *Node* on which the VM is running (e.g. *worker-cluster-m2ssq-3*)
+
++
+image::exercise3/03-image-nic-002.png[title="Identify the worker node", link=self, window=blank, width=100%]
+
++
+. Click on the Configuration tab and select Network.
+
++
+Note that the VM currently has a *single NIC*.
+
++
+image::exercise3/03-image-nic-003a.png[title="Single NIC only", link=self, window=blank, width=100%]
+
++
+You may also login to the VM via the *Console* tab and view the *NIC* details from the operating system.
+
++
+image::exercise3/03-image-nic-003b.png[title="Single NIC in Console", link=self, window=blank, width=100%]
+
++
+. Back on the *Network configuration* screen, click on the button *Add network interface*.
+
++
+In the new window, provide a name for the new interface, such as *nic-1*.
+
++
+
+The model should be *virtio*, and the *Network* should be *hot-plug/east-west-nad* from the drop down.
+
++
+Click the *Save* button.
+
++
+image::exercise3/03-image-nic-004.png[title="Add network interface", link=self, window=blank, width=100%]
+
++
+. Click on the *>* symbol next to the *Pending changes* banner that has appeared below the VM name.
+
++
+Note that the message indicates a *restart or migration* is required for the NIC addition to take effect and that there is a *Pending* label on the new NIC in the *Network interfaces* section.
+
++
+image::exercise3/03-image-nic-005.png[title="View pending changes", link=self, window=blank, width=100%]
+
++
+. After the NIC is added, the VM will *automatically live migrate* in order to complete the hardware addition.
+
++
+NOTE: In order for the new NIC configuration to take effect, the virtual machine will automatically migrate from one worker node to another. If the new NIC configuration does not appear immediately, you may have to wait a few minutes.
+
++
+. Navigate back to the *Console* tab. If necessary, click the blue *Connect* button.
+
++
+Login to the Virtual Machine using *Copy to clipboard* and *Paste to console* with the *User name* and *Password* credentials from above the console window.
+
++
+. You may see messages on the VM console that new hardware has been added.
+
+
++
+image::exercise3/03-image-nic-008.png[title="Messages on console about new NIC", link=self, window=blank, width=100%]
+
++
+. The new NIC is now available for use (e.g. *enp2s0*, although it may have a different name in your environment).
+
++
+You can view the new *NIC* from the operating system by running the command *ip address* and viewing the output.
+
++
+image::exercise3/03-image-nic-009.png[title="New NIC is up", link=self, window=blank, width=100%]
+
+[IMPORTANT]
+====
+Stop the *hot-plug-vm1* VM using *virtctl* from your *Terminal* window to ensure you have enough resources for the next labs.
+
+[,shell,role="execute wrap",subs="attributes"]
+----
+virtctl stop hot-plug-vm1 -n hot-plug
+----
+
+*VM hot-plug-vm1 was scheduled to stop*
+====

@@ -1,0 +1,300 @@
+= Live Migration of Workloads
+
+ifdef::vmware[]
+.Rosetta Stone: VMware
+****
+In VMware this is called VMotion.
+
+VMware uses the concept of Datastores.
+VMware Datastores can be thought of as LUNs, which may or may not belong to a Datastore Cluster.
+
+.Differences
+ * Different paradigm.
+ * PV PVC provides it to a VM when it needs it, getting it from a StorageClass.
+ * Datastore -> Cluster structure
+
+.Mapping
+ * Datastore Cluster (or VM attached directly to Datastore) = StorageClass defines volume, claims against it.
+
+Datastore Clusters are a collection of Datastores and use SDRS for placement of the .VMDK files on specific Datastores.
+Storage Distributed Resource Scheduler (SDRS) can only be applied to Datastore Clusters, and is used to automate this process.
+****
+endif::[]
+
+Migrating workloads between compute nodes and storage types is a crucial feature of any modern hypervisor. OpenShift Virtualization allows the simple and easy process of migrating your virtual machine compute and storage from one place to another.
+
+In this module, you will perform three migration tasks:
+
+* <<computerand,Live migration of a virtual machine from one node to another random node>>
+* <<compute,Live migration of a virtual machine from one node to another specific node>>
+* <<storage,Live migration of virtual machine storage from one StorageClass to another.>>
+
+include::lab-access.adoc[]
+
+[#computerand]
+== Compute Migration to a random node
+During maintenance or troubleshooting, you might need to migrate a VM to a different node. Live migration is the process of moving a running Virtual Machine Instance (VMI) to a different node without disruption.
+
+ifdef::vmware[]
+.Rosetta Stone: VMware
+****
+[NOTE]
+====
+This feature is similar to VMware's Compute vMotion feature, and Distributed Resource Scheduler (DRS) for VM placement.
+====
+****
+
+In this lab, you will be performing a live migration of Virtual Machine from one compute node to another. To do this, you will access a running VM, determine its current node, and then migrate it to another node.
+
+[#computerandrequirements]
+=== Requirements
+
+* The underlying PVC must use *ReadWriteMany (RWX)* access mode
+
+* The pod network must not be configured with the bridge binding type.
+
+* Ports *49152 and 49153* must be available in the VM's virt-launcher pod; live migration fails if these ports are specified in a masquerade network interface.
+
+* CPU model must match on the source and destination node - you can not live migrate from Intel to AMD
+
+[#computerandinstructions]
+=== Instructions
+
+. Ensure you are <<labaccess,logged in to the OpenShift Console as the *admin* user>> from your *web browser* and continue to the next step.
++
+
+. From the left side panel, navigate to *Virtualization -> Virtual Machines*. Under *All projects*, select the *live-migrate* namespace and click on the Virtual Machine named *live-migrate-vm1*.
++
+
+. The Virtual Machine is currently powered off. Click the blue *Play* button to *Start* the Virtual Machine.
++
+
+image::exercise1/01-vm-start-001.png[title="Start the Virtual Machine", link=self, window=blank, width=100%]
++
+
+. The Virtual Machine will schedule, start and move into the *Running* state as seen below.
++
+
+image::exercise1/01-vm-start-002.png[title="Running Virtual Machine", link=self, window=blank, width=100%]
++
+
+[NOTE]
+====
+To see the node the Virtual Machine is currently running on, look at the *General* box on the right hand side of the *VirtualMachine details* page for the *Node* name. In the example, the node is *worker-cluster-m2ssq-1*.
+====
++
+
+image::exercise1/01-image-compute-002.png[title="Virtual machine details", link=self, window=blank, width=100%]
++
+
+. To migrate the Virtual Machine to another node, click on the *Actions* menu, hover over *Migration*, and then click *Compute*.
++
+
+image::exercise1/01-image-compute-003.png[title="Initiate migration", link=self, window=blank, width=100%]
++
+
+. Leave the default selection, which is to *Automatically* migrate to any *Node*.
+
++
+image::exercise1/01-image-compute-004.png[title="Configure migration", link=self, window=blank, width=100%]
+
+. Click *Migrate Virtual Machine*
++
+. Wait a few moments and the Virtual Machine status will change from *Running* to *Migrating*.
+
++
+image::exercise1/01-image-compute-006.png[title="VM is migrating", link=self, window=blank, width=100%]
+
+. A few moments after that, the Virtual Machine will return to a *Running* state.
++
+
+[NOTE]
+====
+Looking back at the *General* box on the right hand side of the *VirtualMachine details* page, you can see that the node has changed.
+====
+
++
+image::exercise1/01-image-compute-007.png[title="VM is running", link=self, window=blank, width=100%]
+
+. The VM has migrated to a new worker node while still running.
+
+[#compute]
+== Compute Migration to a specific node
+
+During maintenance or troubleshooting, you might need to migrate a Virtual Machine to a *specific* node in the cluster.
+
+[NOTE]
+====
+The requirements for this type of migration are the same as the previous lesson.
+====
+
+[#computeinstructions]
+=== Instructions
+
+. Ensure you are <<labaccess,logged in to the OpenShift Console as the *admin* user>> from your *web browser* and continue to the next step.
+
++
+. From the left side panel, navigate to *Virtualization -> Virtual Machines*.
+
++
+. Under *All projects*, select the *live-migrate* namespace and click on the Virtual Machine named *live-migrate-vm1*.
+
++
+. The Virtual Machine should already be *Running* from the last lesson. If it is not, click the blue *Play* button to *Start* the Virtual Machine and wait for it to enter the *Running* state.
+
++
+image::exercise1/01-image-compute-002.png[title="Virtual machine details", link=self, window=blank, width=100%]
+
++
+. To migrate the Virtual Machine to another node, click on the *Actions* menu, hover over *Migration*, and then click *Compute*.
+
++
+image::exercise1/01-image-compute-003.png[title="Initiate migration", link=self, window=blank, width=100%]
+
+. You will be presented with the *Select the target Node to migrate your VirtualMachine to* window.
+
++
+image::exercise1/01-image-compute-004.png[title="Configure migration", link=self, window=blank, width=100%]
+
+. Select *Specific Node*, which will then display the list of available nodes. Select the check the box next to a worker node and click *Migrate Virtual Machine*
+
++
+image::exercise1/01-image-compute-005.png[title="Select worker node", link=self, window=blank, width=100%]
+
+. You will see the Virtual Machine status changes from *Running* to *Migrating*.
+
++
+image::exercise1/01-image-compute-006.png[title="VM is migrating", link=self, window=blank, width=100%]
+
+. A few moments after that, the Virtual Machine status will return to a *Running* state.
+
++
+[NOTE]
+====
+Looking back at the *General* box on the right hand side of the *VirtualMachine details* page, you can see that the node has changed, specifically to the one you selected from the list.
+====
+
+image::exercise1/01-image-compute-007.png[title="VM is running", link=self, window=blank, width=100%]
+
+[#storage]
+== Storage Migration
+Storage environments often have their own lifecycles and performance profiles, so it is important to be able to move Virtual Machines between storage devices for lifecycle and performance management. OpenShift Virtualization allows the migration of PVCs from one StorageClass to another while the virtual machine is running.
+
+ifdef::vmware[]
+.Rosetta Stone: VMware
+****
+[NOTE]
+====
+This feature is similar to VMware's Storage vMotion feature.
+
+This also includes the Storage Distributed Resource Scheduler (SDRS) for disk placement.
+====
+endif::[]
+****
+
+[#storagerequirements]
+=== Requirements
+
+* The *Migration Toolkit for Containers (MTC)* Operator must be installed for storage class migrations
+
+[NOTE]
+====
+MTC has been deprecated and engineering is working on removing the *MTC* requirement for storage class migrations.
+
+This feature is targeting *4.21* and engineering plans to backport it to *4.20.z*. 
+
+You can follow https://issues.redhat.com/browse/VIRTSTRAT-97[VM Storage Migration] for more information.
+====
+
+[#storageinstructions]
+=== Instructions
+
+. Ensure you are <<labaccess,logged in to the OpenShift Console as the *admin* user>> and continue to the next step.
+
++
+. From the left side panel, navigate to *Virtualization -> Virtual Machines*.
+
++
+Under *All projects*, select the *live-migrate* namespace and click on the Virtual Machine named *live-migrate-vm1*.
+
++
+image::exercise1/01-image-storage-001.png[title="Virtual machine details", link=self, window=blank, width=100%]
+
+. Click on the *Configuration* tab and select *Storage*. You can see that the Virtual Machine currently has a single 30GB bootable disk that is using the *Storage class* called *ocs-external-storagecluster-ceph-rbd*.
+
++
+image::exercise1/01-image-storage-002.png[title="View storage details", link=self, window=blank, width=100%]
+
+. Click on the *Console* tab. If necessary, click the blue *Connect* button.
+
++
+Login to the Virtual Machine using *Copy to clipboard* and *Paste to console* with the *User name* and *Password* credentials from above the console window.
+
++
+. Run a command, such as `top` or `ping`, that will continue running as we perform the remainder of this exercise.
+
++
+image::exercise1/01-image-storage-003.png[title="Run command on console", link=self, window=blank, width=100%]
+
+. Click on the *Actions* menu, hover over *Migration* and click on *Storage*.
+
++
+image::exercise1/01-image-storage-004.png[title="Initiate storage migration", link=self, window=blank, width=100%]
+
+. In the *Migrate VirtualMachine storage* window, review the options, keep the defaults and click *Next*.
++
+image::exercise1/01-image-storage-005.png[title="Migration details", link=self, window=blank, width=100%]
+
+. For the *Destination StorageClass*, select the new *StorageClass* called *custom-storage-class* and click *Next*.
+
++
+image::exercise1/01-image-storage-006.png[title="Select destination StorageClass", link=self, window=blank, width=100%]
+
+. Review the final storage migration configuration and click *Migrate VirtualMachine storage*.
+
++
+image::exercise1/01-image-storage-007.png[title="Review migration details", link=self, window=blank, width=100%]
+
+. The next window will show you the status of the storage migration. It is safe to close the window by clicking the *X* in the top corner, or you may click on the link to *View storage migrations*. Do not click the *Stop* button.
++
+image::exercise1/01-image-storage-008.png[title="Migration has started", link=self, window=blank, width=100%]
+
+. To view the storage migration status, navigate to *Migration for Virtualization* from the left side panel and click *Storage migrations*. The migration plan will start in the *Pending* state, move to *Running* and then to *Completed*.
+
++
+[NOTE]
+====
+It may take over a minute for the migration to start, and five or more minutes for the migration to complete in the lab environment.
+====
+
++
+image::exercise1/01-image-storage-009.png[title="Migration is running", link=self, window=blank, width=100%]
+
+. Once the migration is *Complete*, from the left side panel, navigate back to *Virtualization -> Virtual Machines*.
+
++
+Under *All projects*, select the *live-migrate* namespace and click on the Virtual Machine named *live-migrate-vm1*.
+
++
+Click on the *Configuration* tab and select *Storage*. You can see that the name of the *Source* has changed and the *Storage class* is now *custom-storage-class*, which is what you selected for the storage migration.
+
++
+image::exercise1/01-image-storage-010.png[title="VM has been migrated", link=self, window=blank, width=100%]
+
++
+. Moving back to the *Console* tab, you will see that your ping is still running and was uninterrupted during the migration.
+
++
+image::exercise1/01-image-storage-011.png[title="No interruption during storage migration", link=self, window=blank, width=100%]
+
+[IMPORTANT]
+====
+Stop the *live-migrate-vm1* VM using *virtctl* from your *Terminal* window to ensure you have enough resources for the next labs.
+
+[,shell,role="execute wrap",subs="attributes"]
+----
+virtctl stop live-migrate-vm1 -n live-migrate
+----
+
+*VM live-migrate-vm1 was scheduled to stop*
+====

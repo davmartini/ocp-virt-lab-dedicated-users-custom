@@ -1,0 +1,752 @@
+= Affinity and Anti-Affinity for VM Placement
+
+ifdef::vmware[]
+.Rosetta Stone: VMware
+****
+OpenShift Affinity Rules are similar to VMWare's Virtual Machine Affinity Rules.
+If one were to also employ the OpenShift Descheduler for smart automated rescheduling of VMs, this feature would be similar to VMware's VM Affinity Rules coupled with the Distributed Resource Scheduler (DRS).
+But that is not covered in this module.
+****
+
+This lab showcases how to use and apply Node Affinity, Pod Affinity, and Pod-Anti Affinity against Virtual Machines. The lab focuses on the practical application of these principles in real-world scenarios and strengthens your technical understanding of how they work.
+
+include::lab-access.adoc[]
+
+[#nodeaffinity]
+== Node Affinity
+
+Node Affinity is a set of rules that guide the scheduler to attract a Virtual Machine to a specific node or group of nodes. These rules rely on matching labels that are applied to the nodes.
+
+The core use case for Node Affinity is to ensure that a VM runs only on nodes that possess specific features or needs, such as a particular GPU model or a high amount of RAM, by matching the corresponding labels on the node.
+
+This lab will demonstrate how Node Affinity is set up and how it functions.
+
+[#nodeaffinityinstructions]
+=== Instructions
+
+. Ensure you are <<labaccess,logged in to both the OpenShift Console and CLI as the *admin* user>> from your *web browser* and the *terminal* window on the right side of your screen and continue to the next step.
+
++
+
+. Start the *node-affinity-vm* Virtual Machine
+
++
+[.wrap,console,role=execute]
+----
+virtctl start node-affinity-vm -n affinity
+----
+
++
+[source,console]
+----
+VM node-affinity-vm was scheduled to start
+----
+
++
+. Verify the *VirtualMachineInstance* is running and see what node it is running on. If the *VirtualMachineInstance* is still in the scheduling phase, please execute the command again.
++
+[.wrap,console,role=execute]
+----
+oc get vmi -n affinity
+----
+
++
+The output will look similar to the following, with a different *IP* and *NODENAME*:
+
++
+[source,console]
+----
+NAME               AGE   PHASE     IP             NODENAME                        READY
+node-affinity-vm   57s   Running   10.232.1.153   control-plane-cluster-dvddt-1   True
+----
+
++
+. Set a label `zone=east` on any node where the *node-affinity-vm* is currently *not* running.
+
++
+The following command returns the name of 1 node where the *node-affinity-vm* VM is not running and labels it:
+
++
+... Gets a list of all of nodes (*oc get nodes -o name*)
+
++
+... Does an inverted-match to select non-matching lines and returns 1 result (*grep -v -m 1*)
+
++
+... With the *nodeName* where the *node-affinity-vm* VM is currently running (*oc get vmi node-affinity-vm -n affinity -o json | jq -r '.status.nodeName'*)
+
++
+[source,text,role=execute]
+.Set the label
+----
+oc label $(oc get nodes -o name | grep -v -m 1 $(oc get vmi node-affinity-vm -n affinity -o json | jq -r '.status.nodeName')) zone=east
+----
+
++
+.Output
+----
+node/worker-cluster-dvddt-1 labeled
+----
+
++
+Alternatively, using the OpenShift Console, from the left side panel, navigate to *Compute → Nodes*, pick a node where the *node-affinity-vm* is not running, click the 3 dots and select *Edit labels*.
+
++
+image::exercise4/04-image-affinity-v2.png[title="Edit Node Labels", link=self, window=blank, width=100%]
+
++
+In the new window, enter *zone=east* and click *Save*
+
++
+image::exercise4/04-image-affinity-labels.png[title="Add Label", link=self, window=blank, width=100%]
+
++
+. Make sure the label was applied.
+
++
+[source,text,role=execute]
+.Check the label
+----
+oc get nodes <worker you just labeled> --show-labels | grep -i zone=east
+----
+
++
+Alternatively, using the OpenShift Console, from the left side panel, navigate to *Compute → Nodes*, select the node where you added the label, click the *Details* tab and check the *Labels* section for *zone=east*.
+
++
+image::exercise4/04-image-affinity-check-labels.png[title="Check the Label", link=self, window=blank, width=100%]
+
++
+. Using the OpenShift Console, from the left side panel, navigate to *Virtualization → VirtualMachines*.
+
++
+Under *All projects*, select the *affinity* namespace and click on the Virtual Machine named *node-affinity-vm*.
+
++
+. Click on the *Configuration* tab.
+
++
+image::exercise4/04-image-affinity01.png[title="Node Affinity Navigation", link=self, window=blank, width=100%]
+
++
+. From the *Configuration* tab, select *Scheduling* and click the *blue pencil* icon under *Affinity rules* to add a new one.
+
++
+image::exercise4/04-image-affinity02.png[title="Node Affinity add rule", link=self, window=blank, width=100%]
+
++
+. Click *Add affinity rule*.
+
++
+image::exercise4/04-image-affinity02a.png[title="Node Affinity add rule", link=self, window=blank, width=100%]
+
++
+. Change the *Condition* to *Preferred during scheduling* and set the *weight* to *75*.
+
++
+Under *Node Labels* click *Add Expression*.
+
++
+Set the *Key* field to `zone` and the *Values* field to `east` and click *Add*.
+
++
+This is the same label applied to the node earlier.
+
++
+Your Final Node Affinity rule will look like the picture below.
+
++
+Confirm this is true and click *Save affinity rule*.
+
++
+image::exercise4/04-image-affinity03.png[title="Node Affinity Rule", link=self, window=blank, width=100%]
+
++
+. Click *Apply rules*.
+
++
+image::exercise4/04-image-affinity03a.png[title="Node Affinity Rule", link=self, window=blank, width=100%]
+
++
+. Let's take a look at the Node Affinity rule on *node-affinity-vm*.
+
++
+You can view this information through the GUI by inspecting the *node-affinity-vm* *YAML*, or using the CLI.
+
++
+[source,text,role=execute]
+.View the VM affinity definition
+----
+oc get vm node-affinity-vm -n affinity -o jsonpath='{.spec.template.spec.affinity}{"\n"}'
+----
+
++
+.Output
+----
+{"nodeAffinity":{"preferredDuringSchedulingIgnoredDuringExecution":[{"preference":{"matchExpressions":[{"key":"zone","operator":"In","values":["east"]}]},"weight":75}]}}
+----
+
++
+. Without an external force to move or restart the VM, new Affinity rules do not take effect.
+
++
+To apply the changes manually, you can live migrate or restart the VM. For automatic enforcement, you can configure the *Descheduler* with the *AffinityAndTaints* profile.
+
++
+. Restart the *node-affinity-vm* VM.
+
++
+[.wrap,console,role=execute]
+----
+virtctl restart node-affinity-vm -n affinity
+----
+
++
+[source,console]
+----
+VM node-affinity-vm was scheduled to restart
+----
+
++
+. Once the VM restarts, it will be running on the node with the affinity label.
+
++
+You can validate this in the GUI by navigating to the *node-affinity-vm*, and looking at the *Node* name in the *General* box on the right hand side of the *VirtualMachine details* page or using the OCP CLI.
+
++
+[source,text,role=execute]
+.Get VMI information
+----
+oc get vmi node-affinity-vm -n affinity
+----
+
++
+.Output
+----
+NAME               AGE   PHASE     IP            NODENAME                 READY
+node-affinity-vm   58s   Running   10.233.0.46   worker-cluster-t96sv-2   True
+----
+
+[#podaffinity]
+== Pod Affinity
+Pod Affinity is a scheduling rule that co-locates a VMs (or pods) with a specific labels onto the same node.
+
+The primary benefit of using pod affinity is to improve performance for dependent VMs or services that require low-latency communication by guaranteeing their placement on the same node.
+
+This lab will demonstrate the setup and usage of Pod Affinity.
+
+[#podaffinityinstructions]
+=== Instructions
+
+. Ensure you are <<labaccess,logged in to both the OpenShift Console and CLI as the *admin* user>> from your *web browser* and the *terminal* window on the right side of your screen and continue to the next step.
+
++
+. To begin, we are going to leverage our existing *node-affinity-vm* from the previous lab. This will serve as 1 of the 2 VMs we use to demonstrate Affinity.
+
++
+There are 2 ways to add label:
+
++
+.. Editing the VM YAML from the CLI or Console
+
++
+.. Using *oc label*
+
++
+Both methods have benefits and drawbacks. In many production use cases, they will be used together.
+
++
+[loweralpha, start=1]
+... Editing the VM YAML requires a restart of the VM for the new labels to take effect. This is because the label on the VM must get passed down to the *virt-launcher* pod and that only happens after a restart.
+
++
+... Using *oc label* is ephemeral and is lost after a VM restart. This is because the label is applied directly to the *virt-launcher* pod, with immediate effect, but not set on the VM object.
+
++
+. To make things permanent, use the OpenShift CLI to set a label `app: fedora` on the *node-affinity-vm*.
+
++
+Add the label under *spec.template.metadata.labels* NOT *metadata.labels* at the top of the YAML:
+
++
+[source,text,role=execute]
+.Modify the VM
+----
+oc edit vm node-affinity-vm -n affinity
+----
++
+[source,yaml]
+----
+apiVersion: kubevirt.io/v1
+kind: VirtualMachine
+metadata:
+  annotations:
+    kubemacpool.io/transaction-timestamp: "2026-01-16T18:46:28.5004163Z"
+  generation: 3
+  labels:
+    app.kubernetes.io/instance: module-affinity  <---Do not put the label here
+  name: node-affinity-vm
+  namespace: affinity
+  resourceVersion: "714752"
+  uid: 5cf5a3d2-203c-41cb-8da2-d696acd9e71a
+spec:
+  dataVolumeTemplates:
+  - metadata:
+      creationTimestamp: null
+      name: node-affinity-vm-volume
+    spec:
+      sourceRef:
+        kind: DataSource
+        name: rhel10
+        namespace: openshift-virtualization-os-images
+      storage:
+        resources:
+          requests:
+            storage: 30Gi
+  instancetype:
+    kind: virtualmachineclusterinstancetype
+    name: u1.small
+  preference:
+    kind: virtualmachineclusterpreference
+    name: rhel.10
+  runStrategy: Manual
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: fedora <---Put the label here
+        network.kubevirt.io/headlessService: headless
+    spec:
+      affinity:
+        nodeAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - preference:
+              matchExpressions:
+              - key: zone
+                operator: In
+                values:
+                - east
+            weight: 75
+      architecture: amd64
+      domain:
+        devices:
+          autoattachPodInterface: false
+          disks:
+          - disk:
+              bus: virtio
+            name: cloudinitdisk
+          interfaces:
+          - macAddress: 02:f9:4a:ad:c3:06
+            masquerade: {}
+            name: default
+        firmware:
+          serial: 212f42c0-c2ac-4581-96e2-5297e2436a8d
+          uuid: ad3a3d79-9539-4585-826e-9cca5a71f775
+        machine:
+          type: pc-q35-rhel9.6.0
+        resources: {}
+      networks:
+      - name: default
+        pod: {}
+      subdomain: headless
+      volumes:
+      - dataVolume:
+          name: node-affinity-vm-volume
+        name: rootdisk
+      - cloudInitNoCloud:
+          userData: |
+            chpasswd:
+              expire: false
+            password: redhat
+            user: rhel
+        name: cloudinitdisk
+----
+
+
++
+.Save and Exit
+[source,console]
+----
+:wq!
+----
+
++
+Make sure the VM was edited successful and did not fail for any reason.
+
++
+[source,console]
+----
+virtualmachine.kubevirt.io/node-affinity-vm edited
+----
+
++
+. Restart the *node-affinity-vm* so the label is applied to the *virt-launcher* pod.
+
++
+[.wrap,console,role=execute]
+----
+virtctl restart node-affinity-vm -n affinity
+----
+
++
+[source,console]
+----
+VM node-affinity-vm was scheduled to restart
+----
+
++
+. Next, we are going to configure the *pod-affinity-vm*.
+
++
+.. Begin by starting *pod-affinity-vm* Virtual Machine
+
++
+[.wrap,console,role=execute]
+----
+virtctl start pod-affinity-vm -n affinity
+----
+
++
+[source,console]
+----
+VM pod-affinity-vm was scheduled to start
+----
+
++
+. Verify the *VirtualMachineInstance* is running and see what node it is running on. If the *VirtualMachineInstance* is still in the scheduling phase, please execute the command again.
++
+[.wrap,console,role=execute]
+----
+oc get vmi -n  affinity pod-affinity-vm
+----
+
++
+.Output
+----
+NAME               AGE    PHASE     IP             NODENAME                        READY
+pod-affinity-vm    1m2s   Running   10.232.0.218   control-plane-cluster-dvddt-1   True
+----
+
++
+. Once the VM has started, using the OpenShift Console, from the left side panel, navigate to *Virtualization → VirtualMachines*
+
++
+Under *All projects*, select the *affinity* namespace and click on the Virtual Machine named *pod-affinity-vm* and click on the *Configuration* tab.
+
++
+From the *Configuration* tab, select *Scheduling* and click the *blue pencil* icon under *Affinity rules* to add a new one.
+
++
+image::exercise4/04-image-affinity04.png[title="Pod Affinity Rule", link=self, window=blank, width=100%]
+
++
+. From the new window, click *Add affinity rule*.
+
++
+. Change the *type* to *Workload (pod) Affinity*
+
++
+. Keep the *Condition* set to *Required during scheduling* and leave the *Topology key* at the default value.
+
++
+. Click *Add expression* under *Workload labels*.
+
++
+Set the *Key* field to `app` and the *Values* field to `fedora` and click *Add*.
+
++
+This is the same label applied to the *node-affinity-vm* earlier.
+
++
+Your Final Pod Affinity rule will look like the picture below.
+
++
+Confirm this is true and click *Save affinity rule*.
+
++
+image::exercise4/04-image-affinity05.png[title="Pod Affinity Rule", link=self, window=blank, width=100%]
+
++
+. Click *Apply rules*
+
++
+. Now let's take a look at the Pod Affinity rule on *pod-affinity-vm*.
+
++
+You can view this information through the GUI by inspecting the *pod-affinity-vm* *YAML*, or using the CLI.
+
++
+[source,text,role=execute]
+----
+oc get vm pod-affinity-vm -n affinity -o jsonpath='{.spec.template.spec.affinity}{"\n"}'
+----
+
++
+.Output
+----
+{"podAffinity":{"requiredDuringSchedulingIgnoredDuringExecution":[{"labelSelector":{"matchExpressions":[{"key":"app","operator":"In","values":["fedora"]}]},"topologyKey":"kubernetes.io/hostname"}]}}
+----
+
++
+. Check where the *pod-affinity-vm* and *node-affinity-vm* are running by looking at OpenShift Console or using the OpenShift CLI.
+
++
+[source,text,role=execute]
+----
+oc get vmi pod-affinity-vm node-affinity-vm -n affinity
+----
+
++
+.Output
+----
+NAME               AGE    PHASE     IP             NODENAME                        READY
+pod-affinity-vm    8m2s   Running   10.232.0.218   control-plane-cluster-dvddt-1   True
+node-affinity-vm   11m    Running   10.233.0.35    worker-cluster-dvddt-1          True
+----
+
++
+. As we noted in the last lab, without an external force to move or restart the VM, new Affinity rules do not take effect.
+
++
+To apply the changes manually, you can live migrate or restart the VM. For automatic enforcement, you can configure the *Descheduler* with the *AffinityAndTaints* profile.
+
++
+. Restart the *pod-affinity-vm* VM.
+
++
+[.wrap,console,role=execute]
+----
+virtctl restart pod-affinity-vm -n affinity
+----
+
++
+[source,console]
+----
+VM pod-affinity-vm was scheduled to restart
+----
+
++
+. Once the VM restarts, the pod affinity will be in effect.
+
++
+You can validate this in the GUI by navigating to the *pod-affinity-vm* and *node-affinity-vm*, and looking at the *Node* name in the *General* box on the right hand side of the *VirtualMachine details* page or using the OCP CLI.
+
++
+[source,text,role=execute]
+----
+oc get vmi pod-affinity-vm node-affinity-vm -n affinity
+----
+
++
+.Output
+----
+NAME               AGE    PHASE     IP            NODENAME                 READY
+pod-affinity-vm    100s   Running   10.233.0.36   worker-cluster-dvddt-1   True
+node-affinity-vm   35m    Running   10.233.0.35   worker-cluster-dvddt-1   True
+----
+
++
+. You will now see the *pod-affinity-vm* running on the same node *node-affinity-vm* because of the pod affinity rule.
+
+
+[#podantiaffinity]
+== Pod Anti-Affinity
+
+Pod Anti-Affinity is a crucial feature in achieving cross-cluster High Availability (HA) for your workloads. It work by instructing the scheduler to prevent the co-location of related VMs on the same node.
+
+The primary benefit is to enhance application resilience. It ensues that VMs belonging to the same service (such as a database cluster) are distributed across different nodes. The failure of a single node will not cause an outage for the entire service.
+
+This lab will demonstrate the setup and usage of Pod Anti-Affinity.
+
+[#podantiaffinityinstructions]
+=== Instructions
+
+. Ensure you are <<labaccess,logged in to both the OpenShift Console and CLI as the *admin* user>> from your *web browser* and the *terminal* window on the right side of your screen and continue to the next step.
+
++
+. To begin, we are going to leverage our existing *node-affinity-vm* and the *app: fedora* label from the previous lab. This will serve as 1 of the 2 VMs we use to demonstrate Anti-Affinity.
+
++
+. Next, we are going to configure the *pod-anti-affinity-vm*.
+
++
+.. Begin by starting *pod-anti-affinity-vm* Virtual Machine
+
++
+[.wrap,console,role=execute]
+----
+virtctl start pod-anti-affinity-vm -n affinity
+----
+
++
+[source,console]
+----
+VM pod-anti-affinity-vm was scheduled to start
+----
+
++
+. Verify the *VirtualMachineInstance* is running and see what node it is running on. If the *VirtualMachineInstance* is still in the scheduling phase, please execute the command again.
++
+[.wrap,console,role=execute]
+----
+oc get vmi pod-anti-affinity-vm -n affinity
+----
+
++
+.Output
+----
+NAME                   AGE   PHASE     IP            NODENAME                 READY
+pod-anti-affinity-vm   1m    Running   10.233.0.44   worker-cluster-dvddt-1   True
+----
+
++
+. Once the VM has started, using the OpenShift Console, from the left side panel, navigate to *Virtualization → VirtualMachines*
+
++
+Under *All projects*, select the *affinity* namespace and click on the Virtual Machine named *pod-anti-affinity-vm* and click on the *Configuration* tab.
+
++
+From the *Configuration* tab, select *Scheduling* and click the *blue pencil* icon under *Affinity rules* to add a new one.
+
++
+image::exercise4/04-image-affinity06.png[title="Add Pod Anti-Affinity Rule", link=self, window=blank, width=100%]
+
++
+. From the new window, click *Add affinity rule*.
+
++
+. Change the *type* to *Workload (pod) Anti-Affinity*
+
++
+. Keep the *Condition* set to *Required during scheduling* and leave the *Topology key* at the default value.
+
++
+. Click *Add expression* under *Workload labels*
+
++
+Set the *Key* field to `app` and the *Values* field to `fedora` and click *Add*.
+
++
+This is the same label applied to the *node-affinity-vm*.
+
++
+Your Final Pod Affinity rule will look like the picture below.
+
++
+Confirm this is true and click *Save affinity rule*.
+
++
+image::exercise4/04-image-affinity07.png[title="Add Pod Anti-Affinity Rule", link=self, window=blank, width=100%]
+
++
+. Click *Apply Rules*
+
++
+. Now let's take a look at the Pod Affinity rule on *pod-anti-affinity-vm*.
+
++
+You can view this information through the GUI by inspecting the *pod-anti-affinity-vm* *YAML*, or using the CLI.
+
++
+[source,text,role=execute]
+----
+oc get vm pod-anti-affinity-vm -n affinity -o jsonpath='{.spec.template.spec.affinity}{"\n"}'
+----
+
++
+.Output
+----
+{"podAntiAffinity":{"requiredDuringSchedulingIgnoredDuringExecution":[{"labelSelector":{"matchExpressions":[{"key":"app","operator":"In","values":["fedora"]}]},"topologyKey":"kubernetes.io/hostname"}]}}
+----
+
++
+. Check where the *pod-anti-affinity-vm* and *node-affinity-vm* are running by looking at OpenShift Console or using the OpenShift CLI.
+
++
+[source,text,role=execute]
+----
+oc get vmi pod-anti-affinity-vm node-affinity-vm -n affinity
+----
+
++
+.Output
+----
+NAME                   AGE   PHASE     IP            NODENAME                 READY
+pod-anti-affinity-vm   30m   Running   10.233.0.44   worker-cluster-dvddt-1   True
+node-affinity-vm        5m   Running   10.233.0.46   worker-cluster-dvddt-1   True
+----
+
++
+[NOTE]
+====
+It's possible your *pod-anti-affinity-vm* and *node-affinity-vm* are already on different nodes because the cluster is lightly loaded. Even so, you can restart the pods endlessly and they never will end up on the same node.
+====
+
+. As we noted in the last lab, without an external force to move or restart the VM, new Affinity rules do not take effect.
+
++
+To apply the changes manually, you can live migrate or restart the VM. For automatic enforcement, you can configure the *Descheduler* with the *AffinityAndTaints* profile.
+
++
+. Restart the *pod-anti-affinity-vm* VM.
+
++
+[.wrap,console,role=execute]
+----
+virtctl restart pod-anti-affinity-vm -n affinity
+----
+
++
+[source,console]
+----
+VM pod-anti-affinity-vm was scheduled to restart
+----
+
++
+. Once the VM restarts, the pod anti-affinity will be in effect.
+
++
+You can validate this in the GUI by navigating to the *pod-anti-affinity-vm* and *node-affinity-vm*, and looking at the *Node* name in the *General* box on the right hand side of the *VirtualMachine details* page or using the OCP CLI.
+
++
+[source,text,role=execute]
+----
+oc get vmi pod-anti-affinity-vm node-affinity-vm -n affinity
+----
+
++
+.Output
+----
+NAME                   AGE   PHASE     IP            NODENAME                        READY
+pod-anti-affinity-vm   43s   Running                 control-plane-cluster-dvddt-1   True
+node-affinity-vm       58m   Running   10.233.0.35   worker-cluster-dvddt-1          True
+----
+
++
+. You will now see the *pod-anti-affinity-vm* running on a different node from *node-affinity-vm* because of the pod anti-affinity rule.
+
+[IMPORTANT]
+====
+Stop the *node-affinity-vm*, *pod-affinity-vm* and *pod-anti-affinity-vm* VMs using *virtctl* from your *Terminal* window to ensure you have enough resources for the next labs.
+
+[,shell,role="execute wrap",subs="attributes"]
+----
+virtctl stop node-affinity-vm -n affinity
+----
+
+*VM node-affinity-vm was scheduled to stop*
+
+[,shell,role="execute wrap",subs="attributes"]
+----
+virtctl stop pod-affinity-vm -n affinity
+----
+
+*VM pod-affinity-vm was scheduled to stop*
+
+[,shell,role="execute wrap",subs="attributes"]
+----
+virtctl stop pod-anti-affinity-vm -n affinity
+----
+
+*VM pod-anti-affinity-vm was scheduled to stop*
+====

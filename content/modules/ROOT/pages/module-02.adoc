@@ -1,0 +1,615 @@
+= Overcommit in OpenShift Virtualization
+
+ifdef::vmware[]
+.VMware Rosetta Stone
+****
+VMware admins typically interact with CPU and memory overcommit as part of a more collaborative relationship with Capacity Management teams, applying values *to each ESXi host* that are often provided to them by those teams or other 3rd party capacity management systems.
+****
+endif::[]
+
+
+*Overcommit* occurs when the allocated virtual resources exceed the physical resources available on the host. Overcommit allows users to enable higher workload density by leveraging the fact that Virtual Machines (VMs) rarely use their full allocated capacity simultaneously.
+
+In this module, you will perform two overcommit tasks:
+
+* <<cpu,Understand and Overcommit CPU on a Virtual Machine>>
+* <<memory,Understand, Enable and Overcommit Memory on a Virtual Machine>>
+
+include::lab-access.adoc[]
+
+[#cpu]
+== CPU Overcommit
+
+In OpenShift Virtualization, compute resources assigned to Virtual Machines (VMs) are backed by either *Guaranteed CPUs* or *time-sliced CPU shares*.
+
+*Guaranteed CPUs*, also known as CPU reservations, dedicate CPU cores or threads to a specific workload, making them unavailable to any other workload. Assigning guaranteed CPUs to a VM ensures sole access to a reserved physical CPU. You enable dedicated resources for VMs to use guaranteed CPUs.
+
+*Time-sliced CPUs* dedicate a slice of time on a shared physical CPU to each workload. You can specify the slice size during VM creation or when the VM is offline. By default, each vCPU receives 100 milliseconds (1/10 of a second) of physical CPU time.
+
+With time-sliced CPUs, the Linux kernel's *Completely Fair Scheduler (CFS)* manages how VMs share physical CPU cores. CFS rotates VMs through available cores, giving each VM a proportional slice of CPU time based on its configured CPU requests.
+
+By default OpenShift Virtualization has a 10:1 overcommit ratio. To achieve CPU overcommit, each VM’s *virt-launcher* pod will define _100m_ of CPU requests or _1/10th_ of a CPU from a Kubernetes resource and scheduling perspective, per vCPU requested by the VM.
+
+The default _10:1_ overcommit ratio can be configured to the desired overcommit level by changing the *vmiCPUAllocationRatio* on the *hyperconverged* Custom Resource. Changing this ratio will influence the CPU requests for each vCPU that is allocated by default, which enforces the maximum level of CPU overcommit through Kubernetes based request scheduling.
+
+[NOTE]
+====
+Resource assignments are made at *virt-launcher* pod scheduling time, so any VMs will need to be live migrated stopped and restarted to change CPU allocation behavior after a ratio change.
+====
+
+[#cpuinstructions]
+=== Instructions
+
+. Ensure you are <<labaccess,logged in to both the OpenShift Console and CLI as the *admin* user>> from your *web browser* and the *terminal* window on the right side of your screen and continue to the next step.
+
++
+. To understand CPU overcommit, you must first identify how many physical CPU cores are available on your worker nodes.
+
++
+.. List all worker nodes in your cluster:
+
++
+[,shell,role="execute wrap",subs="attributes"]
+----
+oc get nodes -l node-role.kubernetes.io/worker=
+----
+
++
+[,shell,subs="attributes"]
+.Output
+----
+NAME                            STATUS   ROLES                         AGE   VERSION
+control-plane-cluster-jlkcx-1   Ready    control-plane,master,worker   21h   v1.33.6
+worker-cluster-jlkcx-1          Ready    worker                        52m   v1.33.6
+worker-cluster-jlkcx-2          Ready    worker                        52m   v1.33.6
+----
+
+.. Show available CPU resources on a specific node:
+
++
+[,text,role="execute wrap",subs="attributes"]
+----
+oc describe node $(oc get nodes -o custom-columns=":metadata.name" --no-headers | grep worker | head -n 1) | grep -A 9 "Capacity:"
+----
+
++
+[,shell,role=wrap,subs="attributes"]
+.Output
+----
+Capacity:
+  cpu:                            8
+  devices.kubevirt.io/kvm:        1k
+  devices.kubevirt.io/tun:        1k
+  devices.kubevirt.io/vhost-net:  1k
+  ephemeral-storage:              104266732Ki
+  hugepages-1Gi:                  0
+  hugepages-2Mi:                  0
+  memory:                         24600612Ki
+  pods:                           250
+----
+
++
+The `cpu` value shows the number of physical CPU cores (or threads if hyper-threading is enabled) available on the node.
+.. Alternatively, check CPU allocatable resources (physical CPUs minus system reservations):
+
++
+[,shell,role="execute wrap",subs="attributes"]
+----
+oc get node $(oc get nodes -o custom-columns=":metadata.name" --no-headers | grep worker | head -n 1) -o jsonpath='{.status.allocatable.cpu}{"\n"}'
+----
+
++
+[,shell,role=wrap,subs="attributes"]
+.Output
+----
+7500m
+----
+
++
+.. Using the *OpenShift Console*, you can navigate to *Compute → Nodes* to view their key specifications.
+
++
+image::exercise2/node-details.png[title="Confirm number of CPUs", link=self, window=blank, width=100%]
+
+
++
+. Viewing VM vCPU Allocations
+
++
+.. List all running VMs and their vCPU counts:
+
++
+[,shell,role="execute wrap",subs="attributes"]
+----
+oc get vms -n over-commit -o custom-columns=\
+NAMESPACE:.metadata.namespace,\
+NAME:.metadata.name,\
+vCPUs:.spec.template.spec.domain.cpu.cores,\
+STATUS:.status.printableStatus
+----
+
++
+[,shell,role=wrap,subs="attributes"]
+.Output
+----
+NAMESPACE     NAME              vCPUs   STATUS
+over-commit   overcommit-vm-1   16      Stopped
+----
+
+.. For a specific VM, check the vCPU configuration:
+
++
+[,shell,role="execute wrap",subs="attributes"]
+----
+oc get vm overcommit-vm-1 -n over-commit -o jsonpath='{.spec.template.spec.domain.cpu.cores}{"\n"}'
+----
+
++
+[,shell,role=wrap,subs="attributes"]
+.Output
+----
+16
+----
+
++
+.. Start the *overcommit-vm-1* Virtual Machine
+
+... You can do this via the *Console*
++
+image::exercise2/start-vm.png[title="Start VM", link=self, window=blank, width=100%]
+
++
+... Or you can use *virtctl* to start it from your *Terminal* window
+
++
+[,shell,role="execute wrap",subs="attributes"]
+----
+virtctl start overcommit-vm-1 -n over-commit
+----
+
++
+[,shell,role=wrap,subs="attributes"]
+.Output
+----
+VM overcommit-vm-1 was scheduled to start
+----
+
++
+.. View CPU requests and limits for the running VM:
+
++
+[,shell,role="execute wrap",subs="attributes"]
+----
+oc get vmi overcommit-vm-1 -n over-commit -o jsonpath='{.spec.domain.cpu}{"\n"}'
+----
+
++
+[,shell,role=wrap,subs="attributes"]
+.Output
+----
+{"cores":16,"maxSockets":8,"model":"Icelake-Server-v2","sockets":2,"threads":1}
+----
+
++
+.. Using the *OpenShift Console*, navigate to *Virtualization → Virtual Machines*.
+
++
+Under *All projects*, select the *over-commit* namespace and select the *overcommit-vm-1* VM to view the *CPU/Memory* allocation.
+
++
+image::exercise2/vm-details.png[title="Confirm number of CPUs", link=self, window=blank, width=100%]
+
++
+.. Confirm the number of CPUs inside the guest
+
++
+Click on the *Console* tab. If necessary, click the blue *Connect* button.
+
++
+Login to the Virtual Machine using *Copy to clipboard* and *Paste to console* with the *User name* and *Password* credentials from above the console window.
+
++
+From the console, run the following command to verify the number of CPUs:
+
++
+[,shell,role="execute wrap",subs="attributes"]
+----
+nproc
+----
+
++
+[,shell,role=wrap,subs="attributes"]
+.Output
+----
+32
+----
+
+
++
+image::exercise2/overcommit-nproc.png[title="Confirm number of CPUs", link=self, window=blank, width=100%]
+
++
+. Calculating CPU Overcommit Ratio
+
++
+To calculate the overcommit ratio on a specific node:
+
+.. Identify all VMs running on the node:
+
++
+[,shell,role="execute wrap",subs="attributes"]
+----
+oc get vmi -A -o wide | grep $(oc get vmi overcommit-vm-1 -n over-commit -o json | jq -r '.status.nodeName')
+----
+
++
+[,shell,subs="attributes"]
+.Output
+----
+NAME              AGE   PHASE     IP             NODENAME                        READY   LIVE-MIGRATABLE   PAUSED
+overcommit-vm-1   75m   Running   10.232.0.121   control-plane-cluster-qc86c-1   True    True
+----
+
+
+
++
+.. Sum the vCPUs for all VMs on the node:
+
++
+[,shell,role="execute wrap",subs="attributes"]
+----
+NODE=$(oc get nodes -o custom-columns=":metadata.name" --no-headers | grep $(oc get vmi overcommit-vm-1 -n over-commit -o json | jq -r '.status.nodeName'))
+oc get vmi -A -o json | \
+jq -r --arg NODE "$NODE" \
+'.items[] | select(.status.nodeName == $NODE) |
+{
+  name: .metadata.name,
+  total_vcpus: ((.spec.domain.cpu.sockets // 1) * (.spec.domain.cpu.cores // 1) * (.spec.domain.cpu.threads // 1))
+}' | \
+jq -s 'map(.total_vcpus) | add'
+----
+
++
+[,text,role=wrap,subs="attributes"]
+.Output
+----
+32
+----
+
++
+NOTE: You should at least see "32" but it may differ if more VMs are actually running on the same node.
+
+
++
+.. Calculate the overcommit ratio:
+
++
+[,shell,role="wrap",subs="attributes"]
+----
+Overcommit Ratio = Total vCPUs allocated / Physical CPU cores
+
+Example:
+- Physical CPU cores: 8 (Available capacity from step 3.b)
+- Total vCPUs allocated: 32
+- Overcommit ratio: 32 / 8 = 4:1
+----
+
++
+. Understanding the Default 10:1 CPU Overcommit Ratio
+
++
+OpenShift Virtualization applies a default *10:1 CPU overcommit ratio* when you don't explicitly specify CPU requests. This means that if a VM has multiple vCPUs, the actual CPU request on the *virt-launcher* pod will be 1/10th of the total cpu requested by the VM.
+
+. Check *virt-launcher* pod CPU Requests
+
++
+[,shell,role="execute wrap",subs="attributes"]
+----
+oc get pods -n over-commit -l vm.kubevirt.io/name=overcommit-vm-1
+----
+
++
+[,shell,role=wrap,subs="attributes"]
+.Output
+----
+NAME                                  READY   STATUS    RESTARTS   AGE
+virt-launcher-overcommit-vm-1-rtspw   2/2     Running   0          47m
+----
+
++
+[,shell,role="execute wrap",subs="attributes"]
+----
+oc get pods -n over-commit -l vm.kubevirt.io/name=overcommit-vm-1 \
+-o jsonpath='{.items[0].spec.containers[?(@.name=="compute")].resources}{"\n"}' | jq
+----
+
++
+[,text,role=wrap,subs="attributes"]
+.Output
+----
+{
+  "limits": {
+    "devices.kubevirt.io/kvm": "1",
+    "devices.kubevirt.io/tun": "1",
+    "devices.kubevirt.io/vhost-net": "1"
+  },
+  "requests": {
+    "cpu": "3200m",
+    "devices.kubevirt.io/kvm": "1",
+    "devices.kubevirt.io/tun": "1",
+    "devices.kubevirt.io/vhost-net": "1",
+    "ephemeral-storage": "50M",
+    "memory": "2564Mi"
+  }
+}
+----
+
++
+Using the *OpenShift Console*, navigate to *Workloads → Pods*.
+
++
+From the *Project:* dropdown and select the *over-commit* namespace to see the *virt-launcher* pod for the VM.
+
++
+Click on the *virt-launcher* pod and to go the *YAML* tab to see the *cpu requests* value.
+
++
+image::exercise2/pod-cpu-details.png[title="Confirm number of CPUs", link=self, window=blank, width=100%]
+
++
+IMPORTANT: **A VM with 32 vCPUs only requests `3200m` (0.1 * 32 = 3.2 CPU) by default!**
+
+[#memory]
+== Memory Overcommit
+
+Kubernetes, until 1.21, and OpenShift, until 4.21, did not have a Generally Available native SWAP implementation and thus did not allow use of SWAP.
+
+Memory oversubscription without use of swap is hazardous because if the amount of memory required by processes running on a node exceeds the amount of RAM available, processes will be killed. That's not desirable, particularly for VMs where the workloads will be go offline if the VM is killed.
+
+OpenShift Virtualization ships the *wasp-agent* to permit the controlled use of swap with VMs.
+Refer to the https://docs.redhat.com/en/documentation/openshift_container_platform/4.20/html/virtualization/postinstallation-configuration#virt-using-wasp-agent-to-configure-higher-vm-workload-density_virt-configuring-higher-vm-workload-density[wasp-agent component documentation] for more information.
+
+NOTE: We won't configure the *wasp-agent* in this lab due to time and resource constraints but you can read the documentation and install procedures on your own time.
+
+IMPORTANT: Starting with Kubernetes 1.21 and OpenShift 4.21 the *wasp-agent* will be superseded by the native Kubernetes SWAP implementation.
+
+The *memoryOvercommitPercentage* parameter on the *hyperconverged* Custom Resources tells OpenShift Virtualization how to scale the memory requests for each VM. When set to the default, 100, it calculates memory requests based on the full amount of memory declared by the VM. When it's set to a higher value, the request is set to a proportionally smaller value than the VM requested, allowing for memory overcommit.
+
+For example, with a VM with 16GiB of memory.
+
+If the overcommit percentage is set to its default value of 100, the memory request on the pod will be 16 GiB plus some extra for the overhead for the QEMU process running the VM.
+
+If it's set to 200, the request on the pod will be set to 8GiB plus the overhead, with the VM still seeing 16GiB.
+
+[IMPORTANT]
+====
+To calculate the request value when overcommitting memory, you can use the following formula:
+
+requested memory = VM memory * (100 / memoryOvercommitPercentage)
+
+16 * (100 / 200) = 8GiB
+
+or, with 150% overcommit
+
+16 * (100 / 150) = 10.66GiB
+====
+
+[NOTE]
+====
+Memory overhead per virtual machine ≈ (0.002 × requested memory) + 218 MiB + 8 MiB × (number of vCPUs) + 16 MiB × (number of graphics devices) + (additional memory overhead)
+
+See the section on https://docs.redhat.com/en/documentation/openshift_container_platform/4.20/html/virtualization/installing#memory-overhead_preparing-cluster-for-virt[Virtual machine memory overhead] in the OpenShift Virtualization docs.
+====
+
+[#memoryinstructions]
+=== Instructions
+
+. Ensure you are <<labaccess,logged in to both the OpenShift Console and CLI as the *admin* user>> from your *web browser* and the *terminal* window on the right side of your screen and continue to the next step.
+
++
+
+Using the *OpenShift Console*, navigate to *Virtualization → Virtual Machines*.
+
++
+Under *All projects*, select the *over-commit* namespace and select the *overcommit-vm-1* VM to view the *CPU/Memory* allocation.
+
++
+image::exercise2/vm-memory-assigned.png[title="VM Memory Assigned", link=self, window=blank, width=100%]
+
++
+[,shell,role="execute wrap",subs="attributes"]
+----
+oc get vm -n over-commit overcommit-vm-1 -o json | jq .spec.template.spec.domain.memory
+----
+
++
+[,text,role=wrap,subs="attributes"]
+.Output
+----
+{
+  "guest": "2Gi"
+}
+----
+
++
+Using the *OpenShift Console*, navigate to *Workloads → Pods*.
+
++
+From the *Project:* dropdown and select the *over-commit* namespace to see the *virt-launcher* pod for the VM.
+
++
+Click on the *virt-launcher* pod and to go the *YAML* tab to see the *memory requests* value.
+
++
+image::exercise2/virt-launcher-memory-request.png[title="Virt-Launcher Memory Request", link=self, window=blank, width=100%]
+
+. Observe the memory requests for the *virt-launcher* pod compared to the memory allocated to the VM :
+
++
+[,shell,role="execute wrap",subs="attributes"]
+----
+oc get pod -n over-commit -l vm.kubevirt.io/name=overcommit-vm-1 -o json | jq '.items[0].spec.containers[0].resources.requests.memory'
+----
+
++
+[,text,role=wrap,subs="attributes"]
+.Output
+----
+"2564Mi"
+----
+
++
+NOTE: The *virt-launcher* pod is requesting 2564Mi which is 2048Mi + **overhead**.
+
++
+IMPORTANT: This overhead is necessary and expected - it ensures the VM has enough resources to run properly.
+
+. Enable Memory Overcommit
+
++
+Using the *OpenShift Console*, navigate to *Virtualization → Overview → Settings → Cluster → General Settings*
+
++
+Click the *Toggle Switch* to "Enable Memory Density"
+
++
+image::exercise2/enable-memory-overcommit.png[title="Enable Memory Overcommit", link=self, window=blank, width=100%]
+
++
+You can confirm memory overcommit is enabled by checking the *hyperconverged* CR using the CLI:
+
++
+[,shell,role="execute wrap",subs="attributes"]
+----
+oc get hyperconverged -n openshift-cnv kubevirt-hyperconverged -o json | jq '.spec.higherWorkloadDensity.memoryOvercommitPercentage'
+----
+
++
+[,text,role=wrap,subs="attributes"]
+.Output
+----
+150
+----
+
++
+NOTE: This means that the memory overcommit ratio is _150%_ which is _1.5:1_.
+
++
+. Now let's restart the VM and observe the memory request on the *virt-launcher* pod compared to the memory allocated to the VM.
+
++
+[,shell,role="execute wrap",subs="attributes"]
+----
+virtctl restart overcommit-vm-1 -n over-commit
+----
+
++
+[,shell,role=wrap,subs="attributes"]
+.Output
+----
+VM overcommit-vm-1 was scheduled to restart
+----
+
++
+Using the *OpenShift Console*, navigate to *Workloads → Pods*.
+
++
+From the *Project:* dropdown and select the *over-commit* namespace to see the *virt-launcher* pod for the VM.
+
++
+Click on the *virt-launcher* pod and to go the *YAML* tab to see the *memory requests* value.
+
++
+image::exercise2/virt-launcher-memory-request-overcommit.png[title="Virt-Launcher Memory Request 1.5x", link=self, window=blank, width=100%]
+
++
+The *virt-launcher* pod is requesting _1972720981_ bytes which is ~ _1972Mi_  ~ _1.97GiB_.
+
++
+NOTE: This is less than the _2048MiB_ requested by the VM. This is because the memory overcommit ratio is _150%_.
+
++
+. Increase the memory overcommit ratio to _200%_ by patching the *hyperconverged* Custom Resource.
+
++
+[,shell,role="execute wrap",subs="attributes"]
+----
+oc patch hyperconverged -n openshift-cnv kubevirt-hyperconverged --type merge -p '{"spec":{"higherWorkloadDensity":{"memoryOvercommitPercentage":200}}}'
+----
+
++
+[,text,role=wrap,subs="attributes"]
+.Output
+----
+hyperconverged.hco.kubevirt.io/kubevirt-hyperconverged patched
+----
+
++
+[,shell,role="execute wrap",subs="attributes"]
+----
+oc get hyperconverged -n openshift-cnv kubevirt-hyperconverged -o json | jq '.spec.higherWorkloadDensity.memoryOvercommitPercentage'
+----
+
++
+[,text,role=wrap,subs="attributes"]
+.Output
+----
+200
+----
+
++
+[NOTE]
+====
+This means that the memory overcommit ratio is now _200%_ which is _2:1_.
+====
+
++
+. Restart the VM and observe the memory request on the *virt-launcher* pod compared to the 2GiB allocated to the VM.
+
++
+[,shell,role="execute wrap",subs="attributes"]
+----
+virtctl restart overcommit-vm-1 -n over-commit
+----
+
++
+[,shell,role=wrap,subs="attributes"]
+.Output
+----
+VM overcommit-vm-1 was scheduled to restart
+----
+
++
+[,shell,role="execute wrap",subs="attributes"]
+----
+oc get pod -n over-commit -l vm.kubevirt.io/name=overcommit-vm-1 -o json | jq '.items[0].spec.containers[0].resources.requests.memory'
+----
+
++
+[,text,role=wrap,subs="attributes"]
+.Output
+----
+"1540Mi"
+----
+
++
+[NOTE]
+====
+The *virt-launcher* pod is now requesting _1540Mi_ which is ~ _1.54GiB_.
+
+Calculated as:
+
+2 * (100/200) = 1GiB + VM overhead
+====
+
+[IMPORTANT]
+====
+Stop the *overcommit-vm-1* VM using *virtctl* from your *Terminal* window to ensure you have enough resources for the next labs.
+
+[,shell,role="execute wrap",subs="attributes"]
+----
+virtctl stop overcommit-vm-1 -n over-commit
+----
+
+*VM overcommit-vm-1 was scheduled to stop*
+====

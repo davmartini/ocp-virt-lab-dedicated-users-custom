@@ -1,0 +1,24 @@
+name: modules
+title: "OpenShift Virtualization Capabilities: Applying the Rosetta Stone"
+version: master
+nav:
+  - modules/ROOT/nav.adoc
+
+asciidoc:
+  attributes:
+    page-toclevels: -1
+    lab_name: "OpenShift Virtualization Capabilities: Applying the Rosetta Stone"
+    release-version: master
+    page-pagination: true
+    my_var: "foo"
+    guid: my-guid
+    ssh_user: lab-user
+    ssh_password: devops
+    ssh_command: ssh someone@example.com
+    bastion_ssh_user_name: {bastion_ssh_user_name}
+    page-links:
+    - url: https://redhat.com
+      text: Red Hat
+    - url: https://docs.redhat.com/en/documentation/openshift_container_platform/4.20/html/virtualization/about
+      text: OpenShift Virtualization Documentation
+    vmware: true

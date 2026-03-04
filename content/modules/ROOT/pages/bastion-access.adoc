@@ -1,0 +1,24 @@
+[#bastionaccess]
+== Accessing the Bastion
+
+If you want to access the bastion host from a local terminal on your laptop instead of the built in showroom terminal, you can use the following access information.
+
+.Bastion SSH
+[.wrap,console,role=execute,subs="attributes"]
+----
+ssh {bastion_ssh_username}@{bastion_public_hostname} -p {bastion_ssh_port}
+----
+
+
+.Bastion Username
+[.wrap,console,role=execute,subs="attributes"]
+----
+{bastion_ssh_username}
+----
+
+
+.Bastion Password
+[.wrap,console,role=execute,subs="attributes"]
+----
+{bastion_ssh_password}
+----
