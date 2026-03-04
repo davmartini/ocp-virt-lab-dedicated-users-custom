@@ -3,6 +3,9 @@
 ** xref:index.adoc#labaccess[Accessing the OpenShift Cluster]
 ** xref:index.adoc#bastionaccess[Accessing the Bastion]
 
+* xref:beg-module-01.adoc[1. Live Migration of Workloads]
+
+
 * xref:module-01.adoc[1. Live Migration of Workloads]
 ** xref:module-01.adoc#labaccess[Accessing the OpenShift Cluster]
 ** xref:module-01.adoc#computerand[Compute Migration to a random node]
