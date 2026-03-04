@@ -41,12 +41,12 @@ image::beg-module03/udn03.png[link=self, window=blank, width=70%]
 image::beg-module03/udn04.png[link=self, window=blank, width=80%]
 +
 
-## . We can notably observe:
-* The name of the UDN
-* The Namespace where the UDN will be used
-* The defined topology: flat L2 (a simple switch)
-* The indication that this network is designed to be a "primary" network (it therefore replaces the Pod Network)
-* The use of IPAM, which guarantees that the VM IP addresses will be persistent
+. We can notably observe:
+    * The name of the UDN
+    * The Namespace where the UDN will be used
+    * The defined topology: flat L2 (a simple switch)
+    * The indication that this network is designed to be a "primary" network (it therefore replaces the Pod Network)
+    * The use of IPAM, which guarantees that the VM IP addresses will be persistent
 
 [[vm-create]]
 == Creating VMs on the UDN
