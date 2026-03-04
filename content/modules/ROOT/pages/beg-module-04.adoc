@@ -109,7 +109,7 @@ Now, let's secure our VMs. Our goal:
 
 We do this using standard Kubernetes **`NetworkPolicy`** resources.
 
-# [IMPORTANT]
+[IMPORTANT]
 ====
 It is crucial to understand that **Network Policies are not specific to UDNs**.
 
@@ -118,6 +118,7 @@ They are standard Kubernetes resources that can be used to control flows on any 
 .   The default OpenShift SDN (the Pod Network).
 .   OVS bridges created by a `NodeNetworkConfigurationPolicy` (NNCP).
 .   And, of course, the UDNs we are working with.
+====
 
 . In the left menu, click on *Networking* -> *NetworkPolicies*
 . Ensure you are in the correct project (udn-project-X)
