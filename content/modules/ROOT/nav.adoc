@@ -17,6 +17,9 @@
 
 ** xref:beg-module-05.adoc[5. OpenShift Observability]
 
+** xref:beg-module-06.adoc[6. VM Backup with Veeam Kasten]
+
+
 * xref:adv-intro.adoc[OpenShift Virtualization for advanced users]
 ** xref:adv-module-01.adoc[1. Live Migration of Workloads]
 *** xref:adv-module-01.adoc#labaccess[Accessing the OpenShift Cluster]

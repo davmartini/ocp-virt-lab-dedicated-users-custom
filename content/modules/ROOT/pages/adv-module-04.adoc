@@ -92,13 +92,13 @@ node/worker-cluster-dvddt-1 labeled
 Alternatively, using the OpenShift Console, from the left side panel, navigate to *Compute → Nodes*, pick a node where the *node-affinity-vm* is not running, click the 3 dots and select *Edit labels*.
 
 +
-image::exercise4/04-image-affinity-v2.png[title="Edit Node Labels", link=self, window=blank, width=100%]
+image::adv-module04/04-image-affinity-v2.png[title="Edit Node Labels", link=self, window=blank, width=100%]
 
 +
 In the new window, enter *zone=east* and click *Save*
 
 +
-image::exercise4/04-image-affinity-labels.png[title="Add Label", link=self, window=blank, width=100%]
+image::adv-module04/04-image-affinity-labels.png[title="Add Label", link=self, window=blank, width=100%]
 
 +
 . Make sure the label was applied.
@@ -114,7 +114,7 @@ oc get nodes <worker you just labeled> --show-labels | grep -i zone=east
 Alternatively, using the OpenShift Console, from the left side panel, navigate to *Compute → Nodes*, select the node where you added the label, click the *Details* tab and check the *Labels* section for *zone=east*.
 
 +
-image::exercise4/04-image-affinity-check-labels.png[title="Check the Label", link=self, window=blank, width=100%]
+image::adv-module04/04-image-affinity-check-labels.png[title="Check the Label", link=self, window=blank, width=100%]
 
 +
 . Using the OpenShift Console, from the left side panel, navigate to *Virtualization → VirtualMachines*.
@@ -126,19 +126,19 @@ Under *All projects*, select the *affinity* namespace and click on the Virtual M
 . Click on the *Configuration* tab.
 
 +
-image::exercise4/04-image-affinity01.png[title="Node Affinity Navigation", link=self, window=blank, width=100%]
+image::adv-module04/04-image-affinity01.png[title="Node Affinity Navigation", link=self, window=blank, width=100%]
 
 +
 . From the *Configuration* tab, select *Scheduling* and click the *blue pencil* icon under *Affinity rules* to add a new one.
 
 +
-image::exercise4/04-image-affinity02.png[title="Node Affinity add rule", link=self, window=blank, width=100%]
+image::adv-module04/04-image-affinity02.png[title="Node Affinity add rule", link=self, window=blank, width=100%]
 
 +
 . Click *Add affinity rule*.
 
 +
-image::exercise4/04-image-affinity02a.png[title="Node Affinity add rule", link=self, window=blank, width=100%]
+image::adv-module04/04-image-affinity02a.png[title="Node Affinity add rule", link=self, window=blank, width=100%]
 
 +
 . Change the *Condition* to *Preferred during scheduling* and set the *weight* to *75*.
@@ -159,13 +159,13 @@ Your Final Node Affinity rule will look like the picture below.
 Confirm this is true and click *Save affinity rule*.
 
 +
-image::exercise4/04-image-affinity03.png[title="Node Affinity Rule", link=self, window=blank, width=100%]
+image::adv-module04/04-image-affinity03.png[title="Node Affinity Rule", link=self, window=blank, width=100%]
 
 +
 . Click *Apply rules*.
 
 +
-image::exercise4/04-image-affinity03a.png[title="Node Affinity Rule", link=self, window=blank, width=100%]
+image::adv-module04/04-image-affinity03a.png[title="Node Affinity Rule", link=self, window=blank, width=100%]
 
 +
 . Let's take a look at the Node Affinity rule on *node-affinity-vm*.
@@ -437,7 +437,7 @@ Under *All projects*, select the *affinity* namespace and click on the Virtual M
 From the *Configuration* tab, select *Scheduling* and click the *blue pencil* icon under *Affinity rules* to add a new one.
 
 +
-image::exercise4/04-image-affinity04.png[title="Pod Affinity Rule", link=self, window=blank, width=100%]
+image::adv-module04/04-image-affinity04.png[title="Pod Affinity Rule", link=self, window=blank, width=100%]
 
 +
 . From the new window, click *Add affinity rule*.
@@ -464,7 +464,7 @@ Your Final Pod Affinity rule will look like the picture below.
 Confirm this is true and click *Save affinity rule*.
 
 +
-image::exercise4/04-image-affinity05.png[title="Pod Affinity Rule", link=self, window=blank, width=100%]
+image::adv-module04/04-image-affinity05.png[title="Pod Affinity Rule", link=self, window=blank, width=100%]
 
 +
 . Click *Apply rules*
@@ -609,7 +609,7 @@ Under *All projects*, select the *affinity* namespace and click on the Virtual M
 From the *Configuration* tab, select *Scheduling* and click the *blue pencil* icon under *Affinity rules* to add a new one.
 
 +
-image::exercise4/04-image-affinity06.png[title="Add Pod Anti-Affinity Rule", link=self, window=blank, width=100%]
+image::adv-module04/04-image-affinity06.png[title="Add Pod Anti-Affinity Rule", link=self, window=blank, width=100%]
 
 +
 . From the new window, click *Add affinity rule*.
@@ -636,7 +636,7 @@ Your Final Pod Affinity rule will look like the picture below.
 Confirm this is true and click *Save affinity rule*.
 
 +
-image::exercise4/04-image-affinity07.png[title="Add Pod Anti-Affinity Rule", link=self, window=blank, width=100%]
+image::adv-module04/04-image-affinity07.png[title="Add Pod Anti-Affinity Rule", link=self, window=blank, width=100%]
 
 +
 . Click *Apply Rules*

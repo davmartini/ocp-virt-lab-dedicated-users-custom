@@ -109,7 +109,7 @@ oc get node $(oc get nodes -o custom-columns=":metadata.name" --no-headers | gre
 .. Using the *OpenShift Console*, you can navigate to *Compute → Nodes* to view their key specifications.
 
 +
-image::exercise2/node-details.png[title="Confirm number of CPUs", link=self, window=blank, width=100%]
+image::adv-module02/node-details.png[title="Confirm number of CPUs", link=self, window=blank, width=100%]
 
 
 +
@@ -156,7 +156,7 @@ oc get vm overcommit-vm-1 -n over-commit -o jsonpath='{.spec.template.spec.domai
 
 ... You can do this via the *Console*
 +
-image::exercise2/start-vm.png[title="Start VM", link=self, window=blank, width=100%]
+image::adv-module02/start-vm.png[title="Start VM", link=self, window=blank, width=100%]
 
 +
 ... Or you can use *virtctl* to start it from your *Terminal* window
@@ -197,7 +197,7 @@ oc get vmi overcommit-vm-1 -n over-commit -o jsonpath='{.spec.domain.cpu}{"\n"}'
 Under *All projects*, select the *over-commit* namespace and select the *overcommit-vm-1* VM to view the *CPU/Memory* allocation.
 
 +
-image::exercise2/vm-details.png[title="Confirm number of CPUs", link=self, window=blank, width=100%]
+image::adv-module02/vm-details.png[title="Confirm number of CPUs", link=self, window=blank, width=100%]
 
 +
 .. Confirm the number of CPUs inside the guest
@@ -226,7 +226,7 @@ nproc
 
 
 +
-image::exercise2/overcommit-nproc.png[title="Confirm number of CPUs", link=self, window=blank, width=100%]
+image::adv-module02/overcommit-nproc.png[title="Confirm number of CPUs", link=self, window=blank, width=100%]
 
 +
 . Calculating CPU Overcommit Ratio
@@ -354,7 +354,7 @@ From the *Project:* dropdown and select the *over-commit* namespace to see the *
 Click on the *virt-launcher* pod and to go the *YAML* tab to see the *cpu requests* value.
 
 +
-image::exercise2/pod-cpu-details.png[title="Confirm number of CPUs", link=self, window=blank, width=100%]
+image::adv-module02/pod-cpu-details.png[title="Confirm number of CPUs", link=self, window=blank, width=100%]
 
 +
 IMPORTANT: **A VM with 32 vCPUs only requests `3200m` (0.1 * 32 = 3.2 CPU) by default!**
@@ -414,7 +414,7 @@ Using the *OpenShift Console*, navigate to *Virtualization → Virtual Machines*
 Under *All projects*, select the *over-commit* namespace and select the *overcommit-vm-1* VM to view the *CPU/Memory* allocation.
 
 +
-image::exercise2/vm-memory-assigned.png[title="VM Memory Assigned", link=self, window=blank, width=100%]
+image::adv-module02/vm-memory-assigned.png[title="VM Memory Assigned", link=self, window=blank, width=100%]
 
 +
 [,shell,role="execute wrap",subs="attributes"]
@@ -441,7 +441,7 @@ From the *Project:* dropdown and select the *over-commit* namespace to see the *
 Click on the *virt-launcher* pod and to go the *YAML* tab to see the *memory requests* value.
 
 +
-image::exercise2/virt-launcher-memory-request.png[title="Virt-Launcher Memory Request", link=self, window=blank, width=100%]
+image::adv-module02/virt-launcher-memory-request.png[title="Virt-Launcher Memory Request", link=self, window=blank, width=100%]
 
 . Observe the memory requests for the *virt-launcher* pod compared to the memory allocated to the VM :
 
@@ -473,7 +473,7 @@ Using the *OpenShift Console*, navigate to *Virtualization → Overview → Sett
 Click the *Toggle Switch* to "Enable Memory Density"
 
 +
-image::exercise2/enable-memory-overcommit.png[title="Enable Memory Overcommit", link=self, window=blank, width=100%]
+image::adv-module02/enable-memory-overcommit.png[title="Enable Memory Overcommit", link=self, window=blank, width=100%]
 
 +
 You can confirm memory overcommit is enabled by checking the *hyperconverged* CR using the CLI:
@@ -520,7 +520,7 @@ From the *Project:* dropdown and select the *over-commit* namespace to see the *
 Click on the *virt-launcher* pod and to go the *YAML* tab to see the *memory requests* value.
 
 +
-image::exercise2/virt-launcher-memory-request-overcommit.png[title="Virt-Launcher Memory Request 1.5x", link=self, window=blank, width=100%]
+image::adv-module02/virt-launcher-memory-request-overcommit.png[title="Virt-Launcher Memory Request 1.5x", link=self, window=blank, width=100%]
 
 +
 The *virt-launcher* pod is requesting _1972720981_ bytes which is ~ _1972Mi_  ~ _1.97GiB_.

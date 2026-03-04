@@ -39,7 +39,7 @@ include::lab-access.adoc[]
 Click the *Create NodeHealthCheck* button
 
 +
-image::exercise6/06-image-nodehealthcheck-v2.png[title="Create NodeHealthCheck", link=self, window=blank, width=100%]
+image::adv-module06/06-image-nodehealthcheck-v2.png[title="Create NodeHealthCheck", link=self, window=blank, width=100%]
 
 +
 . Name the *NodeHealthCheck* `workerhealthcheck`.
@@ -51,7 +51,7 @@ Leave the *Remediation template* set to *Self node remediation*.
 From the *Selector labels* dropdown, select *Worker* under *Role*. You do not need to select any *Labels*.
 
 +
-image::exercise6/06-image-nodehealthcheck2.png[title="Create NodeHealthCheck", link=self, window=blank, width=100%]
+image::adv-module06/06-image-nodehealthcheck2.png[title="Create NodeHealthCheck", link=self, window=blank, width=100%]
 
 +
 Further down on the same screen, leave *Min healthy* and both *Type* and *Status* drop downs as the default.
@@ -60,7 +60,7 @@ Further down on the same screen, leave *Min healthy* and both *Type* and *Status
 Change duration to *5s* for both of the *Unhealthy Conditions*.
 
 +
-image::exercise6/06-image-nodehealthcheck3.png[title="Create NodeHealthCheck", link=self, window=blank, width=100%]
+image::adv-module06/06-image-nodehealthcheck3.png[title="Create NodeHealthCheck", link=self, window=blank, width=100%]
 
 +
 Click *Create*
@@ -168,7 +168,7 @@ The *SelfNodeRemediation* operand will not show up until the node goes *NotReady
 Here you can see the self remediation object and follow its progress against the node.
 
 +
-image::exercise6/06-image-nodehealthcheck4.png[title="Node remediation running", link=self, window=blank, width=100%]
+image::adv-module06/06-image-nodehealthcheck4.png[title="Node remediation running", link=self, window=blank, width=100%]
 
 +
 . From your two terminal windows, you will see:

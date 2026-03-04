@@ -440,7 +440,7 @@ From the left side panel, navigate to *Virtualization -> Virtual Machines*. Unde
 On the *Virtual machine details* page, you will see the *Source* VM is *Running*.
 
 +
-image::exercise7/image1-ui-src-vm-running.png[title="Source Virtual Machine Details - Running", link=self, window=blank, width=100%]
+image::adv-module07/image1-ui-src-vm-running.png[title="Source Virtual Machine Details - Running", link=self, window=blank, width=100%]
 
 +
 To view the *Destination* VM, select by the *Namespace* *vm-live-migration-destination* to expand it and click on the virtual machine named *vm-migration-ns-ns-live*.
@@ -449,43 +449,43 @@ To view the *Destination* VM, select by the *Namespace* *vm-live-migration-desti
 On the *Virtual machine details* page, you will see the *Destination* VM. If the migration has not started, it will have a status of *WaitingForReceiver*.
 
 +
-image::exercise7/image2-ui-dest-waiting.png[title="Destination Virtual Machine Details - WaitingForReceiver", link=self, window=blank, width=100%]
+image::adv-module07/image2-ui-dest-waiting.png[title="Destination Virtual Machine Details - WaitingForReceiver", link=self, window=blank, width=100%]
 
 +
 If the *Migration* has started and is in the early stages, the VM will a status of *Starting*.
 
 +
-image::exercise7/image3-ui-dest-starting.png[title="Destination Virtual Machine Details - Starting", link=self, window=blank, width=100%]
+image::adv-module07/image3-ui-dest-starting.png[title="Destination Virtual Machine Details - Starting", link=self, window=blank, width=100%]
 
 +
 When the *Source* and *Destination* are ready, the status of the *Destination* VM will change to *Migrating*.
 
 +
-image::exercise7/image4-ui-dest-migrating.png[title="Destination Virtual Machine Details - Migrating", link=self, window=blank, width=100%]
+image::adv-module07/image4-ui-dest-migrating.png[title="Destination Virtual Machine Details - Migrating", link=self, window=blank, width=100%]
 
 +
 Once the *Destination* VM starts *Migrating*, you can click on the *Migrating* status which will display a pop-up panel with information about the state of the migration.
 
 +
-image::exercise7/image5-ui-migrating-overview-panel.png[title="Destination Virtual Machine - Migration Pop-up Panel", link=self, window=blank, width=100%]
+image::adv-module07/image5-ui-migrating-overview-panel.png[title="Destination Virtual Machine - Migration Pop-up Panel", link=self, window=blank, width=100%]
 
 +
 From the *Migrating* pop-up panel, there is a link *Migration metrics*. Clicking that link will take you to the *Metrics* tab with detailed information about the VM and the migration.
 
 +
-image::exercise7/image6-ui-dest-migrating-metrics.png[title="Destination Virtual Machine - Migration Metrics", link=self, window=blank, width=100%]
+image::adv-module07/image6-ui-dest-migrating-metrics.png[title="Destination Virtual Machine - Migration Metrics", link=self, window=blank, width=100%]
 
 +
 Scrolling down on the *Metrics* page, you will see more migration metrics and a *LiveMigration progress* bar.
 
 +
-image::exercise7/image7-ui-dest-migrating-metrics2.png[title="Destination Virtual Machine - Migration Metrics", link=self, window=blank, width=100%]
+image::adv-module07/image7-ui-dest-migrating-metrics2.png[title="Destination Virtual Machine - Migration Metrics", link=self, window=blank, width=100%]
 
 +
 As the migration progresses, you will see the *LiveMigration progress* bar move until it reaches *100%* and displays a *Complete time*.
 
 +
-image::exercise7/image8-ui-dest-migrating-progress-bar.png[title="Destination Virtual Machine - Migration Progress Bar", link=self, window=blank, width=100%]
+image::adv-module07/image8-ui-dest-migrating-progress-bar.png[title="Destination Virtual Machine - Migration Progress Bar", link=self, window=blank, width=100%]
 
 +
 Navigating back to the *Overview* tab, you will see that the *Destination* VM is now in a *Running* state. You can also see, in the *Projects* sidebar, that the *Source* VM is now *Stopped*.
@@ -494,7 +494,7 @@ Navigating back to the *Overview* tab, you will see that the *Destination* VM is
 This marks the successful completion of the *Namespace* to *Namespace* live migration.
 
 +
-image::exercise7/image9-ui-dest-running-src-stopped.png[title="Destination Virtual Machine - Running & Source Virtual Machine - Stopped, link=self, window=blank, width=100%]
+image::adv-module07/image9-ui-dest-running-src-stopped.png[title="Destination Virtual Machine - Running & Source Virtual Machine - Stopped, link=self, window=blank, width=100%]
 
 [#decmluiinstructions]
 == UI Based Instructions
@@ -573,7 +573,7 @@ vm-migration-ns-ns-live   113s   Running   10.232.1.115   control-plane-cluster-
 . From the left side panel, navigate to *Migration for Virtualization* and click *Migration plans*.
 
 +
-image::exercise7/ui/image1-click-migration-plans.png[title="Migration Plans", link=self, window=blank, width=100%]
+image::adv-module07/ui/image1-click-migration-plans.png[title="Migration Plans", link=self, window=blank, width=100%]
 
 . From the *Migration plans* page, click *Create plan*.
 
@@ -584,7 +584,7 @@ If *Create plan* is greyed out, make sure you change the *project* to *openshift
 ====
 
 +
-image::exercise7/ui/image2-click-create-plans.png[title="Create Migration Plan", link=self, window=blank, width=100%]
+image::adv-module07/ui/image2-click-create-plans.png[title="Create Migration Plan", link=self, window=blank, width=100%]
 
 . On the *Creation migration plan* page, give your plan a name like `namespace-to-namespace`.
 
@@ -592,7 +592,7 @@ image::exercise7/ui/image2-click-create-plans.png[title="Create Migration Plan",
 Leave the *Plan project* as the default value of *openshift-mtv*.
 
 +
-image::exercise7/ui/image3-planinfo-name-project.png[title="Create migration plan", link=self, window=blank, width=100%]
+image::adv-module07/ui/image3-planinfo-name-project.png[title="Create migration plan", link=self, window=blank, width=100%]
 
 . Further down the *Creation migration plan* page, select *host* as both the *Target* and *Source* provider and select *vm-live-migration-destination* as the *Target project*.
 
@@ -606,7 +606,7 @@ Because we are migration our *VirtualMachine* between *Namespaces* within the sa
 ====
 
 +
-image::exercise7/ui/image4-planinfo-source-target-providers.png[title="Create migration plan", link=self, window=blank, width=100%]
+image::adv-module07/ui/image4-planinfo-source-target-providers.png[title="Create migration plan", link=self, window=blank, width=100%]
 
 . From the *Virtual machines* list, select *vm-migration-ns-ns-live* as the *VirtualMachine* you want to migrate.
 
@@ -614,7 +614,7 @@ image::exercise7/ui/image4-planinfo-source-target-providers.png[title="Create mi
 Click *Next*
 
 +
-image::exercise7/ui/image5-select-virtual-machine.png[title="Select Virtual Machine", link=self, window=blank, width=100%]
+image::adv-module07/ui/image5-select-virtual-machine.png[title="Select Virtual Machine", link=self, window=blank, width=100%]
 
 . On the *Network Map* page, select *Use new network map* and select */Default network* as the *Source network*.
 
@@ -626,7 +626,7 @@ Click *Next*
 
 +
 
-image::exercise7/ui/image6-new-network-map.png[title="Create Network Map", link=self, window=blank, width=100%]
+image::adv-module07/ui/image6-new-network-map.png[title="Create Network Map", link=self, window=blank, width=100%]
 
 . On the *Storage Map* page, select *Use new storage map* and select *ocs-external-storagecluster-ceph-rbd* as the *Source storage*.
 
@@ -637,7 +637,7 @@ The *Target storage* should already be set to *ocs-external-storagecluster-ceph-
 Click *Next*
 
 +
-image::exercise7/ui/image7-new-storage-map.png[title="Create Storage Map", link=self, window=blank, width=100%]
+image::adv-module07/ui/image7-new-storage-map.png[title="Create Storage Map", link=self, window=blank, width=100%]
 
 . On the *Migration type* page, select *Live migration*.
 
@@ -645,7 +645,7 @@ image::exercise7/ui/image7-new-storage-map.png[title="Create Storage Map", link=
 Click *Next*
 
 +
-image::exercise7/ui/image8-migration-type-live.png[title="Migration Type", link=self, window=blank, width=100%]
+image::adv-module07/ui/image8-migration-type-live.png[title="Migration Type", link=self, window=blank, width=100%]
 
 . On the *Other settings* page, leave the defaults.
 
@@ -653,7 +653,7 @@ image::exercise7/ui/image8-migration-type-live.png[title="Migration Type", link=
 Click *Next*
 
 +
-image::exercise7/ui/image9-power-state.png[title="Other Settings", link=self, window=blank, width=100%]
+image::adv-module07/ui/image9-power-state.png[title="Other Settings", link=self, window=blank, width=100%]
 
 . On the *Hooks* page, leave the defaults.
 
@@ -661,7 +661,7 @@ image::exercise7/ui/image9-power-state.png[title="Other Settings", link=self, wi
 Click *Next*
 
 +
-image::exercise7/ui/image10-migration-hooks.png[title="Hooks", link=self, window=blank, width=100%]
+image::adv-module07/ui/image10-migration-hooks.png[title="Hooks", link=self, window=blank, width=100%]
 
 . On the *Review and create* page, make sure everything looks correct.
 
@@ -669,7 +669,7 @@ image::exercise7/ui/image10-migration-hooks.png[title="Hooks", link=self, window
 Click *Create plan*
 
 +
-image::exercise7/ui/image11-review-create.png[title="Review and Create", link=self, window=blank, width=100%]
+image::adv-module07/ui/image11-review-create.png[title="Review and Create", link=self, window=blank, width=100%]
 
 . When the *Plan* is created, you will be taken to the *Plan details* page where you can monitor the status and progress of your migration.
 
@@ -684,7 +684,7 @@ You can follow https://issues.redhat.com/browse/CNV-72966[CNV-72966 - loosen (or
 ====
 
 +
-image::exercise7/ui/image12-plan-created-error.png[title="Plan Details", link=self, window=blank, width=100%]
+image::adv-module07/ui/image12-plan-created-error.png[title="Plan Details", link=self, window=blank, width=100%]
 
 [IMPORTANT]
 ====
