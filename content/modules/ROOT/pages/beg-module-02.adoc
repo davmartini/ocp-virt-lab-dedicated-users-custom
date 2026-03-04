@@ -19,17 +19,17 @@ By default, the preconfigured templates provided by Red Hat OpenShift Virtualiza
 
 . To begin, click on *Templates* in the left menu, and select *openshift* for your *project*. You may need to toggle the *Show default projects* button for the *openshift* project to appear.
 +
-image::2025_spring/module-07-tempinst/01_Project_Toggle.png[link=self, window=blank, width=100%]
+image::beg-module02/01_Project_Toggle.png[link=self, window=blank, width=100%]
 +
-image::2025_spring/module-07-tempinst/01_Template_List.png[link=self, window=blank, width=100%]
+image::beg-module02/01_Template_List.png[link=self, window=blank, width=100%]
 
 . In the search bar, type *centos9* and press Enter. In the list of templates that appears, find the *centos-stream9-server-small* template.
 +
-image::2025_spring/module-07-tempinst/02_Search_Centos9.png[link=self, window=blank, width=100%]
+image::beg-module02/02_Search_Centos9.png[link=self, window=blank, width=100%]
 
 . Click on the name of the *centos-stream9-server-small* template; a message will indicate that default templates cannot be modified and will ask if you want to *clone* one. Click the *Create a new custom Template* option.
 +
-image::2025_spring/module-07-tempinst/03_Create_Custom_Template.png[link=self, window=blank, width=100%]
+image::beg-module02/03_Create_Custom_Template.png[link=self, window=blank, width=100%]
 
 . A new menu called *Clone template* will appear; fill in the following values, and when you are finished, click the *Clone* button.
 +
@@ -39,39 +39,39 @@ image::2025_spring/module-07-tempinst/03_Create_Custom_Template.png[link=self, w
 * *Template display name:* CentOS Stream 9 VM - Database Template Small
 * *Template provider:* Roadshow userX
 
-image::2025_spring/module-07-tempinst/04_Clone_Template_Options.png[link=self, window=blank, width=100%]
+image::beg-module02/04_Clone_Template_Options.png[link=self, window=blank, width=100%]
 
 . Next, click on the *Scripts* tab at the top, and in the section called *Cloud-init*, click the *Edit* button.
 +
-image::2025_spring/module-07-tempinst/09_Scripts_CloudInit.png[link=self, window=blank, width=100%]
+image::beg-module02/09_Scripts_CloudInit.png[link=self, window=blank, width=100%]
 
 ## . When the *Cloud-init* dialog opens, click the *Configure via: Script* radio button then *replace* the YAML with the provided YAML *snippet*. Click *save* and *apply*. + [source,yaml,role=execute]
 
 ## userData: |- #cloud-config user: centos password: ${CLOUD_USER_PASSWORD} chpasswd: { expire: False } packages: - mariadb-server runcmd: - systemctl enable mariadb - systemctl start mariadb
 
-image::2025_spring/module-07-tempinst/10_Cloud_Init_Script.png[link=self, window=blank, width=100%]
+image::beg-module02/10_Cloud_Init_Script.png[link=self, window=blank, width=100%]
 
 . Now, click on the *Catalog* item in the left menu, select the *Template catalog* option, followed by *User templates*. You should see the template you created available as a tile.
 +
-image::2025_spring/module-07-tempinst/11_User_Templates.png[link=self, window=blank, width=100%]
+image::beg-module02/11_User_Templates.png[link=self, window=blank, width=100%]
 
 . Click on the tile and the VM start screen will appear. Click the *Quick create VirtualMachine* button.
 +
-image::2025_spring/module-07-tempinst/12_Quick_Create_Template.png[link=self, window=blank, width=100%]
+image::beg-module02/12_Quick_Create_Template.png[link=self, window=blank, width=100%]
 
 . When the virtual machine starts, you can see on the *Overview* page that it was created from our template, and that it has the additional resources we defined. We just need to verify that it correctly installed *MariaDB* for us.
 +
-image::2025_spring/module-07-tempinst/13_VM_From_Template.png[link=self, window=blank, width=100%]
+image::beg-module02/13_VM_From_Template.png[link=self, window=blank, width=100%]
 
 . Click on the *Console* tab at the top and use the *Guest login credentials* that are provided along with the *Copy* and *Paste to console* buttons to connect to the virtual machine console.
 +
-image::2025_spring/module-07-tempinst/14_VM_Console.png[link=self, window=blank, width=100%]
+image::beg-module02/14_VM_Console.png[link=self, window=blank, width=100%]
 
 ## . Once connected to the virtual machine, run the following command to test the MariaDB installation. + [source,sh,role=execute]
 
 ## sudo mysql -u root
 
-image::2025_spring/module-07-tempinst/15_MariaDB_Login.png[link=self, window=blank, width=100%]
+image::beg-module02/15_MariaDB_Login.png[link=self, window=blank, width=100%]
 
 . Press *Ctrl-D* twice to log out of the VM.
 
@@ -86,13 +86,13 @@ This process can be streamlined after the initial installation of the operating 
 
 . Type the word *win* in the search bar, or scroll down until you find the *Microsoft Windows Server 2019 VM* tile.
 +
-image::2025_spring/module-07-tempinst/16_Windows_2k19_Tile.png[link=self, window=blank, width=100%]
+image::beg-module02/16_Windows_2k19_Tile.png[link=self, window=blank, width=100%]
 
 . A dialog will appear showing the default configuration linked to the template.
 +
 NOTE: Notice that there is initially no option to quick create this VM because there is no *boot source* provided. We must customize the VM to match our needs.
 +
-image::2025_spring/module-07-tempinst/17_Windows_2k19_Dialog.png[link=self, window=blank, width=100%]
+image::beg-module02/17_Windows_2k19_Dialog.png[link=self, window=blank, width=100%]
 +
 . In this dialog:
 
@@ -106,24 +106,24 @@ image::2025_spring/module-07-tempinst/17_Windows_2k19_Dialog.png[link=self, wind
 
 . Once the options are filled in, we want to click the *Customize VirtualMachine* button at the bottom to continue configuring our *Template*.
 +
-image::2025_spring/module-07-tempinst/18_Windows_2k19_Parameters.png[link=self, window=blank, width=100%]
+image::beg-module02/18_Windows_2k19_Parameters.png[link=self, window=blank, width=100%]
 
 . On the *Customize and create VirtualMachine* screen, click the edit pencil next to the *Boot mode* option.
 +
-image::2025_spring/module-07-tempinst/19_Boot_Mode.png[link=self, window=blank, width=100%]
+image::beg-module02/19_Boot_Mode.png[link=self, window=blank, width=100%]
 
 . When the *Boot mode* menu appears, select the *BIOS* *boot mode* from the *drop-down* menu and click the *Save* button.
 +
-image::2025_spring/module-07-tempinst/19a_Boot_BIOS.png[link=self, window=blank, width=100%]
+image::beg-module02/19a_Boot_BIOS.png[link=self, window=blank, width=100%]
 
 . Now, click on the *Scripts* tab, then *scroll* down to the *Sysprep* section and click the *Edit* button.
 +
-image::2025_spring/module-07-tempinst/20_Customize_Scripts.png[link=self, window=blank, width=100%]
+image::beg-module02/20_Customize_Scripts.png[link=self, window=blank, width=100%]
 
 . A new window will appear to allow you to create *Sysprep* actions for your new template.
 +
 
-image::2025_spring/module-07-tempinst/21_Sysprep.png[link=self, window=blank, width=100%]
+image::beg-module02/21_Sysprep.png[link=self, window=blank, width=100%]
 
 . Copy and paste the following code block into the *autounattend.xml* section:
 +
@@ -268,27 +268,27 @@ image::2025_spring/module-07-tempinst/21_Sysprep.png[link=self, window=blank, wi
 
 . Once the code is pasted, click the *Save* button in the dialog.
 +
-image::2025_spring/module-07-tempinst/22_Windows_2k19_Sysprep.png[link=self, window=blank, width=100%]
+image::beg-module02/22_Windows_2k19_Sysprep.png[link=self, window=blank, width=100%]
 
 . With the *Sysprep* in place, click the *Create VirtualMachine* button at the bottom of the screen.
 +
-image::2025_spring/module-07-tempinst/23_Create_VirtualMachine.png[link=self, window=blank, width=100%]
+image::beg-module02/23_Create_VirtualMachine.png[link=self, window=blank, width=100%]
 
 . The Virtual Machine will start the *provisioning* process by downloading the ISO image, configuring, and starting the instance.
 +
-image::2025_spring/module-07-tempinst/24_Windows_2k19_Provisioning.png[link=self, window=blank, width=100%]
+image::beg-module02/24_Windows_2k19_Provisioning.png[link=self, window=blank, width=100%]
 
 . This process may take a few minutes as it must download the *boot* ISO image. You can check the download progress by clicking the *Diagnostics* tab.
 +
-image::2025_spring/module-07-tempinst/25_CD_Import.png[link=self, window=blank, width=100%]
+image::beg-module02/25_CD_Import.png[link=self, window=blank, width=100%]
 
 . After a few moments, the virtual machine will start, and the status will change to *Running*. Click on the *Console* tab to see the *autoattend* installation process:
 +
-image::2025_spring/module-07-tempinst/26_Windows_2k19_Console.png[link=self, window=blank, width=100%]
+image::beg-module02/26_Windows_2k19_Console.png[link=self, window=blank, width=100%]
 
 . Once the VM installation process is complete (*provisioning* will take 3-5 minutes, startup and configuration will take about 10 minutes), turn it off with the *Stop* button.
 +
-image::2025_spring/module-07-tempinst/27_Stop_Button.png[link=self, window=blank, width=100%]
+image::beg-module02/27_Stop_Button.png[link=self, window=blank, width=100%]
 
 . Once the machine is turned off, we want to make a *clone* of the root volume that we can use for future installations based on Windows *templates*, without having to go through the customization process every time.
 
@@ -296,7 +296,7 @@ image::2025_spring/module-07-tempinst/27_Stop_Button.png[link=self, window=blank
 
 . Find the *win-sysprep* *PVC* created with our installation, and using the three-dot menu on the right, select *Clone PVC*.
 +
-image::2025_spring/module-07-tempinst/28_Storage_PVC.png[link=self, window=blank, width=100%]
+image::beg-module02/28_Storage_PVC.png[link=self, window=blank, width=100%]
 
 . In the menu that appears, fill in the following options, then click the *Clone* button:
 
@@ -304,21 +304,21 @@ image::2025_spring/module-07-tempinst/28_Storage_PVC.png[link=self, window=blank
 * *Access mode*: Shared access (RWX)
 * *StorageClass*: ocs-external-storagecluster-ceph-rbd-immediate
 
-image::2025_spring/module-07-tempinst/29_Clone_Menu.png[link=self, window=blank, width=100%]
+image::beg-module02/29_Clone_Menu.png[link=self, window=blank, width=100%]
 
 . Once this is saved, you can use it to quickly create future Windows VMs.
 
 . Go back to the *Catalog* menu item, and use this cloned *PVC* as a *boot source* to quick-create new virtual machines by selecting the *clone PVC* option as the *Disk source*, and selecting the *PVC* *Windows-2k19-Sysprep-Template* as the *PVC name* to clone, and click the *Customize VirtualMachine* button to configure the *BIOS* *boot mode* instead of *UEFI*.
 +
-image::2025_spring/module-07-tempinst/30_Windows_Template.png[link=self, window=blank, width=100%]
+image::beg-module02/30_Windows_Template.png[link=self, window=blank, width=100%]
 
 . Configure the *BIOS* and press *Create VirtualMachine*
 +
-image::2025_spring/module-07-tempinst/31_Windows_Template_BIOS.png[link=self, window=blank, width=100%]
+image::beg-module02/31_Windows_Template_BIOS.png[link=self, window=blank, width=100%]
 
 . In a few moments, the new Windows Server 2019 virtual machine will start from our cloned *PVC*.
 +
-image::2025_spring/module-07-tempinst/32_Windows_Template_Running.png[link=self, window=blank, width=100%]
+image::beg-module02/32_Windows_Template_Running.png[link=self, window=blank, width=100%]
 
 [[instance_types]]
 == Introduction to Instance Types
@@ -329,19 +329,19 @@ This section explores *provisioning* a VM using an *instance type*.
 
 . To begin, click on *Catalog* in the left menu. You will see that the default catalog item is *InstanceType*.
 +
-image::2025_spring/module-07-tempinst/33_Left_Menu_Catalog.png[link=self, window=blank, width=100%]
+image::beg-module02/33_Left_Menu_Catalog.png[link=self, window=blank, width=100%]
 
 . The first step when using an *instance type* is to select a volume to boot from. Similar to *templates* that provide *boot sources*, these *boot sources* are available for guests provisioned with an *InstanceType*. You can see the included volumes by selecting the *project* *openshift-virtualization-os-images*, or you can upload your own with the *Add volume* button.
 +
-image::2025_spring/module-07-tempinst/34_Volume_Boot.png[link=self, window=blank, width=100%]
+image::beg-module02/34_Volume_Boot.png[link=self, window=blank, width=100%]
 
 . Click on the *rhel9* *boot* volume to select it as the type of volume to boot from. The selection will be indicated by a small vertical blue line to the left of the image name and the name itself changing to bold font.
 +
-image::2025_spring/module-07-tempinst/35_Select_RHEL9.png[link=self, window=blank, width=100%]
+image::beg-module02/35_Select_RHEL9.png[link=self, window=blank, width=100%]
 
 . Next, you can select the *instance type* you want to use. There are *instance types* provided by Red Hat by default, or you can create your own for your specific use case. If you hover over a provided *instance type*, you can see a description of the intended use.
 +
-image::2025_spring/module-07-tempinst/36_Select_InstanceType.png[link=self, window=blank, width=100%]
+image::beg-module02/36_Select_InstanceType.png[link=self, window=blank, width=100%]
 +
 
 * The *instance types* provided by Red Hat are intended for the following uses:
@@ -353,15 +353,15 @@ image::2025_spring/module-07-tempinst/36_Select_InstanceType.png[link=self, wind
 
 . Click on the *U series* tile to see a *dropdown list* of resources defined for general *instance types*. The default option here is *medium: 1 CPUs, 4 GiB Memory*. Select it. Again, the selection will be indicated by a blue line and bold font for the *instance type*.
 +
-image::2025_spring/module-07-tempinst/37_InstanceType_Resources.png[link=self, window=blank, width=100%]
+image::beg-module02/37_InstanceType_Resources.png[link=self, window=blank, width=100%]
 
 . The last section to complete when *provisioning* using an *instance type* is similar to the *templates* section. You must provide a name for the virtual machine, and select the *storage class* to use for a storage disk. By default, a name will be generated for the VM, and the default *storage class* will be selected. When you are satisfied, click the *Create VirtualMachine* button.
 +
-image::2025_spring/module-07-tempinst/38_VM_Details.png[link=self, window=blank, width=100%]
+image::beg-module02/38_VM_Details.png[link=self, window=blank, width=100%]
 
 . You will be directed to the overview page of the virtual machine, and see that the VM provisioned using an *instance type* is now operational.
 +
-image::2025_spring/module-07-tempinst/39_VM_Overview.png[link=self, window=blank, width=100%]
+image::beg-module02/39_VM_Overview.png[link=self, window=blank, width=100%]
 
 [[cleanup]]
 == Cleanup

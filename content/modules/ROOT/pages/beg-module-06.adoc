@@ -26,7 +26,7 @@ To test the backup and restore lifecycle, we need a VM with a specific state (a 
 
 . Select the *Fedora VM* template.
 +
-image::2025_spring/kasten/1.png[link=self, window=blank, width=100%]
+image::beg-module06/1.png[link=self, window=blank, width=100%]
 
 . Change the name to **fedora-kasten-test** and click *Quick create VirtualMachine*.
 
@@ -50,7 +50,7 @@ image::2025_spring/kasten/1.png[link=self, window=blank, width=100%]
 
 You should see `test.txt` appear in the list. Leave this VM running.
 +
-image::2025_spring/kasten/2.png[link=self, window=blank, width=100%]
+image::beg-module06/2.png[link=self, window=blank, width=100%]
 
 == Accessing the Kasten K10 Console
 
@@ -64,15 +64,15 @@ The Kasten console is the web interface where we will manage backup policies and
 
 . You should see a route named *k10-route*. Click the URL in the *Location* column.
 +
-image::2025_spring/kasten/3.png[link=self, window=blank, width=100%]
+image::beg-module06/3.png[link=self, window=blank, width=100%]
 
 . A new window will open with the Kasten K10 dashboard. You can now log in with your OpenShift credentials.
 +
-image::2025_spring/kasten/4.png[link=self, window=blank, width=50%]
+image::beg-module06/4.png[link=self, window=blank, width=50%]
 
 . If necessary, authorize Kasten access for your username.
 +
-image::2025_spring/kasten/9.png[link=self, window=blank, width=100%]
+image::beg-module06/9.png[link=self, window=blank, width=100%]
 
 == Creating and Running a Backup Policy
 We now have access to the Veeam Kasten console.
@@ -81,11 +81,11 @@ We will now create a Policy that tells Kasten what to back up and how.
 
 . Start by clicking the *applications* tile in the dashboard.
 +
-image::2025_spring/kasten/5.png[link=self, window=blank, width=100%]
+image::beg-module06/5.png[link=self, window=blank, width=100%]
 
 . In the dashboard, select the three-dot menu for our **project-X** and click *Create a policy*.
 +
-image::2025_spring/kasten/6.png[link=self, window=blank, width=100%]
+image::beg-module06/6.png[link=self, window=blank, width=100%]
 
 . Fill in the form for our backup policy:
 * *Name:* We can leave this as default.
@@ -93,19 +93,19 @@ image::2025_spring/kasten/6.png[link=self, window=blank, width=100%]
 * Select *Enable Backups via Snapshot Exports* and select the **s3-odf** storage.
 * Leave other options as default and click *Submit*.
 +
-image::2025_spring/kasten/10.png[link=self, window=blank, width=70%]
+image::beg-module06/10.png[link=self, window=blank, width=70%]
 
 . Click *Create Policy*.
 
 . The policy is now created but has not yet run. On the line of your new policy (`project-x-backup`), click the icon on the right and then *Run Once*.
 +
-image::2025_spring/kasten/11.png[link=self, window=blank, width=100%]
+image::beg-module06/11.png[link=self, window=blank, width=100%]
 
 . Confirm by clicking *Yes, continue* in the pop-up window.
 
 . Click *Dashboard* in the main Kasten menu. You will see a backup job in progress (*Running*). Wait a few moments until the job status changes to *Succeeded*.
 +
-image::2025_spring/kasten/12.png[link=self, window=blank, width=100%]
+image::beg-module06/12.png[link=self, window=blank, width=100%]
 
 . Our VM is now backed up.
 
@@ -121,7 +121,7 @@ It's time to simulate an accidental deletion of our virtual machine.
 
 . Click the *Actions* menu (in the top right corner) and select *Stop*, then *Delete*.
 +
-image::2025_spring/kasten/13.png[link=self, window=blank, width=100%]
+image::beg-module06/13.png[link=self, window=blank, width=100%]
 
 . Wait for the VM to disappear from the list. Our VM and its `test.txt` file are gone.
 
@@ -137,7 +137,7 @@ Now let's use Kasten to restore our VM from the backup point.
 
 . You will see a list of *Restore Points*. Locate the valid restore point we created in the previous step.
 +
-image::2025_spring/kasten/15.png[link=self, window=blank, width=100%]
+image::beg-module06/15.png[link=self, window=blank, width=100%]
 
 . Click the *Restore* icon on the same line as this restore point.
 
@@ -145,7 +145,7 @@ image::2025_spring/kasten/15.png[link=self, window=blank, width=100%]
 
 . You will be redirected to the *Dashboard* where you can track the restore job status. Wait for the job to change to *Succeeded*.
 +
-image::2025_spring/kasten/16.png[link=self, window=blank, width=100%]
+image::beg-module06/16.png[link=self, window=blank, width=100%]
 
 == Verifying the Restore
 
@@ -167,7 +167,7 @@ Let's check if our VM is back and, more importantly, if its state (the `test.txt
 
 **You should see the `test.txt` file!**
 +
-image::2025_spring/kasten/14.png[link=self, window=blank, width=100%]
+image::beg-module06/14.png[link=self, window=blank, width=100%]
 
 . (Optional) You can now log out of the console (Ctrl-D).
 

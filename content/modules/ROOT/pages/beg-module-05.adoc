@@ -15,34 +15,34 @@ An *OpenShift user* will only be able to access metrics and dashboards related t
 
 . Set of dashboards available to an administrator
 +
-image::2025_spring/module-06-observability/admin01.png[link=self, window=blank, width=75%]
+image::beg-module05/admin01.png[link=self, window=blank, width=75%]
 
 . Example of the dashboard for OpenShift cluster utilization.
 +
-image::2025_spring/module-06-observability/admin02.png[link=self, window=blank, width=75%]
+image::beg-module05/admin02.png[link=self, window=blank, width=75%]
 
 . Focus on a specific physical node.
 +
-image::2025_spring/module-06-observability/admin03.png[link=self, window=blank, width=75%]
+image::beg-module05/admin03.png[link=self, window=blank, width=75%]
 
 . Power consumption is also available.
 +
-image::2025_spring/module-06-observability/admin04.png[link=self, window=blank, width=75%]
+image::beg-module05/admin04.png[link=self, window=blank, width=75%]
 
 [[user-observability]]
 == OpenShift Observability for Users
 
 . Accessing the Observability section.
 +
-image::2025_spring/module-06-observability/user01.png[link=self, window=blank, width=75%]
+image::beg-module05/user01.png[link=self, window=blank, width=75%]
 
 . Resources used in your project.
 +
-image::2025_spring/module-06-observability/user02.png[link=self, window=blank, width=75%]
+image::beg-module05/user02.png[link=self, window=blank, width=75%]
 
 . Focus on a VM in your project
 +
-image::2025_spring/module-06-observability/user03.png[link=self, window=blank, width=75%]
+image::beg-module05/user03.png[link=self, window=blank, width=75%]
 
 [[virt-observability]]
 == Observability for OpenShift Virtualization
@@ -51,10 +51,10 @@ In addition to the default stack present in OpenShift, OpenShift Virtualization 
 
 . OpenShift Virtualization metrics at the project level
 +
-image::2025_spring/module-06-observability/vm01.png[link=self, window=blank, width=75%]
+image::beg-module05/vm01.png[link=self, window=blank, width=75%]
 
 . OpenShift Virtualization metrics at the VM level
 +
-image::2025_spring/module-06-observability/vm02.png[link=self, window=blank, width=75%]
+image::beg-module05/vm02.png[link=self, window=blank, width=75%]
 
 Would you like me to translate any other specific monitoring or logging sections?

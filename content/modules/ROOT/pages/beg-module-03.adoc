@@ -21,15 +21,15 @@ This `br-flat` bridge is now connected to the corporate network. All VM traffic 
 
 . In the left navigation menu, click on *Networking* -> *NodeNetworkConfigurationPolicy*.
 +
-image::2025_spring/module-09-networking/23.png[link=self, window=blank, width=50%, height=50%]
+image::beg-module03/23.png[link=self, window=blank, width=50%, height=50%]
 
 . You should see a policy named *br-flat*. Click on it.
 +
-image::2025_spring/module-09-networking/25.png[link=self, window=blank, width=60%, height=50%]
+image::beg-module03/25.png[link=self, window=blank, width=60%, height=50%]
 
 . Click on the *YAML* tab to see the policy definition.
 +
-image::2025_spring/module-09-networking/24.png[link=self, window=blank, width=75%]
+image::beg-module03/24.png[link=self, window=blank, width=75%]
 
 . Observe the `desiredState`. It describes the network configuration that OpenShift will apply to the nodes. It will look like this:
 
@@ -64,13 +64,13 @@ We have granted you the rights to inspect the physical node configuration direct
 
 . To do this, simply go to the left menu *Networking* -> *Node Network Configuration*.
 +
-image::2025_spring/module-09-networking/nnc01.png[link=self, window=blank, width=75%]
+image::beg-module03/nnc01.png[link=self, window=blank, width=75%]
 
 . You can see in real-time all the physical nodes on which you can zoom or move objects easily.
 +
-image::2025_spring/module-09-networking/nnc02.png[link=self, window=blank, width=75%]
+image::beg-module03/nnc02.png[link=self, window=blank, width=75%]
 +
-image::2025_spring/module-09-networking/nnc03.png[link=self, window=blank, width=75%]
+image::beg-module03/nnc03.png[link=self, window=blank, width=75%]
 
 Now that we have confirmed the network configuration is in place on the nodes, we can create VMs that *use* it.
 
@@ -87,7 +87,7 @@ Let's create a NAD now and connect our VMs through our corporate network.
 . In the *Project* dropdown at the top, select the project where you want your VM to reside. We will use the project *project-X*.
 . Click the *Create Network Attachment Definition* button.
 +
-image::2025_spring/module-09-networking/26.png[link=self, window=blank, width=100%]
+image::beg-module03/26.png[link=self, window=blank, width=100%]
 +
 . Fill in the form with the following details:
 * *Name:* `corp-network`
@@ -99,7 +99,7 @@ image::2025_spring/module-09-networking/26.png[link=self, window=blank, width=10
 +
 NOTE: This is also where you could specify a *VLAN Tag Number* if your network required it. For this exercise, we do not need one and leave this field blank.
 
-image::2025_spring/module-09-networking/27.png[link=self, window=blank, width=100%]
+image::beg-module03/27.png[link=self, window=blank, width=100%]
 +
 
 . Click the *Create* button.
@@ -135,15 +135,15 @@ To validate our configuration, we will create two new VMs, `fedora-bridged-1` an
 . Click on *Virtualization* -> *VirtualMachines*.
 . Ensure you are in the same project where you created the *NAD*, *project-X*, and click Create → From Template.
 +
-image::2025_spring/module-09-networking/31.png[link=self, window=blank, width=100%]
+image::beg-module03/31.png[link=self, window=blank, width=100%]
 +
 . Click on the *Fedora VM* tile and assign the name *Name:* `fedora-bridged-1`. Then click on *Customize Machine*:
 +
-image::2025_spring/module-09-networking/32.png[link=self, window=blank, width=100%]
+image::beg-module03/32.png[link=self, window=blank, width=100%]
 +
 . Select the *Network Interfaces* tab.
 +
-image::2025_spring/module-09-networking/33.png[link=self, window=blank, width=100%]
+image::beg-module03/33.png[link=self, window=blank, width=100%]
 +
 . The default *Pod Networking* interface is present. This interface is created by default and allows our machines to communicate through the OpenShift SDN.
 . We will add an interface based on the NAD we created to allow our VM to connect to the corporate network in addition to the OpenShift SDN.
@@ -154,13 +154,13 @@ image::2025_spring/module-09-networking/33.png[link=self, window=blank, width=10
 * *Model:* `virtio`
 * *Network:* Click the dropdown and select our **corp-network** NAD.
 +
-image::2025_spring/module-09-networking/34.png[link=self, window=blank, width=75%]
+image::beg-module03/34.png[link=self, window=blank, width=75%]
 +
 . Click the *Save* button in the modal.
 . Verify that the `corp-network` interface is listed for your VM in addition to the pod network.
 . Click the *Create VirtualMachine* button at the bottom and wait for the VM to start.
 
-image::2025_spring/module-09-networking/35.png[link=self, window=blank, width=70%]
+image::beg-module03/35.png[link=self, window=blank, width=70%]
 
 [[vm-verify]]
 == Verifying the VM Network Configuration
@@ -173,26 +173,26 @@ Let's confirm that our VM has both network connections.
 * The `Pod Networking` interface will show an IP address assigned by the cluster (e.g., `10.133.x.x`).
 * The `corp-network` interface will show an IP address assigned by the DHCP of our corporate network (e.g., `192.168.x.x`).
 +
-image::2025_spring/module-09-networking/28.png[link=self, window=blank, width=100%]
+image::beg-module03/28.png[link=self, window=blank, width=100%]
 +
 . Now we will right-click on the machine `fedora-bridged-1` and click on clone.
 +
-image::2025_spring/module-09-networking/29.png[link=self, window=blank, width=35%]
+image::beg-module03/29.png[link=self, window=blank, width=35%]
 +
 . We will give it the name `fedora-bridged-2` and create it:
 +
-image::2025_spring/module-09-networking/30.png[link=self, window=blank, width=100%]
+image::beg-module03/30.png[link=self, window=blank, width=100%]
 +
 . Our two VMs are created and are connected to the corporate network in addition to the OpenShift SDN. Let's verify they can communicate with each other through this network.
 
 . Note the IP address of the `fedora-bridged-2` VM.
 +
-image::2025_spring/module-09-networking/36.png[link=self, window=blank, width=100%]
+image::beg-module03/36.png[link=self, window=blank, width=100%]
 +
 . Click on the `fedora-bridged-1` VM to open its details page.
 . Go to the *Console* tab and log in to the VM.
 +
-image::2025_spring/module-09-networking/37.png[link=self, window=blank, width=70%]
+image::beg-module03/37.png[link=self, window=blank, width=70%]
 +
 . Once logged in, use the `ping` command to reach `fedora-bridged-2` using the IP address you noted in step 3.
 
@@ -229,14 +229,14 @@ A key advantage of using a NetworkAttachmentDefinition (NAD) is that network con
 . In the *Virtualization* -> *VirtualMachines* list, locate your `fedora-bridged-1` VM.
 . Note the IP addresses displayed in the Network section of the Overview.
 
-image::2025_spring/module-09-networking/36.png[link=self, window=blank, width=100%]
+image::beg-module03/36.png[link=self, window=blank, width=100%]
 +
 
 === Start Live Migration
 
 . Click the action menu at the top right and select *Migration* -> *Compute*.
 +
-image::2025_spring/module-09-networking/38.png[link=self, window=blank, width=100%]
+image::beg-module03/38.png[link=self, window=blank, width=100%]
 +
 . Observe the VM status. It will change to *Migrating*, then return to *Running*. This may take a minute.
 
@@ -246,7 +246,7 @@ image::2025_spring/module-09-networking/38.png[link=self, window=blank, width=10
 . Note that the pod network IP address has changed. This is the new Pod Network IP on the new node.
 . The IP assigned for the external network has not changed.
 +
-image::2025_spring/module-09-networking/36.png[link=self, window=blank, width=100%]
+image::beg-module03/36.png[link=self, window=blank, width=100%]
 +
 
 == Migration Conclusion

@@ -15,7 +15,7 @@ A UDN creates a **flat L2 network** that runs on top of the OpenShift overlay. I
 * **Integrated IPAM:** The UDN manages its own IP addressing plan (IPAM). It distributes persistent IP addresses to VMs, ensuring that a VM will keep the same IP address even after a migration or restart.
 
 .Illustration of the Pod Network and a UDN on the OpenShift network
-image::2025_spring/module-09-networking/39.png[link=self, window=blank, width=75%]
+image::beg-module03/39.png[link=self, window=blank, width=75%]
 
 [[udn-create-section]]
 == Creating a User-Defined Network (UDN)
@@ -26,19 +26,19 @@ We will start by creating our UDN in this dedicated namespace/project.
 
 . In the left navigation menu, click on *Networking* -> *UserDefinedNetworks*
 +
-image::2025_spring/module-09-networking/udn01.png[link=self, window=blank, width=40%]
+image::beg-module03/udn01.png[link=self, window=blank, width=40%]
 +
 . Then click on *Create* and *UserDefinedNetwork*
 +
-image::2025_spring/module-09-networking/udn02.png[link=self, window=blank, width=40%]
+image::beg-module03/udn02.png[link=self, window=blank, width=40%]
 +
 . Choose your project and the CIDR of your choice.
 +
-image::2025_spring/module-09-networking/udn03.png[link=self, window=blank, width=70%]
+image::beg-module03/udn03.png[link=self, window=blank, width=70%]
 +
 . Now let's examine our UDN
 +
-image::2025_spring/module-09-networking/udn04.png[link=self, window=blank, width=80%]
+image::beg-module03/udn04.png[link=self, window=blank, width=80%]
 +
 
 ## . We can notably observe:
@@ -57,11 +57,11 @@ Now let's create two VMs, `vm-web` and `vm-db`, and attach them to this UDN. We 
 . Click on *Virtualization* -> *VirtualMachines*.
 . Ensure you are in the *udn-project-X* project and click on *Create → From Template*
 +
-image::2025_spring/module-09-networking/44.png[link=self, window=blank, width=100%]
+image::beg-module03/44.png[link=self, window=blank, width=100%]
 +
 . Click on the *Fedora VM* tile and assign the name *Name:* `vm-web`.
 +
-image::2025_spring/module-09-networking/45.png[link=self, window=blank, width=100%]
+image::beg-module03/45.png[link=self, window=blank, width=100%]
 +
 . And create the *Virtual Machine*
 
@@ -69,7 +69,7 @@ image::2025_spring/module-09-networking/45.png[link=self, window=blank, width=10
 
 . Click on *User Template*, then the *centos-stream9-server-db-small* tile and assign the name *Name:* `vm-db`.
 +
-image::2025_spring/module-09-networking/50.png[link=self, window=blank, width=100%]
+image::beg-module03/50.png[link=self, window=blank, width=100%]
 +
 
 == Verifying IP Persistence (Live Migration)
@@ -79,14 +79,14 @@ Let's start by verifying IP persistence.
 . In the *Virtualization* -> *VirtualMachines* list, locate your `vm-db` VM
 . Note the IP address displayed in the Network section of the Overview. This is an IP that has been dedicated to this machine by our UDN's IPAM.
 
-image::2025_spring/module-09-networking/48.png[link=self, window=blank, width=100%]
+image::beg-module03/48.png[link=self, window=blank, width=100%]
 +
 
 === Start Live Migration
 
 . Click on the action menu at the top right and select *Migration* -> *Compute*.
 +
-image::2025_spring/module-09-networking/49.png[link=self, window=blank, width=50%]
+image::beg-module03/49.png[link=self, window=blank, width=50%]
 +
 . Observe the VM status. It will change to *Migrating*, then return to *Running*. This may take a minute.
 
@@ -95,7 +95,7 @@ image::2025_spring/module-09-networking/49.png[link=self, window=blank, width=50
 . Once the VM has returned to the *Running* state, check the IP address displayed in the Network section of the Overview again.
 . The VM's IP address has not changed. This IP is linked to this VM and will not change despite live migrations or restarts.
 +
-image::2025_spring/module-09-networking/48.png[link=self, window=blank, width=100%]
+image::beg-module03/48.png[link=self, window=blank, width=100%]
 +
 
 You will see that the IP address is **exactly the same**. UDN guarantees IP persistence, which is essential for database services or applications that depend on stable IPs.
