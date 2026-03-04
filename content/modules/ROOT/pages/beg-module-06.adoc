@@ -14,7 +14,7 @@ Kasten treats applications, including VMs, as an atomic unit, backing up not onl
 * Restore the VM from the backup.
 * Verify that the VM has returned to its previous state, including the test file.
 
-image::module-01-install/00.png[]
+image::beg-module06/00.png[]
 
 == Preparing the Test Virtual Machine
 
