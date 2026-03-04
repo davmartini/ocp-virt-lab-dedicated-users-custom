@@ -196,23 +196,27 @@ image::beg-module03/37.png[link=self, window=blank, width=70%]
 +
 . Once logged in, use the `ping` command to reach `fedora-bridged-2` using the IP address you noted in step 3.
 
-## [source,yaml,role=execute]
-
-## ping -c 3 #IP address of fedora-bridged-2
++
+[source,yaml,role=execute]
+----
+ping -c 3 #ip adress de fedora-bridged-2
+----
++
 
 You will get a result similar to this example, the VMs are communicating with each other over the corporate network.
 
-## [source,sh]
-
+[source,sh]
+----
 $ ping -c 3 192.168.127.51
 PING 192.168.127.51 (192.168.127.51) 56(84) bytes of data.
 64 bytes from 192.168.127.51: icmp_seq=1 ttl=64 time=0.852 ms
 64 bytes from 192.168.127.51: icmp_seq=2 ttl=64 time=0.730 ms
 64 bytes from 192.168.127.51: icmp_seq=3 ttl=64 time=0.915 ms
 
-## --- 192.168.127.51 ping statistics ---
+--- 192.168.127.51 ping statistics ---
 3 packets transmitted, 3 received, 0% packet loss, time 2003ms
 rtt min/avg/max/mdev = 0.730/0.832/0.915/0.079 ms
+----
 
 [[vm-migration-test]]
 == IP Persistence During Live Migration
