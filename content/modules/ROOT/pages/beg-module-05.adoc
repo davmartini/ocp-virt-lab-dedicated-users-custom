@@ -1,0 +1,60 @@
+[[vm-observability]]
+= OpenShift Observability
+
+OpenShift natively integrates (at no extra cost) a complete observability stack that collects metrics and can also collect logs (infrastructure, application, and audit).
+This entire stack is composed of open-source components that we actively contribute to, such as Prometheus, Thanos, AlertManager, etc.
+
+OpenShift Observability is multi-tenant by default and offers different dashboards based on your role and permissions.
+
+A *cluster admin* will, for example, be able to see dozens of dashboards to have complete visibility of the cluster, a particular project, or a specific application.
+
+An *OpenShift user* will only be able to access metrics and dashboards related to the projects they have access to.
+
+[[admin-observability]]
+== OpenShift Observability for Administrators
+
+. Set of dashboards available to an administrator
++
+image::2025_spring/module-06-observability/admin01.png[link=self, window=blank, width=75%]
+
+. Example of the dashboard for OpenShift cluster utilization.
++
+image::2025_spring/module-06-observability/admin02.png[link=self, window=blank, width=75%]
+
+. Focus on a specific physical node.
++
+image::2025_spring/module-06-observability/admin03.png[link=self, window=blank, width=75%]
+
+. Power consumption is also available.
++
+image::2025_spring/module-06-observability/admin04.png[link=self, window=blank, width=75%]
+
+[[user-observability]]
+== OpenShift Observability for Users
+
+. Accessing the Observability section.
++
+image::2025_spring/module-06-observability/user01.png[link=self, window=blank, width=75%]
+
+. Resources used in your project.
++
+image::2025_spring/module-06-observability/user02.png[link=self, window=blank, width=75%]
+
+. Focus on a VM in your project
++
+image::2025_spring/module-06-observability/user03.png[link=self, window=blank, width=75%]
+
+[[virt-observability]]
+== Observability for OpenShift Virtualization
+
+In addition to the default stack present in OpenShift, OpenShift Virtualization adds a specific view for OpenShift Virtualization directly accessible at the level of each project and VM.
+
+. OpenShift Virtualization metrics at the project level
++
+image::2025_spring/module-06-observability/vm01.png[link=self, window=blank, width=75%]
+
+. OpenShift Virtualization metrics at the VM level
++
+image::2025_spring/module-06-observability/vm02.png[link=self, window=blank, width=75%]
+
+Would you like me to translate any other specific monitoring or logging sections?

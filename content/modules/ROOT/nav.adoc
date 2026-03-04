@@ -11,7 +11,11 @@
 
 ** xref:beg-module-02.adoc[2. Template Management]
 
-** xref:beg-module-03.adoc[1. VM Management]
+** xref:beg-module-03.adoc[3. Basic Network]
+
+** xref:beg-module-04.adoc[4. Advanced Network]
+
+** xref:beg-module-05.adoc[5. OpenShift Observability]
 
 * xref:adv-intro.adoc[OpenShift Virtualization for advanced users]
 ** xref:adv-module-01.adoc[1. Live Migration of Workloads]

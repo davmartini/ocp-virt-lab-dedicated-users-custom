@@ -1,0 +1,281 @@
+= Connecting VMs to the Corporate Network
+
+== Introduction
+
+While OpenShift offers a SDN (Software Defined Network) that allows communication between our VMs using the cluster's internal network, some VMs require direct access to our *corporate network*.
+
+This module explains how OpenShift Virtualization bridges the gap between Kubernetes and traditional networks. You will observe the **NodeNetworkConfigurationPolicy (NNCP)** that prepares the nodes, create a **NetworkAttachmentDefinition (NAD)** to define the network, and finally, launch a VM connected to both the pod network and the corporate network.
+
+[[NNCP]]
+== Understanding and Observing Node Network Configuration (NNCP)
+
+Before creating a network for our VM, the cluster *nodes* must be physically prepared via the **NodeNetworkConfigurationPolicy (NNCP)**.
+
+An *NNCP* allows for the *declarative* configuration of the physical interfaces of our cluster nodes. For our scenario, an administrator has already created an NNCP that:
+
+1. Selects the worker nodes.
+2. Takes a physical network interface (e.g., `enp3s0`).
+3. Creates a new **Linux Bridge** (named `br-flat` here) and attaches this physical interface to it.
+
+This `br-flat` bridge is now connected to the corporate network. All VM traffic destined for this network will pass through this bridge. Let's observe this existing configuration.
+
+. In the left navigation menu, click on *Networking* -> *NodeNetworkConfigurationPolicy*.
++
+image::2025_spring/module-09-networking/23.png[link=self, window=blank, width=50%, height=50%]
+
+. You should see a policy named *br-flat*. Click on it.
++
+image::2025_spring/module-09-networking/25.png[link=self, window=blank, width=60%, height=50%]
+
+. Click on the *YAML* tab to see the policy definition.
++
+image::2025_spring/module-09-networking/24.png[link=self, window=blank, width=75%]
+
+. Observe the `desiredState`. It describes the network configuration that OpenShift will apply to the nodes. It will look like this:
+
+## [source,yaml]
+
+## spec:
+desiredState:
+interfaces:
+- bridge:
+options:
+stp:
+enabled: false
+port:
+- name: enp3s0 <1>
+description: Linux bridge with enp3s0 as a port
+ipv4:
+dhcp: false
+enabled: false
+name: br-flat <2>
+state: up
+type: linux-bridge
+nodeSelector:
+node-role.kubernetes.io/worker: '' <3>
+
+<1> Defines the port used for the Linux bridge.
+<2> Creates the `br-flat` bridge on the node's physical network interface card (NIC) `enp3s0`.
+<3> This policy is applied to all nodes with the "worker" role.
+
+== Verifying Physical Node Configuration
+
+We have granted you the rights to inspect the physical node configuration directly from the *OpenShift* console.
+
+. To do this, simply go to the left menu *Networking* -> *Node Network Configuration*.
++
+image::2025_spring/module-09-networking/nnc01.png[link=self, window=blank, width=75%]
+
+. You can see in real-time all the physical nodes on which you can zoom or move objects easily.
++
+image::2025_spring/module-09-networking/nnc02.png[link=self, window=blank, width=75%]
++
+image::2025_spring/module-09-networking/nnc03.png[link=self, window=blank, width=75%]
+
+Now that we have confirmed the network configuration is in place on the nodes, we can create VMs that *use* it.
+
+[[nad-create]]
+== Creating the Network Attachment Definition (NAD)
+
+The NNCP prepared the *nodes*, but it did not create an *attachment* that our VMs can use. For that, we need a **NetworkAttachmentDefinition (NAD)**.
+
+Think of the NAD as a *virtual NIC*. It is a resource created in a *Project* that defines a type of NIC that can be *consumed by our VMs*. It will serve as the link between our *VMs* and our *br-flat Bridge*.
+
+Let's create a NAD now and connect our VMs through our corporate network.
+
+. In the left navigation menu, click on *Networking* -> *NetworkAttachmentDefinitions*.
+. In the *Project* dropdown at the top, select the project where you want your VM to reside. We will use the project *project-X*.
+. Click the *Create Network Attachment Definition* button.
++
+image::2025_spring/module-09-networking/26.png[link=self, window=blank, width=100%]
++
+. Fill in the form with the following details:
+* *Name:* `corp-network`
+* *Description:* `Corporate network for VMs`
+* *Network Type:* Select `Linux bridge` from the dropdown list. This is the type used by OpenShift Virtualization.
++
+. Once the type is selected, the form will update. Fill in the new field:
+* *Bridge Name:* `br-flat` (This *must* match the bridge name from the NNCP we observed).
++
+NOTE: This is also where you could specify a *VLAN Tag Number* if your network required it. For this exercise, we do not need one and leave this field blank.
+
+image::2025_spring/module-09-networking/27.png[link=self, window=blank, width=100%]
++
+
+. Click the *Create* button.
+. You will see your new `corp-network` NAD in the list. If you click on it and go to the *YAML* tab, you will see the resulting configuration:
+
+## [source,yaml]
+
+## apiVersion: k8s.cni.cncf.io/v1
+kind: NetworkAttachmentDefinition
+metadata:
+name: corp-network
+namespace: project-X
+spec:
+config: '{
+"cniVersion": "0.3.1",
+"name": "corp-network",
+"type": "bridge", <1>
+"bridge": "br-flat", <2>
+"macspoofchk": true,
+"preserveDefaultVlan": false,
+"ipam": {}
+}'
+
+<1> The network plugin type.
+<2> The Linux bridge on the node to be used.
+
+[[vm-create]]
+== Creating VMs Linked to the Bridge
+
+To validate our configuration, we will create two new VMs, `fedora-bridged-1` and `fedora-bridged-2`. Unlike previous VMs, we will connect them to the corporate network in addition to the OpenShift pod network.
+
+. In the left navigation menu, switch to the *Virtualization* perspective.
+. Click on *Virtualization* -> *VirtualMachines*.
+. Ensure you are in the same project where you created the *NAD*, *project-X*, and click Create → From Template.
++
+image::2025_spring/module-09-networking/31.png[link=self, window=blank, width=100%]
++
+. Click on the *Fedora VM* tile and assign the name *Name:* `fedora-bridged-1`. Then click on *Customize Machine*:
++
+image::2025_spring/module-09-networking/32.png[link=self, window=blank, width=100%]
++
+. Select the *Network Interfaces* tab.
++
+image::2025_spring/module-09-networking/33.png[link=self, window=blank, width=100%]
++
+. The default *Pod Networking* interface is present. This interface is created by default and allows our machines to communicate through the OpenShift SDN.
+. We will add an interface based on the NAD we created to allow our VM to connect to the corporate network in addition to the OpenShift SDN.
+
+. Click the *Add Network Interface* button.
+. A new modal window will appear. Configure the second interface:
+* *Name:* `nic-1-corpnet`
+* *Model:* `virtio`
+* *Network:* Click the dropdown and select our **corp-network** NAD.
++
+image::2025_spring/module-09-networking/34.png[link=self, window=blank, width=75%]
++
+. Click the *Save* button in the modal.
+. Verify that the `corp-network` interface is listed for your VM in addition to the pod network.
+. Click the *Create VirtualMachine* button at the bottom and wait for the VM to start.
+
+image::2025_spring/module-09-networking/35.png[link=self, window=blank, width=70%]
+
+[[vm-verify]]
+== Verifying the VM Network Configuration
+
+Let's confirm that our VM has both network connections.
+
+. Click on the `fedora-bridged-1` VM you just created.
+. Go to the *Overview* tab and observe the *Network* section.
+. You will see both interfaces listed:
+* The `Pod Networking` interface will show an IP address assigned by the cluster (e.g., `10.133.x.x`).
+* The `corp-network` interface will show an IP address assigned by the DHCP of our corporate network (e.g., `192.168.x.x`).
++
+image::2025_spring/module-09-networking/28.png[link=self, window=blank, width=100%]
++
+. Now we will right-click on the machine `fedora-bridged-1` and click on clone.
++
+image::2025_spring/module-09-networking/29.png[link=self, window=blank, width=35%]
++
+. We will give it the name `fedora-bridged-2` and create it:
++
+image::2025_spring/module-09-networking/30.png[link=self, window=blank, width=100%]
++
+. Our two VMs are created and are connected to the corporate network in addition to the OpenShift SDN. Let's verify they can communicate with each other through this network.
+
+. Note the IP address of the `fedora-bridged-2` VM.
++
+image::2025_spring/module-09-networking/36.png[link=self, window=blank, width=100%]
++
+. Click on the `fedora-bridged-1` VM to open its details page.
+. Go to the *Console* tab and log in to the VM.
++
+image::2025_spring/module-09-networking/37.png[link=self, window=blank, width=70%]
++
+. Once logged in, use the `ping` command to reach `fedora-bridged-2` using the IP address you noted in step 3.
+
+## [source,yaml,role=execute]
+
+## ping -c 3 #IP address of fedora-bridged-2
+
+You will get a result similar to this example, the VMs are communicating with each other over the corporate network.
+
+## [source,sh]
+
+$ ping -c 3 192.168.127.51
+PING 192.168.127.51 (192.168.127.51) 56(84) bytes of data.
+64 bytes from 192.168.127.51: icmp_seq=1 ttl=64 time=0.852 ms
+64 bytes from 192.168.127.51: icmp_seq=2 ttl=64 time=0.730 ms
+64 bytes from 192.168.127.51: icmp_seq=3 ttl=64 time=0.915 ms
+
+## --- 192.168.127.51 ping statistics ---
+3 packets transmitted, 3 received, 0% packet loss, time 2003ms
+rtt min/avg/max/mdev = 0.730/0.832/0.915/0.079 ms
+
+[[vm-migration-test]]
+== IP Persistence During Live Migration
+
+A key advantage of using a NetworkAttachmentDefinition (NAD) is that network connectivity is managed independently of the underlying pod network. We will prove this by performing a live migration of a VM.
+
+.We expect that:
+
+* The **Pod Network** IP (managed by OpenShift) **will change**, as the VM lands on a new node.
+* The **corp-network** IP (managed by our external DHCP) **will not change**.
+
+=== Verify Initial State
+
+. In the *Virtualization* -> *VirtualMachines* list, locate your `fedora-bridged-1` VM.
+. Note the IP addresses displayed in the Network section of the Overview.
+
+image::2025_spring/module-09-networking/36.png[link=self, window=blank, width=100%]
++
+
+=== Start Live Migration
+
+. Click the action menu at the top right and select *Migration* -> *Compute*.
++
+image::2025_spring/module-09-networking/38.png[link=self, window=blank, width=100%]
++
+. Observe the VM status. It will change to *Migrating*, then return to *Running*. This may take a minute.
+
+=== Verify Post-Migration State
+
+. Once the VM has returned to the *Running* state, check the IP addresses displayed in the Network section of the Overview again.
+. Note that the pod network IP address has changed. This is the new Pod Network IP on the new node.
+. The IP assigned for the external network has not changed.
++
+image::2025_spring/module-09-networking/36.png[link=self, window=blank, width=100%]
++
+
+== Migration Conclusion
+
+This step demonstrates a fundamental concept: live migration moved the VM from one physical node to another. The Pod network, being closely tied to the cluster and node infrastructure, had to reassign a new IP address to the VM.
+
+However, the connection to the `corp-network`, defined by the NAD, is a direct connection to the Linux bridge (`br-flat`) that exists on *all* worker nodes. The VM's IP is assigned by a mechanism external to the cluster.
+
+This proves that corporate network connectivity is stable, persistent, and completely independent of the movement of the workload (VM) within the cluster.
+
+[[cleanup]]
+== Cleanup
+
+To save resources for the next *lab*, please stop all the VMs you created in this module.
+
+. Navigate to the *Virtualization* *persona* in the left menu, then click on *Virtual Machines*.
+. If any VMs show the *Running* status, highlight the VM in the central tree column and select the *Stop* button or the option in the *Actions* *dropdown* menu.
+
+All VMs should now be in the *Stopped* state.
+
+[[Résumé]]
+== Summary
+
+In this module, you set up hybrid network connectivity for a Virtual Machine. You learned the critical difference between the two components that make this possible:
+
+* **NodeNetworkConfigurationPolicy (NNCP):** The low-level resource, managed by the cluster administrator, that configures the *node's* physical hardware by creating a Linux bridge (`br-flat`) on a physical NIC.
+* **NetworkAttachmentDefinition (NAD):** The high-level, namespace-scoped resource that defines a *usable network* by pointing to the NNCP bridge (`br-flat`).
+* VMs get their IP addresses from an *external service* (the corporate network's DHCP server).
+* VMs can communicate directly with each other *using this external network*.
+* These VMs act as true members of that network and could also *reach other devices present on that same network segment*, bypassing the cluster's SDN.
+
+Would you like me to help you configure a specific network policy for these bridged VMs?
