@@ -78,11 +78,12 @@ image::beg-module02/13_VM_From_Template.png[link=self, window=blank, width=100%]
 . Click on the *Console* tab at the top and use the *Guest login credentials* that are provided along with the *Copy* and *Paste to console* buttons to connect to the virtual machine console.
 +
 image::beg-module02/14_VM_Console.png[link=self, window=blank, width=100%]
-
-## . Once connected to the virtual machine, run the following command to test the MariaDB installation. + [source,sh,role=execute]
-
-## sudo mysql -u root
-
++
+[source,sh,role=execute]
+----
+sudo mysql -u root
+----
++
 image::beg-module02/15_MariaDB_Login.png[link=self, window=blank, width=100%]
 
 . Press *Ctrl-D* twice to log out of the VM.
