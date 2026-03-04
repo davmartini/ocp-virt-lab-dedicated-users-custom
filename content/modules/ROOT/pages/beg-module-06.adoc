@@ -39,15 +39,17 @@ image::beg-module06/1.png[link=self, window=blank, width=100%]
 ## . Once logged in, create an empty test file in the user's home directory root.
 +
 [source,sh,role=execute]
-
-## touch test.txt
+----
+touch test.txt
+----
 
 ## . Verify that the file exists by listing the directory contents.
 +
 [source,sh,role=execute]
-
-## ls
-
+----
+ls
+----
++
 You should see `test.txt` appear in the list. Leave this VM running.
 +
 image::beg-module06/2.png[link=self, window=blank, width=100%]
