@@ -7,7 +7,11 @@
 
 
 * xref:beg-intro.adoc[OpenShift Virtualization for beginners]
-** xref:beg-module-01.adoc[1. Live Migration of Workloads]
+** xref:beg-module-01.adoc[1. VM Management]
+
+** xref:beg-module-02.adoc[2. Template Management]
+
+** xref:beg-module-03.adoc[1. VM Management]
 
 * xref:adv-intro.adoc[OpenShift Virtualization for advanced users]
 ** xref:adv-module-01.adoc[1. Live Migration of Workloads]
