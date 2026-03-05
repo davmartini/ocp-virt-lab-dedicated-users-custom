@@ -44,6 +44,7 @@ Your login is available with:
 * *Simple User:* user01
 * *Password:* userredhat
 
+
 * *Admin User:* admin01
 * *Password:* adminredhat
 
