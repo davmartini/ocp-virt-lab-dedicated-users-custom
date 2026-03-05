@@ -1,19 +1,23 @@
 = Welcom on your OpenShift Virtualization lab !
 
-image::custom-logo.png[title="OpenShift Virtualization Lab", link=self, window=blank, width=100%]
+image::custom-logo.png, link=self, window=blank, width=60%]
+
+== Guides
 
 You can access to 2 different parts during this lab:
-    * A first introduction to OpenShift Virtualization (Beginner's Guide) focus on how a virtualization user can easily deploy VM via the OpenShift Console.
-    * A more advanced guide (Advanced guide) focus on VM optimization and placement
 
-Feel free to follow the one you wanted.
+* A first introduction to OpenShift Virtualization (Beginner's Guide) focus on how a virtualization user can easily deploy VM via the OpenShift Console.
+* A more advanced guide (Advanced guide) focus on VM optimization and placement
+
+*Feel free to follow the one you wanted.*
 
 == Cluster Access
 
 Each of you will have a dedicated OpenShift cluster during this lab.
 You will have 2 accouts: 
-    * A simple user account with limited view on OpenShift infrastructure
-    * A admin account with full vien on your OpenShift cluster
+
+* A simple user account with limited view on OpenShift infrastructure
+* A admin account with full vien on your OpenShift cluster
 
 This strict user access control highlights OpenShift's powerful multi-tenancy.
 Many projects can be operated on a single OpenShift cluster without interfering with each other.
