@@ -1,53 +1,28 @@
+= Welcom on your OpenShift Virtualization lab !
 
+image::custom-logo.png[title="OpenShift Virtualization Lab", link=self, window=blank, width=100%]
 
+You can access to 2 different parts during this lab:
+    * A first introduction to OpenShift Virtualization (Beginner's Guide) focus on how a virtualization user can easily deploy VM via the OpenShift Console.
+    * A more advanced guide (Advanced guide) focus on VM optimization and placement
 
-
-= VMs go cloud-native with OpenShift Virtualization
-
-
-
-== Warning
-
-The environments for these labs are generated on-demand and are not representative of reality. Indeed, for cost and automation reasons, these OpenShift Virtualization environments are "nested" and not supported in production. Performance may therefore be significantly affected.
-
-== Document
-
-You will find the document presented at the beginning of the session at this link:{attachmentsdir}/10th_march_virtualization_handson_workshop_tech_journey_virtualization.pdf[LINK, window=_blan].
+Feel free to follow the one you wanted.
 
 == Cluster Access
 
-Your workshop environment is located on a shared cluster.
-You will be an OpenShift user and not a cluster administrator. Your view will therefore be limited to your project/namespace, and the entire infrastructure part (such as the nodes where your VMs are running) will be hidden from you.
-Other workshop participants are also on this cluster.
-When important OpenShift features are not visible to users, this guide will provide explanations and screenshots of the relevant sections.
+Each of you will have a dedicated OpenShift cluster during this lab.
+You will have 2 accouts: 
+    * A simple user account with limited view on OpenShift infrastructure
+    * A admin account with full vien on your OpenShift cluster
+
 This strict user access control highlights OpenShift's powerful multi-tenancy.
 Many projects can be operated on a single OpenShift cluster without interfering with each other.
 
 You will complete this entire workshop via the OpenShift console.
 
-=== Credentials for the OpenShift Console
-
-Your OpenShift cluster console is available {openshift_console_url}[here^].
-
-Your login is available with:
-
-* *User:* {user}
-* *Password:* {password}
-
-image::module-1-console-login.png[link=self, window=blank, width=100%]
-
-*Enter your username and the password provided above*
-
-Congratulations!
-You are now logged in and ready to start the workshop!
-
----
 
 [#labenvironment]
 == Lab Environment
-
-The terminal window to your right is *already* logged into the lab environment via the bastion host as the *{ssh_user}*.
-All steps of this lab are to be completed from the bastion host as the *{ssh_user}* logged in to the OpenShift cluster as *admin*, unless the OpenShift console is indicated.
 
 The lab environment is running Red Hat OpenShift 4.20 with the following required operators pre-installed:
 
@@ -60,3 +35,34 @@ The lab environment is running Red Hat OpenShift 4.20 with the following require
 * Migration Toolkit for Virtualization
 
 include::lab-access.adoc[]
+
+[IMPORTANT]
+====
+The environments for these labs are generated on-demand and are not representative of reality. Indeed, for cost and automation reasons, these OpenShift Virtualization environments are "nested" and not supported in production. Performance may therefore be significantly affected.
+====
+
+== Document
+
+You will find the document presented at the beginning of the session at this link:{attachmentsdir}/10th_march_virtualization_handson_workshop_tech_journey_virtualization.pdf[LINK, window=_blan].
+
+=== Credentials for the OpenShift Console
+
+Your OpenShift cluster console is available {openshift_console_url}[here^].
+
+Your login is available with:
+
+* *Simple User:* user01
+* *Password:* userredhat
+
+* *Admin User:* admin01
+* *Password:* adminredhat
+
+image::module-1-console-login.png[link=self, window=blank, width=100%]
+
+*Enter your username and the password provided above*
+
+Congratulations!
+You are now logged in and ready to start the workshop!
+
+---
+
