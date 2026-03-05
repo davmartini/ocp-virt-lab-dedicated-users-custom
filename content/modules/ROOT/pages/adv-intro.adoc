@@ -79,3 +79,4 @@ Partner ecosystem
 
 endif::vmware[]
 
+image::advanced.png[title="Advanced guide", link=self, window=blank, width=100%]

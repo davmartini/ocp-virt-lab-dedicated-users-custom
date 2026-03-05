@@ -1,7 +1,5 @@
 == Welcome to the OpenShift Virtualization beginners part
 
-Welcome to this hands-on workshop on *OpenShift Virtualization*!
-
 In this first part, you will take your first steps in OpenShift Virtualization.
 
 .Specifically, we will see how to:
@@ -9,4 +7,7 @@ In this first part, you will take your first steps in OpenShift Virtualization.
 * Create custom templates to standardize and accelerate your VM deployments.
 * Connect our virtual machines to an enterprise-type VLAN network.
 * Set up a UDN network bubble for your VMs' communication.
-// * Create a robust backup and recovery strategy for your virtual machines by integrating the Veeam Kasten solution.
+* Create a robust backup and recovery strategy for your virtual machines by integrating the Veeam Kasten solution.
+
+
+image::beginner.png[title="Beginner's guide", link=self, window=blank, width=100%]
