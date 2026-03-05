@@ -1,4 +1,4 @@
-= Welcom on your OpenShift Virtualization lab !
+= Welcome on your dedicated OpenShift Virtualization lab !
 
 image::custom-logo.png, link=self, window=blank, width=60%]
 
