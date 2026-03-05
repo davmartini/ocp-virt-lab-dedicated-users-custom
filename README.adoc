@@ -12,16 +12,10 @@
 == Create namespace
 
 ----
-for i in {1..20}
-do 
-oc new-project project-$i
-oc create ns udn-projet-$i --dry-run=client -o yaml | oc label -f - --local k8s.ovn.org/primary-user-defined-network="" -o yaml | oc apply -f -
-oc adm policy add-role-to-user admin user$i -n project-$i
-oc adm policy add-role-to-user admin user$i -n udn-projet-$i
-oc adm policy add-role-to-user admin user$i -n openshift
-oc adm policy add-role-to-user kubevirt.io:dm user$i -n project-$i
-oc adm policy add-role-to-user kubevirt.io:dm user$i -n udn-projet-$i
+oc adm policy add-role-to-user admin user01 -n project-1
+oc adm policy add-role-to-user admin user01 -n udn-projet-1
+oc adm policy add-role-to-user admin user01 -n openshift
+oc adm policy add-role-to-user kubevirt.io:dm user01 -n project-1
+oc adm policy add-role-to-user kubevirt.io:dm user01 -n udn-projet-01
 oc adm policy add-role-to-user edit user$i -n openshift-migration
-done
 ----
-
