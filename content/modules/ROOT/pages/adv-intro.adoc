@@ -1,5 +1,7 @@
 == Welcome to the OpenShift Virtualization advanced part
 
+image::advanced.png[title="Advanced guide", link=self, window=blank, width=100%]
+
 OpenShift Virtualization is everywhere and has a major influence across our accounts.
 The interest level is high, but there is always the unavoidable question: How does it compare to other hypervisors?
 
@@ -79,4 +81,3 @@ Partner ecosystem
 
 endif::vmware[]
 
-image::advanced.png[title="Advanced guide", link=self, window=blank, width=100%]
