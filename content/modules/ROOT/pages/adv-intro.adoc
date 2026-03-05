@@ -1,1 +1,81 @@
 == Welcome to the OpenShift Virtualization advanced part
+
+OpenShift Virtualization is everywhere and has a major influence across our accounts.
+The interest level is high, but there is always the unavoidable question: How does it compare to other hypervisors?
+
+Some sellers are not well versed in other virtualization platforms.
+
+In this lab, we will guide you through the process of applying a sort of "Rosetta Stone" to OpenShift Virtualization and other virualization platforms.
+
+Rosetta Stone builds a mapping between traditional virtualization platforms and OpenShift Virtualization capabilities.
+
+Let's take that mapping and put it into practice to supercharge your knowledge and tackle those customer questions with confidence.
+
+In this lab, we will introduce and walk you through how to explain and demonstrate key administrative and VM owner capabilities for infrastructure optimization, workload availability, scalability, and resource management.
+
+You will walk away with the understanding, knowledge, and experience to showcase:
+
+* *Live Migration of Workloads:* Move VMs seamlessly between hosts with zero downtime
+* *CPU and Memory Overcommit:* Optimize resource utilization across your cluster
+* *Hot Plugging of CPU, Memory, and Disk Resources:* Scale VM resources without restarts
+* *Affinity and Anti-Affinity for VM Placement:* Control where VMs run for performance and availability
+* *Dynamic Rescheduling of Workloads:* Let the platform automatically optimize VM placement
+* *Fencing and How to Handle Node Failure:* Ensure workload resilience during infrastructure disruptions
+* *Decentralized Live Migration:* How to migrate workloads between namespaces and clusters
+* *VM Isolation and Security:* Control where VMs run for performance and availability
+
+image::virt-icon-large.png[virt-icon-large,55%,55%,align="left"]
+
+ifdef::vmware[]
+== VMware and OpenShift Virtualization
+
+VMware and OpenShift Virtualization are nearing feature parity, and for customers who are well educated, adoption is not a challenge.
+
+However, because of the differing product philosophies, there is a significant difference between OpenShift Virtualization and VMware in the eyes of administorators and their management.
+
+VMware originated as a desktop software company, so every feature gets implemented in the graphical interface first.
+This hides nearly all the complexity from the average user.
+VMware administrators and their management teams rely on the graphical interface to configure and manage their virtual environment, and very sophisticated operations are hidden behind this interface.
+
+Further, collaboration with a wider community has not been a requirement of VMware as a proprietary software company, so abstractions that allow automation have not been first to implemention.
+
+OpenShift Virtualization, on the other hand, like the Kubernetes project it is part of (kubevirt,) does not implement features "graphical interface first."
+While Red Hat has been doing Virtualization on an enterprise scale since the 1990s, and continues to innovate today, our concerns are with community collaboration and this does not put graphical administration first.
+
+//image::index/vmware-overview.png[vmware-overview,100%,100%,align="left"]
+
+Use the table below as a guide to begin your exploration of the feature parity of OpenShift Virtualization and VMware.
+
+.Feature Comparison
+[cols="1,2,2", options="header"]
+|===
+| | OpenShift Virtualization | VMware
+
+| *Infrastructure Automation*
+| RHACM, Ansible, and GitOps
+| Aria Automation Config (SaltStack) and PowerShell
+
+| *Application Automation*
+| RHACM, Ansible, Pipelines, and GitOps
+| Aria Automation Orchestrator (vRealize Orchestrator) and Aria Automation (vRealize Automation)
+
+| *Networking*
+| Multus / OVN-Kubernetes / Third party CNI
+| NSX
+
+| *Storage*
+| ODF, Optimizing Storage and partner ecosystem for CSI
+| vSAN, Datastores, Datastore Clusters, Partner Ecosystem
+
+| *Observability*
+| RHACM, OpenShift Logging & Metrics, Service Mesh, Distributed Tracing
+| Wavefront
+
+| *Data Protection*
+| OpenShift API for Data Protection (OADP) +
+Partner ecosystem
+| vSphere Replication, partner ecosystem
+|===
+
+endif::vmware[]
+
