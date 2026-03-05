@@ -10,4 +10,4 @@ In this first part, you will take your first steps in OpenShift Virtualization.
 * Create a robust backup and recovery strategy for your virtual machines by integrating the Veeam Kasten solution.
 
 
-image::beginner.png[title="Beginner's guide", link=self, window=blank, width=100%]
+image::index/beginner.png[title="Beginner's guide", link=self, window=blank, width=100%]

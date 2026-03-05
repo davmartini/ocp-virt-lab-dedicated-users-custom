@@ -1,6 +1,6 @@
 = Welcome on your dedicated OpenShift Virtualization lab !
 
-image::custom-logo.png[link=self, window=blank, width=60%]
+image::index/custom-logo.png[link=self, window=blank, width=60%]
 
 == Guides
 
@@ -9,7 +9,7 @@ You can access to 2 different parts during this lab:
 * A first introduction to OpenShift Virtualization (Beginner's Guide) focus on how a virtualization user can easily deploy VM via the OpenShift Console.
 * A more advanced guide (Advanced guide) focus on VM optimization and placement
 
-*Feel free to follow the one you wanted.*
+*Feel free to follow the one you want.*
 
 == Cluster Access
 
@@ -25,21 +25,6 @@ Many projects can be operated on a single OpenShift cluster without interfering 
 You will complete this entire workshop via the OpenShift console.
 
 
-[#labenvironment]
-== Lab Environment
-
-The lab environment is running Red Hat OpenShift 4.20 with the following required operators pre-installed:
-
-* OpenShift Virtualization
-* OpenShift Data Foundations
-* Node Health Check Operator
-* Self Node Remediation Operator
-* Kube Descheduler Operator
-* Migration Toolkit for Containers
-* Migration Toolkit for Virtualization
-
-include::lab-access.adoc[]
-
 [IMPORTANT]
 ====
 The environments for these labs are generated on-demand and are not representative of reality. Indeed, for cost and automation reasons, these OpenShift Virtualization environments are "nested" and not supported in production. Performance may therefore be significantly affected.
@@ -49,7 +34,8 @@ The environments for these labs are generated on-demand and are not representati
 
 You will find the document presented at the beginning of the session at this link:{attachmentsdir}/10th_march_virtualization_handson_workshop_tech_journey_virtualization.pdf[LINK, window=_blan].
 
-=== Credentials for the OpenShift Console
+[#labenvironment]
+== Credentials for the OpenShift Console
 
 Your OpenShift cluster console is available {openshift_console_url}[here^].
 
@@ -61,7 +47,7 @@ Your login is available with:
 * *Admin User:* admin01
 * *Password:* adminredhat
 
-image::module-1-console-login.png[link=self, window=blank, width=100%]
+image::index/module-1-console-login.png[link=self, window=blank, width=100%]
 
 *Enter your username and the password provided above*
 
