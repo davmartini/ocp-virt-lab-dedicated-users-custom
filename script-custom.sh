@@ -61,4 +61,9 @@ oc adm policy add-role-to-user kubevirt.io:dm user01 -n udn-project-1
 oc adm policy add-role-to-user edit user01 -n openshift-migration
 oc adm policy add-cluster-role-to-user cluster-admin admin01
 
+# Add Specific roles 2
+oc apply -f gitops/nmstate-role.yaml
+oc apply -f gitops/nmstate-role-binding.yaml
+
+
 

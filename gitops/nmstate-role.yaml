@@ -1,0 +1,13 @@
+kind: ClusterRole
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: nmstate-dm
+rules:
+  - verbs:
+      - get
+      - list
+      - watch
+    apiGroups:
+      - nmstate.io
+    resources:
+      - nodenetworkstates
