@@ -23,7 +23,7 @@ oc apply -f gitops/udn-project-1.yaml
 echo "Install NMSTATE"
 oc apply -f gitops/openshift-nmstate.yaml
 oc apply -f gitops/nmstate-sub.yaml
-sleep 40
+sleep 90
 oc apply -f gitops/nmstate-int.yaml
 
 
