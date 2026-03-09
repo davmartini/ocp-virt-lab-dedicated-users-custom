@@ -1,5 +1,11 @@
 = VM Backup and Restore with Veeam Kasten
 
+[IMPORTANT]
+====
+The S3 bucket may be limited in terms of size. Errors may occur during export.
+====
+
+
 == Introduction
 
 In a production environment, the ability to quickly back up and restore virtual machines is crucial. OpenShift Virtualization, being *cloud-native*, integrates with modern data protection solutions like *Veeam Kasten K10*.
