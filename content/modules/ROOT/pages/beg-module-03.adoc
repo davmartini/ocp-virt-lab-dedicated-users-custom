@@ -1,5 +1,12 @@
 = Connecting VMs to the Corporate Network
 
+[IMPORTANT]
+====
+You cannot perform this lab part on this custom environment. 
+We encourage you to read this section and ask any questions you may have.
+====
+
+
 == Introduction
 
 While OpenShift offers a SDN (Software Defined Network) that allows communication between our VMs using the cluster's internal network, some VMs require direct access to our *corporate network*.
