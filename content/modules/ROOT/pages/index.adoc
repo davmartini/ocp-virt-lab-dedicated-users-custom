@@ -37,7 +37,9 @@ You will find the document presented at the beginning of the session at this lin
 [#labenvironment]
 == Credentials for the OpenShift Console
 
-Your OpenShift cluster console is available {openshift_console_url}[here^].
+Your OpenShift cluster console is available on this url *https://console-openshift-console.apps.cluster-${UID}.dynamic.redhatworkshops.io/* .
+
+Identity Provider: lab-beginner
 
 Your login is available with:
 
@@ -46,7 +48,8 @@ Your login is available with:
 
 [IMPORTANT]
 ====
-Do the lab only with the *USER01* user plz!!
+Do the beginner lab with the *USER01* user plz!!
+Do the advanced lab with the *ADMIN01* user plz!!
 ====
 
 
