@@ -1,0 +1,24 @@
+apiVersion: config.kio.kasten.io/v1alpha1
+kind: Profile
+metadata:
+  name: odf-s3
+  namespace: kasten-io
+spec:
+  locationSpec:
+    credential:
+      secret:
+        apiVersion: v1
+        kind: secret
+        name: k10secret-s3
+        namespace: kasten-io
+      secretType: AwsAccessKey
+    objectStore:
+      endpoint: 's3.openshift-storage.svc:443'
+      name: kasten-backup-s3-6b6f8d76-ec0c-4f9f-9a80-e6797a826e83
+      objectStoreType: S3
+      path: k10/9a21dce9-4615-4c39-a254-ab87f50d0545/migration
+      pathType: Directory
+      region: eu-west1
+      skipSSLVerify: true
+    type: ObjectStore
+  type: Location

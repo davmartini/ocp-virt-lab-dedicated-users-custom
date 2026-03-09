@@ -40,6 +40,15 @@ sleep 90
 echo "Create Kasten Bucket"
 oc apply -f gitops/bucket.yaml
 
+# Create Kasten Profile
+echo "Create Kasten Profile"
+AK=$(oc get secret/kasten-backup-s3 -n kasten-io -o jsonpath='{.data.AWS_ACCESS_KEY_ID}' | base64 -d)
+SK=$(oc get secret/kasten-backup-s3 -n kasten-io -o jsonpath='{.data.AWS_SECRET_ACCESS_KEY}' | base64 -d)
+oc create secret generic --type=secrets.kanister.io/aws k10secret-s3 --from-literal=aws_access_key_id="$AK" --from-literal=aws_secret_access_key="$SK" -n kasten-io
+oc apply -f kasten-profile-s3.yaml
+oc annotate storageclass ocs-external-storagecluster-ceph-rbd k10.kasten.io/sc-supports-block-mode-exports=true
+oc annotate storageclass ocs-external-storagecluster-ceph-rbd-immediate k10.kasten.io/sc-supports-block-mode-exports=true
+oc annotate volumesnapshotclass ocs-external-storagecluster-rbdplugin-snapclass k10.kasten.io/is-snapshot-class=true
 
 # Role Kasten
 echo "Apply Kasten permissions"
