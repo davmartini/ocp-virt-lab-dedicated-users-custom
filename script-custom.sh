@@ -30,7 +30,7 @@ oc apply -f gitops/nmstate-int.yaml
 # Install Kasten
 echo "Install Kasten"
 oc apply -f gitops/kasten-io.yaml
-oc apply -f gitops/kasten-io-opg
+oc apply -f gitops/kasten-io-opg.yaml
 oc apply -f gitops/kasten-io-sub.yaml
 sleep 90
 oc apply -f gitops/kasten-io-int.yaml
