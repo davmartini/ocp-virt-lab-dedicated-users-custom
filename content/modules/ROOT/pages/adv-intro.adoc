@@ -26,7 +26,7 @@ You will walk away with the understanding, knowledge, and experience to showcase
 * *Decentralized Live Migration:* How to migrate workloads between namespaces and clusters
 * *VM Isolation and Security:* Control where VMs run for performance and availability
 
-image::indevirt-icon-large.png[virt-icon-large,55%,55%,align="left"]
+image::index/virt-icon-large.png[virt-icon-large,55%,55%,align="left"]
 
 ifdef::vmware[]
 == VMware and OpenShift Virtualization
