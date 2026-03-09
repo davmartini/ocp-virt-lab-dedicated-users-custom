@@ -34,7 +34,7 @@ oc adm policy add-role-to-user admin user01 -n project-1
 oc adm policy add-role-to-user admin user01 -n udn-projet-1
 oc adm policy add-role-to-user admin user01 -n openshift
 oc adm policy add-role-to-user kubevirt.io:dm user01 -n project-1
-oc adm policy add-role-to-user kubevirt.io:dm user01 -n udn-projet-01
+oc adm policy add-role-to-user kubevirt.io:dm user01 -n udn-projet-1
 oc adm policy add-role-to-user edit user01 -n openshift-migration
 oc adm policy add-cluster-role-to-user cluster-admin admin01
 
