@@ -48,8 +48,8 @@ Your login is available with:
 
 [IMPORTANT]
 ====
-Do the *beginner lab* with the *USER01* user plz!!.
-Do the *advanced lab* with the *ADMIN01* user plz!!.
+* Do the *beginner lab* with the *USER01* user plz!!
+* Do the *advanced lab* with the *ADMIN01* user plz!!
 ====
 
 
