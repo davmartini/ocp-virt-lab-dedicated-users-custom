@@ -1,11 +1,13 @@
 = Custom OpenShift Virtualization lab
 
+== Infos
+
+* The different actions must be done on each cluster
+
 == Preparation steps
 
-1. Upgrade all operators
-2. Define ocs-external-storagecluster-ceph-rbd-immediate StorageClass as default
-3. Add htpasswd file
-4. Create specific role
+1. Add the htpasswd file
+2. Create specific role
 6. Create namespaces project-1 and udn-projet-1 with associated role
 7. Ajouter le role kubevirt.io:migrate aux utilisateurs
 
