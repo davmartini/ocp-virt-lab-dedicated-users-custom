@@ -27,12 +27,35 @@ oc apply -f gitops/nmstate-sub.yaml
 sleep 90
 oc apply -f gitops/nmstate-int.yaml
 
+# Install Kasten
+echo "Install Kasten"
+oc apply -f gitops/kasten-io.yaml
+oc apply -f gitops/kasten-io-opg
+oc apply -f gitops/kasten-io-sub.yaml
+sleep 90
+oc apply -f gitops/kasten-io-int.yaml
+sleep 90
+
+# Create Bucket
+echo "Create Kasten Bucket"
+oc apply -f gitops/bucket.yaml
+
+
+# Role Kasten
+echo "Apply Kasten permissions"
+oc apply -f gitops/kasten-cluster-role.yaml
+oc apply -f gitops/kasten-cluter-role-policies.yaml
+oc apply -f gitops/role-binding-kasten.yaml
+oc apply -f gitops/kasten-biding.yaml
+oc apply -f gitops/kasten-biding-s3.yaml
+
 
 # Add Specific roles
 echo "Add Specific roles"
 oc adm policy add-role-to-user admin user01 -n project-1
 oc adm policy add-role-to-user admin user01 -n udn-project-1
 oc adm policy add-role-to-user admin user01 -n openshift
+oc adm policy add-role-to-user view user01 -n kasten-io
 oc adm policy add-role-to-user kubevirt.io:dm user01 -n project-1
 oc adm policy add-role-to-user kubevirt.io:dm user01 -n udn-project-1
 oc adm policy add-role-to-user edit user01 -n openshift-migration

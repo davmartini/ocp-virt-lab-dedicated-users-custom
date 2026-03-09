@@ -1,0 +1,13 @@
+kind: ClusterRole
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: kasten-role-s3
+rules:
+  - verbs:
+      - get
+      - list
+      - watch
+    apiGroups:
+      - config.kio.kasten.io
+    resources:
+      - profiles

@@ -1,0 +1,12 @@
+apiVersion: objectbucket.io/v1alpha1
+kind: ObjectBucketClaim
+metadata:
+  name: kasten-backup-s3
+  namespace: kasten-io
+spec:
+  additionalConfig:
+    bucketclass: noobaa-default-bucket-class
+  bucketName: kasten-backup-s3-6b6f8d76-ec0c-4f9f-9a80-e6797a826e83
+  generateBucketName: kasten-backup-s3
+  objectBucketName: obc-kasten-io-kasten-backup-s3
+  storageClassName: openshift-storage.noobaa.io
