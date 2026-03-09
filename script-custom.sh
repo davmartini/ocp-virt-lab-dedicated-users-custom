@@ -24,7 +24,7 @@ echo "Install NMSTATE"
 oc apply -f gitops/openshift-nmstate.yaml
 oc apply -f gitops/nmstate-opg.yaml
 oc apply -f gitops/nmstate-sub.yaml
-sleep 90
+sleep 60
 oc apply -f gitops/nmstate-int.yaml
 
 # Install Kasten
@@ -32,9 +32,9 @@ echo "Install Kasten"
 oc apply -f gitops/kasten-io.yaml
 oc apply -f gitops/kasten-io-opg.yaml
 oc apply -f gitops/kasten-io-sub.yaml
-sleep 90
+sleep 60
 oc apply -f gitops/kasten-io-int.yaml
-sleep 90
+sleep 60
 
 # Create Bucket
 echo "Create Kasten Bucket"
