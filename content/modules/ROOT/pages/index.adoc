@@ -44,6 +44,11 @@ Your login is available with:
 * *Simple User:* user01
 * *Password:* userredhat
 
+[IMPORTANT]
+====
+Do the lab only with the *USER01* user plz!!
+====
+
 
 * *Admin User:* admin01
 * *Password:* adminredhat
