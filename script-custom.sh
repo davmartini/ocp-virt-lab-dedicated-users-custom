@@ -46,8 +46,8 @@ echo "Apply Kasten permissions"
 oc apply -f gitops/kasten-cluster-role.yaml
 oc apply -f gitops/kasten-cluter-role-policies.yaml
 oc apply -f gitops/role-binding-kasten.yaml
-oc apply -f gitops/kasten-biding.yaml
-oc apply -f gitops/kasten-biding-s3.yaml
+oc apply -f gitops/kasten-binding.yaml
+oc apply -f gitops/kasten-binding-s3.yaml
 
 
 # Add Specific roles
