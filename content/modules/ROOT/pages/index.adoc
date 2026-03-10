@@ -32,7 +32,7 @@ The environments for these labs are generated on-demand and are not representati
 
 == Document
 
-You will find the document presented at the beginning of the session at this link:https://github.com/davmartini/ocp-virt-lab-dedicated-users-custom/blob/main/content/modules/ROOT/assets/pdf/openshift_virtualization_airbus.pdf[LINK, window=_blan].
+You will find the document presented at the beginning of the session at this link:{attachmentsdir}/openShift_virtualization_airbus.pdf[LIEN, window=_blan].
 
 [#labenvironment]
 == Credentials for the OpenShift Console
