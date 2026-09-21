@@ -11,57 +11,16 @@ During this 2 days, you will have the possibility to access to 2 different labs:
 
 *Feel free to follow the one you want.*
 
-== Cluster Access
+== Labs access
 
-Each of you will have a dedicated OpenShift cluster during this lab.
-You will have 2 accouts: 
+image::index/beginner-lab.jpex[link=self, window=blank, width=60%]
 
-* A simple user account with limited view on OpenShift infrastructure
-* A admin account with full vien on your OpenShift cluster
 
-This strict user access control highlights OpenShift's powerful multi-tenancy.
-Many projects can be operated on a single OpenShift cluster without interfering with each other.
+image::index/advanced-lab.jpex[link=self, window=blank, width=60%]
 
-You will complete this entire workshop via the OpenShift console.
 
 
 [IMPORTANT]
 ====
 The environments for these labs are generated on-demand and are not representative of reality. Indeed, for cost and automation reasons, these OpenShift Virtualization environments are "nested" and not supported in production. Performance may therefore be significantly affected.
 ====
-
-== Document
-
-You will find the document presented at the beginning of the session at this link:{attachmentsdir}/openShift_virtualization_airbus.pdf[LIEN, window=_blan].
-
-[#labenvironment]
-== Credentials for the OpenShift Console
-
-Your OpenShift cluster console is available on this url *https://console-openshift-console.apps.cluster-${UID}.dynamic.redhatworkshops.io/* .
-
-Identity Provider: lab-beginner
-
-Your login is available with:
-
-* *Simple User:* user01
-* *Password:* userredhat
-
-[IMPORTANT]
-====
-* Do the *beginner lab* with the *USER01* user plz!!
-* Do the *advanced lab* with the *ADMIN01* user plz!!
-====
-
-
-* *Admin User:* admin01
-* *Password:* adminredhat
-
-image::index/module-1-console-login.png[link=self, window=blank, width=100%]
-
-*Enter your username and the password provided above*
-
-Congratulations!
-You are now logged in and ready to start the workshop!
-
----
-
