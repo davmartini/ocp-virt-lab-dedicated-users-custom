@@ -67,3 +67,15 @@ Please, read attentively these different points before to start:
 * **Cluster07:** https://console-openshift-console.apps.cluster-kt47w.dyn.redhatworkshops.io
 
 * **Cluster08:** https://console-openshift-console.apps.cluster-kt47w.dyn.redhatworkshops.io
+
+
+== Certified ecosystem
+
+* **Supported Solution:** https://catalog.redhat.com/en/platform/red-hat-openshift/virtualization
+* **Certified Hardware:** https://catalog.redhat.com/en/search?searchType=hardware
+* **Supported or Certified OS:** https://access.redhat.com/articles/4234591
+
+== Ressources
+
+* **Sizing guide:** https://access.redhat.com/articles/7107457
+* **Fincing & HA guide:** https://access.redhat.com/articles/7057929
