@@ -1,7 +1,6 @@
 ---
 site:
-  title: "OpenShift Virtualization Capabilities: Applying the Rosetta Stone"
-  url: https://rhpds.github.io/ocp-virt-admin-rosetta-showroom/
+  title: "OpenShift Virtualization: Accelerator week september 23-25"
   start_page: modules::index.adoc
 
 content:
