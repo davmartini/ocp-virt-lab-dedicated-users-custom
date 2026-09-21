@@ -29,11 +29,12 @@ Please, read attentively these different points before to start:
 [cols="1a,2a", grid=none, frame=none, valigndesc="middle"]
 |===
 | image::index/beginner-lab.png[Beginner Lab, width=100%]
-| **Beginner's Lab** +
 
 * **OpenShift Verision:** 4.21 (last available version 4.22)
 * **Environment:** One cluster for 5 users
 * **Cluster type:** Nested clusters
+
+| **Beginner's Lab** +
 
 * **Cluster01:** https://console-openshift-console.apps.cluster-kt47w.dyn.redhatworkshops.io
 
@@ -44,11 +45,12 @@ Please, read attentively these different points before to start:
 * **Cluster04:** https://console-openshift-console.apps.cluster-kt47w.dyn.redhatworkshops.io
 
 | image::index/advanced-lab.png[Advanced Lab, width=100%]
-| **Advanced Lab** +
 
 * **OpenShift Verision:** 4.21 (last available version 4.22)
 * **Environment:** One cluster by user
 * **Cluster type:** Nested clusters
+
+| **Advanced Lab** +
 
 * **Cluster01:** https://console-openshift-console.apps.cluster-kt47w.dyn.redhatworkshops.io
 
