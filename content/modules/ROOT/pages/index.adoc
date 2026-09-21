@@ -17,11 +17,9 @@ During this 2 days, you will have the possibility to access to 2 different labs:
 Please, read attentively these different points before to start:
 
 
-* **Point n°1**: The environments for these labs are generated on-demand and are not representative of reality. Indeed, for cost and automation reasons, these OpenShift Virtualization environments are "nested" and not supported in production. Performance may therefore be significantly affected.
-* **Point 1 :** Assurez-vous de bien suivre les étapes dans l'ordre.
-* **Point 2 :** L'environnement de lab est généré à la demande.
-
-N'hésitez pas à vérifier vos identifiants avant de continuer.
+* **Point n°1:** The environments for these labs are generated on-demand and are not representative of reality. Indeed, for cost and automation reasons, these OpenShift Virtualization environments are "nested" and not supported in production. Performance may therefore be significantly affected.
+* **Point n°2:** Please feel free to ask any questions. Some aspects are not covered in these labs but can be demonstrated.
+* **Point n°3:** Please make sure you use the login details you have been provided with.
 ====
 
 
@@ -32,14 +30,30 @@ N'hésitez pas à vérifier vos identifiants avant de continuer.
 |===
 | image::index/beginner-lab.png[Beginner Lab, width=100%]
 | **Beginner's Lab** +
-Ce TP vous permettra de vous familiariser avec les bases d'OpenShift Virtualization. Vous apprendrez à déployer et gérer vos premières machines virtuelles via la console OpenShift.
+
+* Cluster01: https://console-openshift-console.apps.cluster-kt47w.dyn.redhatworkshops.io
+
+* Cluster02: https://console-openshift-console.apps.cluster-kt47w.dyn.redhatworkshops.io
+
+* Cluster03: https://console-openshift-console.apps.cluster-kt47w.dyn.redhatworkshops.io
+
+* Cluster04: https://console-openshift-console.apps.cluster-kt47w.dyn.redhatworkshops.io
 
 | image::index/advanced-lab.png[Advanced Lab, width=100%]
 | **Advanced Lab** +
-Ce TP avancé est destiné aux utilisateurs expérimentés souhaitant approfondir l'optimisation, le placement des VMs et les fonctionnalités d'architecture complexe.
-|===
 
-[IMPORTANT]
-====
-The environments for these labs are generated on-demand and are not representative of reality. Indeed, for cost and automation reasons, these OpenShift Virtualization environments are "nested" and not supported in production. Performance may therefore be significantly affected.
-====
+* Cluster01: https://console-openshift-console.apps.cluster-kt47w.dyn.redhatworkshops.io
+
+* Cluster02: https://console-openshift-console.apps.cluster-kt47w.dyn.redhatworkshops.io
+
+* Cluster03: https://console-openshift-console.apps.cluster-kt47w.dyn.redhatworkshops.io
+
+* Cluster04: https://console-openshift-console.apps.cluster-kt47w.dyn.redhatworkshops.io
+
+* Cluster01: https://console-openshift-console.apps.cluster-kt47w.dyn.redhatworkshops.io
+
+* Cluster02: https://console-openshift-console.apps.cluster-kt47w.dyn.redhatworkshops.io
+
+* Cluster03: https://console-openshift-console.apps.cluster-kt47w.dyn.redhatworkshops.io
+
+* Cluster04: https://console-openshift-console.apps.cluster-kt47w.dyn.redhatworkshops.io
