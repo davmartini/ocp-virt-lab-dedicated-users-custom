@@ -2,12 +2,12 @@
 
 image::index/custom-logo.png[link=self, window=blank, width=60%]
 
-== Guides
+== OpenShift Roadshow
 
-You can access to 2 different parts during this lab:
+During this 2 days, you will have the possibility to access to 2 different labs:
 
-* A first introduction to OpenShift Virtualization (Beginner's Guide) focus on how a virtualization user can easily deploy VM via the OpenShift Console.
-* A more advanced guide (Advanced guide) focus on VM optimization and placement
+* **Beginner's lab:** A first introduction to OpenShift Virtualization focus on how a virtualization user can easily deploy VM via the OpenShift Console.
+* **Advanced lab:** A more advanced guide focus on VM optimization and placement
 
 *Feel free to follow the one you want.*
 
