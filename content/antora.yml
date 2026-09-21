@@ -1,5 +1,5 @@
 name: modules
-title: "OpenShift Virtualization Capabilities: Applying the Rosetta Stone"
+title: "OpenShift Virtualization: Accelerator week september 23-25"
 version: master
 nav:
   - modules/ROOT/nav.adoc
@@ -7,7 +7,7 @@ nav:
 asciidoc:
   attributes:
     page-toclevels: -1
-    lab_name: "OpenShift Virtualization Capabilities: Applying the Rosetta Stone"
+    lab_name: "OpenShift Virtualization: Accelerator week september 23-25"
     release-version: master
     page-pagination: true
     my_var: "foo"
@@ -19,6 +19,6 @@ asciidoc:
     page-links:
     - url: https://redhat.com
       text: Red Hat
-    - url: https://docs.redhat.com/en/documentation/openshift_container_platform/4.20/html/virtualization/about
+    - url: https://docs.redhat.com/en/documentation/openshift_container_platform/4.22/html/virtualization/about
       text: OpenShift Virtualization Documentation
     vmware: true
