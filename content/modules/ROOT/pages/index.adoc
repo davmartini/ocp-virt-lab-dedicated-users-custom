@@ -31,29 +31,37 @@ Please, read attentively these different points before to start:
 | image::index/beginner-lab.png[Beginner Lab, width=100%]
 | **Beginner's Lab** +
 
-* Cluster01: https://console-openshift-console.apps.cluster-kt47w.dyn.redhatworkshops.io
+* **OpenShift Verision:** 4.21 (last available version 4.22)
+* **Environment:** One cluster for 5 users
+* **Cluster type:** Nested clusters
 
-* Cluster02: https://console-openshift-console.apps.cluster-kt47w.dyn.redhatworkshops.io
+* **Cluster01:** https://console-openshift-console.apps.cluster-kt47w.dyn.redhatworkshops.io
 
-* Cluster03: https://console-openshift-console.apps.cluster-kt47w.dyn.redhatworkshops.io
+* **Cluster02:** https://console-openshift-console.apps.cluster-kt47w.dyn.redhatworkshops.io
 
-* Cluster04: https://console-openshift-console.apps.cluster-kt47w.dyn.redhatworkshops.io
+* **Cluster03:** https://console-openshift-console.apps.cluster-kt47w.dyn.redhatworkshops.io
+
+* **Cluster04:** https://console-openshift-console.apps.cluster-kt47w.dyn.redhatworkshops.io
 
 | image::index/advanced-lab.png[Advanced Lab, width=100%]
 | **Advanced Lab** +
 
-* Cluster01: https://console-openshift-console.apps.cluster-kt47w.dyn.redhatworkshops.io
+* **OpenShift Verision:** 4.21 (last available version 4.22)
+* **Environment:** One cluster by user
+* **Cluster type:** Nested clusters
 
-* Cluster02: https://console-openshift-console.apps.cluster-kt47w.dyn.redhatworkshops.io
+* **Cluster01:** https://console-openshift-console.apps.cluster-kt47w.dyn.redhatworkshops.io
 
-* Cluster03: https://console-openshift-console.apps.cluster-kt47w.dyn.redhatworkshops.io
+* **Cluster02:** https://console-openshift-console.apps.cluster-kt47w.dyn.redhatworkshops.io
 
-* Cluster04: https://console-openshift-console.apps.cluster-kt47w.dyn.redhatworkshops.io
+* **Cluster03:** https://console-openshift-console.apps.cluster-kt47w.dyn.redhatworkshops.io
 
-* Cluster01: https://console-openshift-console.apps.cluster-kt47w.dyn.redhatworkshops.io
+* **Cluster04:** https://console-openshift-console.apps.cluster-kt47w.dyn.redhatworkshops.io
 
-* Cluster02: https://console-openshift-console.apps.cluster-kt47w.dyn.redhatworkshops.io
+* **Cluster05:** https://console-openshift-console.apps.cluster-kt47w.dyn.redhatworkshops.io
 
-* Cluster03: https://console-openshift-console.apps.cluster-kt47w.dyn.redhatworkshops.io
+* **Cluster06:** https://console-openshift-console.apps.cluster-kt47w.dyn.redhatworkshops.io
 
-* Cluster04: https://console-openshift-console.apps.cluster-kt47w.dyn.redhatworkshops.io
+* **Cluster07:** https://console-openshift-console.apps.cluster-kt47w.dyn.redhatworkshops.io
+
+* **Cluster08:** https://console-openshift-console.apps.cluster-kt47w.dyn.redhatworkshops.io
