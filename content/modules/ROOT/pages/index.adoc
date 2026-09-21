@@ -13,12 +13,16 @@ During this 2 days, you will have the possibility to access to 2 different labs:
 
 == Labs access
 
-image::index/beginner-lab.jpex[link=self, window=blank, width=60%]
+[cols="1a,2a", grid=none, frame=none, valigndesc="middle"]
+|===
+| image::index/beginner-lab.png[Beginner Lab, width=100%]
+| **Beginner's Lab** +
+Ce TP vous permettra de vous familiariser avec les bases d'OpenShift Virtualization. Vous apprendrez à déployer et gérer vos premières machines virtuelles via la console OpenShift.
 
-
-image::index/advanced-lab.jpex[link=self, window=blank, width=60%]
-
-
+| image::index/advanced-lab.png[Advanced Lab, width=100%]
+| **Advanced Lab** +
+Ce TP avancé est destiné aux utilisateurs expérimentés souhaitant approfondir l'optimisation, le placement des VMs et les fonctionnalités d'architecture complexe.
+|===
 
 [IMPORTANT]
 ====
