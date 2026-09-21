@@ -11,6 +11,21 @@ During this 2 days, you will have the possibility to access to 2 different labs:
 
 *Feel free to follow the one you want.*
 
+
+[WARNING]
+====
+Please, read attentively these different points before to start:
+
+
+* The environments for these labs are generated on-demand and are not representative of reality. Indeed, for cost and automation reasons, these OpenShift Virtualization environments are "nested" and not supported in production. Performance may therefore be significantly affected.
+* **Point 1 :** Assurez-vous de bien suivre les étapes dans l'ordre.
+* **Point 2 :** L'environnement de lab est généré à la demande.
+
+N'hésitez pas à vérifier vos identifiants avant de continuer.
+====
+
+
+
 == Labs access
 
 [cols="1a,2a", grid=none, frame=none, valigndesc="middle"]
