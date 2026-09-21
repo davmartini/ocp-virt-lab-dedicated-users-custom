@@ -20,6 +20,7 @@ Please, read attentively these different points before to start:
 * **Point n°1:** The environments for these labs are generated on-demand and are not representative of reality. Indeed, for cost and automation reasons, these OpenShift Virtualization environments are "nested" and not supported in production. Performance may therefore be significantly affected.
 * **Point n°2:** Please feel free to ask any questions. Some aspects are not covered in these labs but can be demonstrated.
 * **Point n°3:** Please make sure you use the login details you have been provided with.
+* **
 ====
 
 
@@ -67,6 +68,7 @@ Please, read attentively these different points before to start:
 * **Cluster07:** https://console-openshift-console.apps.cluster-kt47w.dyn.redhatworkshops.io
 
 * **Cluster08:** https://console-openshift-console.apps.cluster-kt47w.dyn.redhatworkshops.io
+==
 
 
 == Certified ecosystem
@@ -74,8 +76,13 @@ Please, read attentively these different points before to start:
 * **Supported Solution:** https://catalog.redhat.com/en/platform/red-hat-openshift/virtualization
 * **Certified Hardware:** https://catalog.redhat.com/en/search?searchType=hardware
 * **Supported or Certified OS:** https://access.redhat.com/articles/4234591
+==
+
 
 == Ressources
 
+* OnDemand labs: 
 * **Sizing guide:** https://access.redhat.com/articles/7107457
 * **Fincing & HA guide:** https://access.redhat.com/articles/7057929
+
+==
