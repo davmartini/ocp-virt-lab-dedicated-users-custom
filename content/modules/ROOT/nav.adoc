@@ -1,3 +1,5 @@
 * xref:index.adoc[Introduction]
-** xref:index.adoc#labenvironment[Lab Environment]
-** xref:index.adoc#labaccess[Accessing the OpenShift Cluster]
+** xref:index.adoc#openshift_roadshow[OpenShift Roadshow]
+** xref:index.adoc#_labs_access[Accessing the OpenShift Cluster]
+** xref:index.adoc#_certified_ecosystem[Certified ecosystem]
+** xref:index.adoc#_ressources[Ressources]

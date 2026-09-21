@@ -81,8 +81,7 @@ Please, read attentively these different points before to start:
 
 == Ressources
 
-* OnDemand labs: 
+* **OnDemand labs:** https://developers.redhat.com/learn
 * **Sizing guide:** https://access.redhat.com/articles/7107457
 * **Fincing & HA guide:** https://access.redhat.com/articles/7057929
-
 ==
