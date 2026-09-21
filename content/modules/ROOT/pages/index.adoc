@@ -68,7 +68,7 @@ Please, read attentively these different points before to start:
 * **Cluster07:** https://console-openshift-console.apps.cluster-kt47w.dyn.redhatworkshops.io
 
 * **Cluster08:** https://console-openshift-console.apps.cluster-kt47w.dyn.redhatworkshops.io
-==
+|===
 
 
 == Certified ecosystem
