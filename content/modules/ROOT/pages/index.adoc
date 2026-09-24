@@ -37,13 +37,13 @@ Please, read attentively these different points before to start:
 
 | **Beginner's Lab** +
 
-* **Cluster01:** https://console-openshift-console.apps.cluster-kt47w.dyn.redhatworkshops.io
+* **Cluster01:** https://console-openshift-console.apps.cluster-nt745.dyn.redhatworkshops.io
 
-* **Cluster02:** https://console-openshift-console.apps.cluster-kt47w.dyn.redhatworkshops.io
+* **Cluster02:** https://console-openshift-console.apps.cluster-fn2g7.dyn.redhatworkshops.io
 
-* **Cluster03:** https://console-openshift-console.apps.cluster-kt47w.dyn.redhatworkshops.io
+* **Cluster03:** 
 
-* **Cluster04:** https://console-openshift-console.apps.cluster-kt47w.dyn.redhatworkshops.io
+* **Cluster04:** 
 
 | image::index/advanced-lab.png[Advanced Lab, width=100%]
 
@@ -53,21 +53,8 @@ Please, read attentively these different points before to start:
 
 | **Advanced Lab** +
 
-* **Cluster01:** https://console-openshift-console.apps.cluster-kt47w.dyn.redhatworkshops.io
+* **Lab access:** https://catalog.demo.redhat.com/workshop/638n5w
 
-* **Cluster02:** https://console-openshift-console.apps.cluster-kt47w.dyn.redhatworkshops.io
-
-* **Cluster03:** https://console-openshift-console.apps.cluster-kt47w.dyn.redhatworkshops.io
-
-* **Cluster04:** https://console-openshift-console.apps.cluster-kt47w.dyn.redhatworkshops.io
-
-* **Cluster05:** https://console-openshift-console.apps.cluster-kt47w.dyn.redhatworkshops.io
-
-* **Cluster06:** https://console-openshift-console.apps.cluster-kt47w.dyn.redhatworkshops.io
-
-* **Cluster07:** https://console-openshift-console.apps.cluster-kt47w.dyn.redhatworkshops.io
-
-* **Cluster08:** https://console-openshift-console.apps.cluster-kt47w.dyn.redhatworkshops.io
 |===
 
 
