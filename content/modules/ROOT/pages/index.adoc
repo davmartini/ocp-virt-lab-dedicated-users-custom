@@ -41,9 +41,9 @@ Please, read attentively these different points before to start:
 
 * **Cluster02:** https://console-openshift-console.apps.cluster-fn2g7.dyn.redhatworkshops.io
 
-* **Cluster03:** 
+* **Cluster03:** https://console-openshift-console.apps.cluster-xll6z.dyn.redhatworkshops.io
 
-* **Cluster04:** 
+* **Cluster04:** https://console-openshift-console.apps.cluster-sfgnk.dyn.redhatworkshops.io
 
 | image::index/advanced-lab.png[Advanced Lab, width=100%]
 
